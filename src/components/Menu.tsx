@@ -1,5 +1,5 @@
 import './Menu.css';
-export function menu() {
+function menu() {
     return (
     <div className='menu'>
         <div><img src="./logo.png" alt="logo" height={450} width={300} /></div>
@@ -10,3 +10,5 @@ export function menu() {
     </div>
     )
   }
+
+export default menu
