@@ -1,0 +1,38 @@
+.menu {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    margin: auto; 
+    width: 40%; 
+    border-right: 2px solid #76877D; 
+    border-left: 2px solid #76877D; 
+    text-align: center;
+    background-color: #191919;
+    height: 100vh;
+}
+
+.botao {
+    margin: 0;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 3%;
+    background-color: #76877D;
+    border-radius: 5px;
+    border: 1px black solid;
+    height: 2.5%;
+    width: 35%;
+    text-align: center;
+}
+
+.botao:hover {
+    background-color: #A63D40;
+    cursor: pointer;
+}
+
+.botao p {
+    font-size: 1.3em;
+    margin: 0;
+    padding: 0;
+}
+
