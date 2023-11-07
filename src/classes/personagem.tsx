@@ -1,3 +1,5 @@
+import { Arma, Armadura } from "./equipamentos";
+
 export class Atributos {
     forca: number;
     destreza: number;
@@ -98,6 +100,9 @@ export class Personagem {
     pontosVida: number;
     pontosVidaMaximos: number;
     atributos: Atributos;
+    arma?: Arma;
+    armadura?: Armadura;
+    equipSecundario?: string;
 
     // Percepção Passiva e Classe de Armadura (CA)
     percepcaoPassiva: number;
@@ -107,13 +112,19 @@ export class Personagem {
         nome: string,
         pontosVida: number,
         pontosVidaMaximos: number,
-        atributos: Atributos
+        atributos: Atributos,
+        arma?: Arma,
+        armadura?: Armadura,
+        equipSecundario?: string
     ) {
         // Inializa o nome, pontos de vida, pontos de vida maximos e atributos do personagem
         this.nome = nome;
         this.pontosVida = pontosVida;
         this.pontosVidaMaximos = pontosVidaMaximos;
         this.atributos = atributos;
+        this.arma = arma;
+        this.armadura = armadura;
+        this.equipSecundario = equipSecundario;
 
         // Calcula a Percepcao Passiva (PP)
         this.percepcaoPassiva = 10 + this.atributos.sabedoriaBonus;
@@ -121,7 +132,20 @@ export class Personagem {
             this.percepcaoPassiva += this.atributos.bonusProficiencia;
         }
 
-        // Calcula a classe de armadura (CA)
-        this.classeArmadura = 10 + this.atributos.destrezaBonus;
+        // Calcula a Classe de Armadura (CA)
+        if (this.armadura) {
+            // Se o personagem tem uma armadura equipada, o bônus da armadura para o cálculo da CA é utilizado
+            this.classeArmadura = 10 + this.armadura.bonusCA;
+            if (this.armadura.tipo === "leve") {
+                // Se a armadura é leve, toda destreza é utilizada para o calculo da CA
+                this.classeArmadura += this.atributos.destrezaBonus;
+            } else if (this.armadura.tipo === "media") {
+                // Se a armadura é média, até +2 do bônus de Destreza é adicionado no calculo da CA
+                this.classeArmadura += Math.min(2, this.atributos.destrezaBonus);
+            } // Se a armadura for pesada, nada é adicionado a CA
+        } else {
+            // Se o personagem não tem uma armadura, toda destreza é utilizada para o calculo da CA
+            this.classeArmadura = 10 + this.atributos.destrezaBonus;
+        }
     }
 }

@@ -25,6 +25,8 @@ function App() {
   console.log("Classe de Armadura:", personagem.classeArmadura);
   console.log("Armas:", Equipamentos.espadaGrande, Equipamentos.machadoGrande, Equipamentos.malho);
   console.log("Armaduras", Equipamentos.placas);
+  console.log("Armaduras", Equipamentos.halfPlacas);
+  console.log("Armaduras", Equipamentos.studded);
 
   return (
     <div>
