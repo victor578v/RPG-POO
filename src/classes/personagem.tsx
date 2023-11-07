@@ -49,6 +49,7 @@ export class Atributos {
         sabedoria: number,
         carisma: number
     ) {
+        // Inicializa os atributos
         this.forca = forca;
         this.destreza = destreza;
         this.constituicao = constituicao;
@@ -64,14 +65,14 @@ export class Atributos {
         this.sabedoriaBonus = Math.floor((this.sabedoria - 10) / 2);
         this.carismaBonus = Math.floor((this.carisma - 10) / 2);
 
-        // Inicializa as proficiências em testes de resistência e perícias
+        // Inicializa as proficiências em testes de resistência
         this.testeForca = false;
         this.testeDestreza = false;
         this.testeConstituicao = false;
         this.testeInteligencia = false;
         this.testeSabedoria = false;
         this.testeCarisma = false;
-
+        // Inicializa as proficiencias em pericias
         this.atletismo = false;
         this.sobrevivencia = false;
         this.maoHabil = false;
@@ -108,6 +109,7 @@ export class Personagem {
         pontosVidaMaximos: number,
         atributos: Atributos
     ) {
+        // Inializa o nome, pontos de vida, pontos de vida maximos e atributos do personagem
         this.nome = nome;
         this.pontosVida = pontosVida;
         this.pontosVidaMaximos = pontosVidaMaximos;

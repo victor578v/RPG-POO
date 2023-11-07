@@ -1,5 +1,6 @@
 import './App.css'
-import { Atributos, Personagem } from './classes/Personagem.tsx';
+import * as Equipamentos from './classes/equipamentos';
+import { Atributos, Personagem } from './classes/personagem.tsx';
 import menu from './components/Menu.tsx'
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
   );
   console.log("Percepção Passiva:", personagem.percepcaoPassiva);
   console.log("Classe de Armadura:", personagem.classeArmadura);
+  console.log("Armas:", Equipamentos.espadaGrande, Equipamentos.machadoGrande, Equipamentos.malho);
+  console.log("Armaduras", Equipamentos.placas);
 
   return (
     <div>
