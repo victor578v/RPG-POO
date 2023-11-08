@@ -7,24 +7,4 @@ export class Propriedades {
   }
 }
 
-// Propriedade de Duas Maos para armas
-export class DuasMaos extends Propriedades {
-  constructor() {
-    super("Duas Mãos");
-  }
-
-  isDuasMaos(): boolean {
-    return true;
-  }
-}
-
-// Propriedade Leve para armas
-export class Leve extends Propriedades {
-  constructor() {
-    super("Leve");
-  }
-
-  isLeve(): boolean {
-    return true;
-  }
-}
+export const duasMaos = new Propriedades("Duas Maos")

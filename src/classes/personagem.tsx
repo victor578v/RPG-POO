@@ -102,7 +102,7 @@ export class Personagem {
     atributos: Atributos;
     arma?: Arma;
     armadura?: Armadura;
-    equipSecundario?: string;
+    equipSecundario?: Arma | undefined;
 
     // Percepção Passiva e Classe de Armadura (CA)
     percepcaoPassiva: number;
@@ -115,7 +115,7 @@ export class Personagem {
         atributos: Atributos,
         arma?: Arma,
         armadura?: Armadura,
-        equipSecundario?: string
+        equipSecundario?: Arma | undefined
     ) {
         // Inializa o nome, pontos de vida, pontos de vida maximos e atributos do personagem
         this.nome = nome;
@@ -126,6 +126,7 @@ export class Personagem {
         this.armadura = armadura;
         this.equipSecundario = equipSecundario;
 
+        
         // Calcula a Percepcao Passiva (PP)
         this.percepcaoPassiva = 10 + this.atributos.sabedoriaBonus;
         if (this.atributos.percepcao) {
