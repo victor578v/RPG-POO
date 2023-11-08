@@ -1,17 +1,18 @@
 import './Menu.css';
-import { Arma, Armadura, espadaGrande, halfPlacas, machadoGrande, malho, placas, studded } from '../classes/equipamentos';
+import * as Equipamentos from '../classes/equipamentos';
+
 
 interface MenuProps {
-  atualizarPersonagem: (novaArma?: Arma, novaArmadura?: Armadura) => void;
+  atualizarPersonagem: (novaArma?: Equipamentos.Arma, novaArmadura?: Equipamentos.Armadura) => void;
 }
 
 function menu({ atualizarPersonagem }: MenuProps) {
 
-  const escolherArma = (novaArma: Arma) => {
+  const escolherArma = (novaArma: Equipamentos.Arma) => {
     atualizarPersonagem(novaArma, undefined);
   };
 
-  const escolherArmadura = (novaArmadura: Armadura) => {
+  const escolherArmadura = (novaArmadura: Equipamentos.Armadura) => {
     atualizarPersonagem(undefined, novaArmadura);
   };
 
@@ -23,12 +24,11 @@ function menu({ atualizarPersonagem }: MenuProps) {
         <div className='botao'><p>Criar Personagem</p></div>
         <div className='botao'><p>Abrir Personagem</p></div>
         <div className='botao'><p>Tutorial</p></div>
-        <div className='botao' onClick={() => escolherArmadura(placas)}><p>Placas</p></div>
-        <div className='botao' onClick={() => escolherArmadura(studded)}><p>Couro Batido</p></div>
-        <div className='botao' onClick={() => escolherArmadura(halfPlacas)}><p>Meia Armadura</p></div>
-        <div className='botao' onClick={() => escolherArma(espadaGrande)}><p>Espada</p></div>
-        <div className='botao' onClick={() => escolherArma(machadoGrande)}><p>Machado</p></div>
-        <div className='botao' onClick={() => escolherArma(malho)}><p>Malho</p></div>
+        <div className='botao' onClick={() => escolherArmadura(Equipamentos.placas)}><p>Placas</p></div>
+        <div className='botao' onClick={() => escolherArma(Equipamentos.espadaGrande)}><p>Espada Grande</p></div>
+        <div className='botao' onClick={() => escolherArma(Equipamentos.espada)}><p>Espada</p></div>
+        <div className='botao' onClick={() => escolherArma(Equipamentos.vazioArma)}><p>Desequipar Arma</p></div>
+        <div className='botao' onClick={() => escolherArmadura(Equipamentos.vazioArmadura)}><p>Desequipar Armadura</p></div>
     </div>
     )
   }

@@ -8,14 +8,15 @@ import Menu from './components/Menu';
 function App() {
   const atributos = new Atributos(12, 16, 14, 10, 13, 15);
   atributos.percepcao = true
-  const [personagem, setPersonagem] = useState(new Personagem("Joaozinho Guerreiro", 30, 30, atributos))
+  const [personagem, setPersonagem] = useState(new Personagem("Joaozinho Guerreiro", 30, 30, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioEquip))
 
   useEffect(() => {
-    {personagem.calcularClasseArmadura}
+    personagem.calcularClasseArmadura();
+    console.log("-".repeat(10));
     console.log("Nome:", personagem.nome);
-    console.log("Mao Principal:", personagem.arma);
-    console.log("Mao Secundaria:", personagem.equipSecundario)
-    console.log("Armadura:", personagem.armadura)
+    console.log("Mao Principal:", personagem.arma.nome);
+    console.log("Mao Secundaria:", personagem.equipSecundario.nome)
+    console.log("Armadura:", personagem.armadura.nome)
     console.log("Classe de Armadura:", personagem.classeArmadura);
   }, [personagem]);
 
@@ -31,6 +32,8 @@ function App() {
         mudarPersonagem.arma = novaArma;
         if (novaArma.propriedades.includes(duasMaos)) {
           mudarPersonagem.equipSecundario = novaArma;
+        } else {
+          mudarPersonagem.equipSecundario = Equipamentos.vazioEquip
         }
       }
       

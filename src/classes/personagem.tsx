@@ -1,4 +1,4 @@
-import { Arma, Armadura } from "./equipamentos";
+import { Arma, Armadura, EquipSecundario } from "./equipamentos";
 
 export class Atributos {
     forca: number;
@@ -100,9 +100,9 @@ export class Personagem {
     pontosVida: number;
     pontosVidaMaximos: number;
     atributos: Atributos;
-    arma?: Arma;
-    armadura?: Armadura;
-    equipSecundario?: Arma | undefined;
+    arma: Arma;
+    armadura: Armadura;
+    equipSecundario: Arma | EquipSecundario;
     percepcaoPassiva: number;
     classeArmadura?: number;
 
@@ -111,10 +111,10 @@ export class Personagem {
         pontosVida: number,
         pontosVidaMaximos: number,
         atributos: Atributos,
-        classeArmadura?: number,
-        arma?: Arma,
-        armadura?: Armadura,
-        equipSecundario?: Arma | undefined
+        arma: Arma,
+        armadura: Armadura,
+        equipSecundario: Arma | EquipSecundario,
+        classeArmadura?: number
     ) {
         // Inializa o nome, pontos de vida, pontos de vida maximos e atributos do personagem
         this.nome = nome;
@@ -136,13 +136,16 @@ export class Personagem {
     calcularClasseArmadura() {
         if (this.armadura) {
             this.classeArmadura = 10 + this.armadura.bonusCA;
-            if (this.armadura.tipo === "leve") {
+            if (this.armadura.tipo === "leve" || this.armadura.tipo === "nenhuma") {
                 this.classeArmadura += this.atributos.destrezaBonus;
             } else if (this.armadura.tipo === "media") {
                 this.classeArmadura += Math.min(2, this.atributos.destrezaBonus);
             }
         } else {
             this.classeArmadura = 10 + this.atributos.destrezaBonus;
+        }
+        if (this.equipSecundario) {
+            this.classeArmadura += this.equipSecundario.bonusCA;
         }
     }
 }
