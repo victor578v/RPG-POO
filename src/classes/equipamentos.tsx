@@ -27,13 +27,11 @@ export class Arma extends Equipamento {
 export class Armadura extends Equipamento {
   tipo: "leve" | "media" | "pesada";
   bonusCA: number;
-  bonusDestrezaMaximo: number;
 
-  constructor(nome: string, tipo: "leve" | "media" | "pesada", bonusCA: number, bonusDestrezaMaximo: number) {
+  constructor(nome: string, tipo: "leve" | "media" | "pesada", bonusCA: number) {
     super(nome);
     this.tipo = tipo;
     this.bonusCA = bonusCA;
-    this.bonusDestrezaMaximo = bonusDestrezaMaximo;
   }
 }
 
@@ -44,7 +42,7 @@ export const malho = new Arma("Malho", 2, 8, TipoDano.Contundante, [duasMaos]); 
 export const machadoGrande = new Arma("Machado Grande", 2, 8, TipoDano.Cortante, [duasMaos]); // Machado Grande, 2d8 dano, Propriedades: Duas Maos
 
 // Lista de Armaduras
-export const placas = new Armadura("Placas", "pesada", 10, 0); // Armadura de Placas, Pesada, CA 20
-export const halfPlacas = new Armadura("Meia Armadura", "media", 6, 2); // Half Plate (Meia Armadura), Media, CA 16+Des(MAX +2)
-export const studded = new Armadura("Couro Batido", "leve", 3, 99); // Armadura de Couro Batido, Leve, CA 13+Des
+export const placas = new Armadura("Placas", "pesada", 10); // Armadura de Placas, Pesada, CA 20
+export const halfPlacas = new Armadura("Meia Armadura", "media", 6); // Half Plate (Meia Armadura), Media, CA 16+Des(MAX +2)
+export const studded = new Armadura("Couro Batido", "leve", 3); // Armadura de Couro Batido, Leve, CA 13+Des
 

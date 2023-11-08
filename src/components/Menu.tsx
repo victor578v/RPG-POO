@@ -1,14 +1,18 @@
 import './Menu.css';
-import { Arma, espadaGrande, machadoGrande, malho } from '../classes/equipamentos';
+import { Arma, Armadura, espadaGrande, halfPlacas, machadoGrande, malho, placas, studded } from '../classes/equipamentos';
 
 interface MenuProps {
-  atualizarPersonagem: (novaArma: Arma) => void;
+  atualizarPersonagem: (novaArma?: Arma, novaArmadura?: Armadura) => void;
 }
 
 function menu({ atualizarPersonagem }: MenuProps) {
 
   const escolherArma = (novaArma: Arma) => {
-    atualizarPersonagem(novaArma);
+    atualizarPersonagem(novaArma, undefined);
+  };
+
+  const escolherArmadura = (novaArmadura: Armadura) => {
+    atualizarPersonagem(undefined, novaArmadura);
   };
 
 
@@ -19,9 +23,12 @@ function menu({ atualizarPersonagem }: MenuProps) {
         <div className='botao'><p>Criar Personagem</p></div>
         <div className='botao'><p>Abrir Personagem</p></div>
         <div className='botao'><p>Tutorial</p></div>
-        <div className='botao' onClick={() => escolherArma(espadaGrande)}><p>Escolher arma: Espada Grande</p></div>
-        <div className='botao' onClick={() => escolherArma(malho)}><p>Escolher arma: Malho</p></div>
-        <div className='botao' onClick={() => escolherArma(machadoGrande)}><p>Escolher arma: Machado Grande</p></div>
+        <div className='botao' onClick={() => escolherArmadura(placas)}><p>Placas</p></div>
+        <div className='botao' onClick={() => escolherArmadura(studded)}><p>Couro Batido</p></div>
+        <div className='botao' onClick={() => escolherArmadura(halfPlacas)}><p>Meia Armadura</p></div>
+        <div className='botao' onClick={() => escolherArma(espadaGrande)}><p>Espada</p></div>
+        <div className='botao' onClick={() => escolherArma(machadoGrande)}><p>Machado</p></div>
+        <div className='botao' onClick={() => escolherArma(malho)}><p>Malho</p></div>
     </div>
     )
   }
