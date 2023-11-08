@@ -36,3 +36,31 @@
     margin: 0;
     padding: 0;
 }
+
+.closeButton {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #A63D40;
+}
+
+.botaoDebug {
+    margin: 0;
+    background-color: #76877D;
+    border-radius: 5px;
+    border: 1px black solid;
+    text-align: center;
+}
+
+.botaoDebug p {
+    font-size: 1.3em;
+    margin: 0;
+    padding: 0;
+}
+
+.botaoDebug:hover {
+    background-color: #A63D40;
+    cursor: pointer;
+}

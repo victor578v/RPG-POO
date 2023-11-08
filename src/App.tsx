@@ -20,30 +20,43 @@ function App() {
     console.log("Classe de Armadura:", personagem.classeArmadura);
   }, [personagem]);
 
-  const atualizarPersonagem = (novaArma?: Equipamentos.Arma, novaArmadura?: Equipamentos.Armadura) => {
+  const atualizarPersonagem = (
+    novaArma?: Equipamentos.Arma,
+    novaArmadura?: Equipamentos.Armadura,
+    novoEquip?: Equipamentos.EquipSecundario
+  ) => {
     setPersonagem((basePersonagem) => {
 
       const mudarPersonagem: Personagem = {
         ...basePersonagem,
         calcularClasseArmadura: basePersonagem.calcularClasseArmadura,
       };
-  
+
       if (novaArma) {
         mudarPersonagem.arma = novaArma;
         if (novaArma.propriedades.includes(duasMaos)) {
           mudarPersonagem.equipSecundario = novaArma;
-        } else {
+        } else if (basePersonagem.equipSecundario == basePersonagem.arma) {
           mudarPersonagem.equipSecundario = Equipamentos.vazioEquip
         }
       }
-      
+
       if (novaArmadura) {
         mudarPersonagem.armadura = novaArmadura;
       }
 
-      // Calcula a CA
-      mudarPersonagem.calcularClasseArmadura();
-  
+      if (novoEquip) {
+        if (basePersonagem.arma.propriedades.includes(duasMaos)) {
+          mudarPersonagem.arma = Equipamentos.vazioArma;
+          mudarPersonagem.equipSecundario = novoEquip;
+        } else {
+          mudarPersonagem.equipSecundario = novoEquip;
+        }
+      }
+
+        // Calcula a CA
+        mudarPersonagem.calcularClasseArmadura();
+
       return mudarPersonagem;
     });
   };
