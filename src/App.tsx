@@ -3,11 +3,11 @@ import { usePersonagem } from './classes/personagem';
 import Menu from './components/Menu.tsx';
 
 function App() {
-    const { atualizarPersonagem } = usePersonagem();
+    const { personagem, atualizarPersonagem } = usePersonagem();
 
   return (
     <div>
-      <Menu atualizarPersonagem={atualizarPersonagem} />
+      <Menu personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
     </div>
   )
 }

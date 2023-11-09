@@ -4,18 +4,18 @@ import { useState } from 'react';
 import * as Equipamentos from '../classes/equipamentos';
 import './Menu.css';
 import { _1d20 } from '../classes/util';
-import { usePersonagem } from '../classes/personagem';
+import { Personagem } from '../classes/personagem';
 
 
 
 interface MenuProps {
+  personagem: Personagem;
   atualizarPersonagem: (novaArma?: Equipamentos.Arma, novaArmadura?: Equipamentos.Armadura, novoEquip?: Equipamentos.EquipSecundario) => void;
 }
 
 
 
-function menu({ atualizarPersonagem }: MenuProps) {
-  const { personagem } = usePersonagem();
+function menu({ personagem, atualizarPersonagem }: MenuProps) {
   const [open, setOpen] = useState(false);
 
   const escolherArma = (novaArma: Equipamentos.Arma) => {
@@ -55,7 +55,6 @@ function menu({ atualizarPersonagem }: MenuProps) {
             <div className='botaoDebug' onClick={() => escolherArma(Equipamentos.espada)}><p>{Equipamentos.espada.nome}</p></div>
             <div className='botaoDebug' onClick={() => escolherArma(Equipamentos.machadoGrande)}><p>{Equipamentos.machadoGrande.nome}</p></div>
             <div className='botaoDebug' onClick={() => escolherArma(Equipamentos.malho)}><p>{Equipamentos.malho.nome}</p></div>
-            <div className='botaoDebug' onClick={() => escolherArma(Equipamentos.espada)}><p>{Equipamentos.espada.nome}</p></div>
             <div className='textDebug'><p>Equipamento Secundario</p></div>
             <div className='botaoDebug' onClick={() => escolherEquip(Equipamentos.escudo)}><p>{Equipamentos.escudo.nome}</p></div>
             <div className='botaoDebug' onClick={() => escolherEquip(Equipamentos.tocha)}><p>{Equipamentos.tocha.nome}</p></div>
