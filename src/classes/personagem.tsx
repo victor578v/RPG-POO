@@ -235,7 +235,7 @@ export class Personagem {
 }
 
 export function usePersonagem() {
-    const atributos = new Atributos(8, 8, 8, 8, 8, 8);
+    const atributos = new Atributos(10, 8, 8, 8, 8, 8);
     atributos.percepcao = true;
 
     const [personagem, setPersonagem] = useState(

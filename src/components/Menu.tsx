@@ -3,7 +3,7 @@ import { Modal } from 'react-responsive-modal';
 import { useState } from 'react';
 import * as Equipamentos from '../classes/equipamentos';
 import './Menu.css';
-import { _1d20 } from '../classes/util';
+import { RolarDado, _1d20 } from '../classes/util';
 import { Personagem } from '../classes/personagem';
 
 
@@ -32,7 +32,10 @@ function menu({ personagem, atualizarPersonagem }: MenuProps) {
 
   function ataque() {
     _1d20.rolarVezes();
-    console.log(`${+_1d20.resultados + personagem.atributos.forcaBonus + personagem.atributos.bonusProficiencia} (${_1d20.resultados} + ${personagem.atributos.forcaBonus + personagem.atributos.bonusProficiencia})`);
+    console.log(`1d20 + ${personagem.atributos.forcaBonus + personagem.atributos.bonusProficiencia} = ${+_1d20.resultados + personagem.atributos.forcaBonus + personagem.atributos.bonusProficiencia} (${_1d20.resultados} + ${personagem.atributos.forcaBonus + personagem.atributos.bonusProficiencia})`);
+    const dano = new RolarDado(personagem.arma.dadoTipo, personagem.arma.dadosDano)
+    dano.rolarVezes();
+    console.log(`${personagem.arma.dadosDano}d${personagem.arma.dadoTipo} + ${personagem.atributos.forcaBonus} = ${+dano.total + personagem.atributos.forcaBonus} (${dano.resultados} + ${personagem.atributos.forcaBonus}) ${personagem.arma.tipoDano}`)
   }
 
   return (
