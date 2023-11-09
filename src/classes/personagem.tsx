@@ -1,6 +1,9 @@
-import { Arma, Armadura, EquipSecundario } from "./equipamentos";
+import { useState, useEffect } from "react";
+import * as Equipamentos from "./equipamentos";
+import { duasMaos } from "./propriedades";
 
 export class Atributos {
+    // Valores base dos Atributos
     forca: number;
     destreza: number;
     constituicao: number;
@@ -49,7 +52,7 @@ export class Atributos {
         constituicao: number,
         inteligencia: number,
         sabedoria: number,
-        carisma: number
+        carisma: number,
     ) {
         // Inicializa os atributos
         this.forca = forca;
@@ -59,13 +62,13 @@ export class Atributos {
         this.sabedoria = sabedoria;
         this.carisma = carisma;
 
-        // Calcula os bônus dos atributos (+1 a cada 2 numeros acima de 10, -1 a cada 2 numeros abaixo de 10)
-        this.forcaBonus = Math.floor((this.forca - 10) / 2);
-        this.destrezaBonus = Math.floor((this.destreza - 10) / 2);
-        this.constituicaoBonus = Math.floor((this.constituicao - 10) / 2);
-        this.inteligenciaBonus = Math.floor((this.inteligencia - 10) / 2);
-        this.sabedoriaBonus = Math.floor((this.sabedoria - 10) / 2);
-        this.carismaBonus = Math.floor((this.carisma - 10) / 2);
+        // Inicializa o bonus dos atributos
+        this.forcaBonus = Number(Math.floor((this.forca - 10) / 2));
+        this.destrezaBonus = Number(Math.floor((this.destreza - 10) / 2));
+        this.constituicaoBonus = Number(Math.floor((this.constituicao - 10) / 2));
+        this.inteligenciaBonus = Number(Math.floor((this.inteligencia - 10) / 2));
+        this.sabedoriaBonus = Number(Math.floor((this.sabedoria - 10) / 2));
+        this.carismaBonus = Number(Math.floor((this.carisma - 10) / 2));
 
         // Inicializa as proficiências em testes de resistência
         this.testeForca = false;
@@ -100,34 +103,81 @@ export class Personagem {
     pontosVida: number;
     pontosVidaMaximos: number;
     atributos: Atributos;
-    arma: Arma;
-    armadura: Armadura;
-    equipSecundario: Arma | EquipSecundario;
+    arma: Equipamentos.Arma;
+    armadura: Equipamentos.Armadura;
+    equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
     percepcaoPassiva: number;
     classeArmadura?: number;
+    bonusProficiencia: any;
 
+    // Construtor que aceita um objeto com propriedades nomeadas
+    constructor(options: {
+        nome: string;
+        pontosVida: number;
+        pontosVidaMaximos: number;
+        atributos: Atributos;
+        arma: Equipamentos.Arma;
+        armadura: Equipamentos.Armadura;
+        equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
+        classeArmadura?: number;
+    });
+    // Construtor que aceita parâmetros individuais
     constructor(
         nome: string,
         pontosVida: number,
         pontosVidaMaximos: number,
         atributos: Atributos,
-        arma: Arma,
-        armadura: Armadura,
-        equipSecundario: Arma | EquipSecundario,
+        arma: Equipamentos.Arma,
+        armadura: Equipamentos.Armadura,
+        equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario,
         classeArmadura?: number
+    );
+    // Assinatura combinada do construtor usando sobrecarga de método (arg = argumento)
+    constructor(
+        // Primeiro parâmetro: Pode ser uma string (para 'nome') ou um objeto com propriedades nomeadas
+        arg1: string | {
+            nome: string;
+            pontosVida: number;
+            pontosVidaMaximos: number;
+            atributos: Atributos;
+            arma: Equipamentos.Arma;
+            armadura: Equipamentos.Armadura;
+            equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
+            classeArmadura?: number;
+        },
+        // Parâmetros individuais opcionais para o restante das propriedades 
+        arg2?: number,
+        arg3?: number,
+        arg4?: Atributos,
+        arg5?: Equipamentos.Arma,
+        arg6?: Equipamentos.Armadura,
+        arg7?: Equipamentos.Arma | Equipamentos.EquipSecundario,
+        arg8?: number
     ) {
-        // Inializa o nome, pontos de vida, pontos de vida maximos e atributos do personagem
-        this.nome = nome;
-        this.pontosVida = pontosVida;
-        this.pontosVidaMaximos = pontosVidaMaximos;
-        this.atributos = atributos;
-        this.classeArmadura = classeArmadura;
-        this.arma = arma;
-        this.armadura = armadura;
-        this.equipSecundario = equipSecundario;
+        if (typeof arg1 === 'string') {
+            // Usa parametros individuais
+            this.nome = arg1;
+            this.pontosVida = arg2!;
+            this.pontosVidaMaximos = arg3!;
+            this.atributos = arg4!;
+            this.arma = arg5!;
+            this.armadura = arg6!;
+            this.equipSecundario = arg7!;
+            this.classeArmadura = arg8;
+        } else {
+            // Usa os parametros de um objeto
+            this.nome = arg1.nome;
+            this.pontosVida = arg1.pontosVida;
+            this.pontosVidaMaximos = arg1.pontosVidaMaximos;
+            this.atributos = arg1.atributos;
+            this.arma = arg1.arma;
+            this.armadura = arg1.armadura;
+            this.equipSecundario = arg1.equipSecundario;
+            this.classeArmadura = arg1.classeArmadura;
+        }
 
         // Calcula a Percepcao Passiva (PP)
-        this.percepcaoPassiva = 10 + this.atributos.sabedoriaBonus;
+        this.percepcaoPassiva = 10 + (this.atributos.sabedoriaBonus || 0);
         if (this.atributos.percepcao) {
             this.percepcaoPassiva += this.atributos.bonusProficiencia;
         }
@@ -148,4 +198,78 @@ export class Personagem {
             this.classeArmadura += this.equipSecundario.bonusCA;
         }
     }
+    atualizarPersonagem(
+        novaArma?: Equipamentos.Arma,
+        novaArmadura?: Equipamentos.Armadura,
+        novoEquip?: Equipamentos.EquipSecundario
+    ) {
+
+        if (novaArma) {
+            if (novaArma.propriedades.includes(duasMaos)) {
+                this.arma = novaArma
+                this.equipSecundario = novaArma;
+            } else if (this.equipSecundario === this.arma) {
+                this.arma = novaArma
+                this.equipSecundario = Equipamentos.vazioArma;
+            } else {
+                this.arma = novaArma
+            }
+        }
+
+        if (novaArmadura) {
+            this.armadura = novaArmadura
+        }
+
+        if (novoEquip) {
+            if (this.arma.propriedades.includes(duasMaos)) {
+                this.arma = Equipamentos.vazioArma;
+                this.equipSecundario = novoEquip;
+            } else {
+                this.equipSecundario = novoEquip;
+            }
+        }
+
+        // Recalculate stats
+        this.calcularClasseArmadura();
+    }
+}
+
+export function usePersonagem() {
+    const atributos = new Atributos(12, 16, 14, 10, 13, 15);
+    atributos.percepcao = true;
+
+    const [personagem, setPersonagem] = useState(
+        new Personagem("Joaozinho Guerreiro", 30, 30, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma)
+    );
+
+    useEffect(() => {
+        personagem.calcularClasseArmadura();
+        console.log("-".repeat(10));
+        console.log("Nome:", personagem.nome);
+        console.log("Forca:", personagem.atributos.forca + ` (+${personagem.atributos.forcaBonus})`)
+        console.log("Destreza:", personagem.atributos.destreza + ` (+${personagem.atributos.destrezaBonus})`)
+        console.log("Constituicao:", personagem.atributos.constituicao + ` (+${personagem.atributos.constituicaoBonus})`)
+        console.log("Inteligencia:", personagem.atributos.inteligencia + ` (+${personagem.atributos.inteligenciaBonus})`)
+        console.log("Sabedoria:", personagem.atributos.sabedoria + ` (+${personagem.atributos.sabedoriaBonus})`)
+        console.log("Carisma:", personagem.atributos.carisma + ` (+${personagem.atributos.carismaBonus})`)
+        console.log("Mao Principal:", personagem.arma.nome);
+        console.log("Mao Secundaria:", personagem.equipSecundario.nome);
+        console.log("Armadura:", personagem.armadura.nome);
+        console.log("Classe de Armadura:", personagem.classeArmadura);
+        console.log(personagem.atributos.forcaBonus)
+    }, [personagem]);
+
+    const atualizarPersonagem = (
+        novaArma?: Equipamentos.Arma,
+        novaArmadura?: Equipamentos.Armadura,
+        novoEquip?: Equipamentos.EquipSecundario
+    ) => {
+        setPersonagem((basePersonagem) => {
+            const mudarPersonagem = new Personagem({ ...basePersonagem });
+            mudarPersonagem.atualizarPersonagem(novaArma, novaArmadura, novoEquip);
+            return mudarPersonagem;
+        });
+    };
+
+    return { personagem, atualizarPersonagem };
 }

@@ -37,13 +37,26 @@
     padding: 0;
 }
 
+.react-responsive-modal-overlay.customOverlay {
+
+}
+
+.react-responsive-modal-modal.customModal {
+    
+}
+
 .closeButton {
     position: absolute;
-    top: -15px;
-    right: -10px;
+    top: -26px;
+    right: -20px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 30px;
     color: #A63D40;
+}
+
+.debug {
+ display: flex;
+ flex-direction:row;
 }
 
 .botaoDebug {
@@ -51,6 +64,18 @@
     background-color: #76877D;
     border-radius: 5px;
     border: 1px black solid;
+    text-align: center;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    width: 100px;
+}
+
+.textDebug {
+    width: 100px;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    color: #191919;
     text-align: center;
 }
 

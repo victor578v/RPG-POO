@@ -62,6 +62,5 @@ export const halfPlacas = new Armadura("Meia Armadura", "media", 6); // Half Pla
 export const studded = new Armadura("Couro Batido", "leve", 3); // Armadura de Couro Batido, Leve, CA 13+Des
 
 // Lista de Equipamento Secundario
-export const vazioEquip = new EquipSecundario("Vazia", 0)
 export const escudo = new EquipSecundario("Escudo", 2)
 export const tocha = new EquipSecundario("Tocha", 0)
