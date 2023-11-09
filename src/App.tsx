@@ -1,9 +1,9 @@
 import './App.css'
-import { Atributos, Personagem, usePersonagem } from './classes/personagem';
+import { usePersonagem } from './classes/personagem';
 import Menu from './components/Menu.tsx';
 
 function App() {
-    const { personagem, atualizarPersonagem } = usePersonagem();
+    const { atualizarPersonagem } = usePersonagem();
 
   return (
     <div>
