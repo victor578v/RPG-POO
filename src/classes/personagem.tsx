@@ -109,7 +109,6 @@ export class Personagem {
     equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
     percepcaoPassiva: number;
     classeArmadura?: number;
-    bonusProficiencia: any;
 
     // Construtor que aceita um objeto com propriedades nomeadas
     constructor(options: {
@@ -233,25 +232,31 @@ export class Personagem {
         this.calcularClasseArmadura();
     }
     // Logica para ataques. TODO: Criar classe de combate.
-    ataque() {
+    ataque(alvo: Personagem) {
         _1d20.rolarVezes();
         if (acuidade.acuidadeCheck(this)) { // Ataque com Destreza
             console.log(`1d20 + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia})`);
             if (+_1d20.resultados == 20) {
                 console.log("Acerto Critico!")
-            } else if (+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia >= (this.classeArmadura ?? 0)) {
+                return true;
+            } else if (+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
                 console.log("Acerto!")
+                return true;
             } else {
                 console.log("Erro!")
+                return false;
             }
         } else { // Ataque com Forca
             console.log(`1d20 + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia})`);
             if (+_1d20.resultados == 20) {
                 console.log("Acerto Critico!")
-            } else if (+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia >= (this.classeArmadura ?? 0)) {
+                return true;
+            } else if (+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
                 console.log("Acerto!")
+                return true;
             } else {
                 console.log("Erro!")
+                return false;
             }
         }
     }

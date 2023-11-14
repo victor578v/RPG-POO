@@ -43,14 +43,12 @@ export class Combate {
         } else {
             console.log(`${atacante.nome} ataca ${alvo.nome} com ${atacante.arma.nome}`);
 
-            // Lógica de ataque
-            atacante.ataque();
-            const dano = atacante.dano();
-
-            // Aplica o dano ao alvo
-            alvo.pontosVida -= dano;
-
-            console.log(`${alvo.nome} sofre ${dano} pontos de dano. ${alvo.pontosVida}/${alvo.pontosVidaMaximos} pontos de vida restantes.`);
+            // Lógica de ataque do combate
+            if (atacante.ataque(alvo)) {
+                const dano = atacante.dano();
+                alvo.pontosVida -= dano;
+                console.log(`${alvo.nome} sofre ${dano} pontos de dano. ${alvo.pontosVida}/${alvo.pontosVidaMaximos} pontos de vida restantes.`);
+            }
 
             // Verifica se o alvo foi derrotado
             if (alvo.pontosVida <= 0) {
