@@ -76,7 +76,7 @@ function menu({ personagem, atualizarPersonagem }: MenuProps) {
             <div className='textDebug'><p>Debug de Criaturas</p></div>
             <div className='botaoDebug' onClick={() => { combate.adicionarParticipante(criarNovoGoblin()); setAtt(att + 1); }}><p>Adicionar 1 Goblin</p></div>
             <div className='botaoDebug' onClick={() => { combate.iniciarCombate(); setAtt(att + 1); }}><p>Entrar em combate</p></div>
-            <div className='botaoDebug' onClick={() => { combate.iniciarRodada(); setAtt(att + 1); }}><p>Passar Turno</p></div>
+            <div className='botaoDebug' onClick={() => { combate.iniciarRodada(personagem); setAtt(att + 1); }}><p>Passar Turno</p></div>
           </div>
         </div>
       </Modal>

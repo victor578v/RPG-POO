@@ -13,26 +13,33 @@ export class Combate {
         this.participantes.push(participante);
     }
 
-    iniciarRodada() {
-        if (this.participantes) {
+    iniciarRodada(personagem: Personagem) {
+        if (this.rodada > 0) {
             this.rodada++;
             console.log(`Iniciando rodada ${this.rodada}`);
+            this.ataqueInimigos(personagem);
+            this.finalizarCombate(personagem);
         } else {
-            console.log("Nenhum combate rodando!")
+            console.log("Nenhum combate encontrado!")
         }
     }
 
     iniciarCombate() {
         if (this.participantes.length > 0) {
             console.log('Combate iniciado!');
-            this.iniciarRodada();
+            this.rodada = 1;
+            console.log(`Iniciando rodada ${this.rodada}`);
         } else {
             console.log("Nao há com quem lutar!")
         }
     }
-    finalizarCombate() {
+    finalizarCombate(personagem: Personagem = {} as Personagem) {
         if (this.participantes.length === 0) {
             console.log('Todos os inimigos foram derrotados. O combate foi vencido!');
+            this.participantes = [];
+            this.rodada = 0;
+        } else if ((personagem.pontosVida || 0) <= 0) {
+            console.log('Seus pontos de vida zeraram. Game Over!');
             this.participantes = [];
             this.rodada = 0;
         }
@@ -58,11 +65,16 @@ export class Combate {
                 if (index !== -1) {
                     this.participantes.splice(index, 1);
                 }
-
-                // Verifica se todos os inimigos foram derrotados
-                this.finalizarCombate();
             }
         }
+    }
+    ataqueInimigos(personagem: Personagem) {
+        console.log("-".repeat(10))
+        console.log('Turno dos inimigos!');
+        console.log("-".repeat(10))
+        this.participantes.forEach((inimigo) => {
+            this.ataque(inimigo, personagem);
+        });
     }
 }
 export const combate = new Combate();
