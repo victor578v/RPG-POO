@@ -1,4 +1,4 @@
-import { duasMaos, Propriedades } from "./propriedades";
+import { acuidade, duasMaos, Propriedades } from "./propriedades";
 import { TipoDano } from "./util";
 
 export class Equipamento {
@@ -53,6 +53,7 @@ export const espadaGrande = new Arma("Espada Grande", 2, 6, TipoDano.Cortante, [
 export const malho = new Arma("Malho", 2, 8, TipoDano.Contundante, [duasMaos]); //  malho, 2d8 dano, Propriedades: Duas Maos
 export const machadoGrande = new Arma("Machado Grande", 2, 8, TipoDano.Cortante, [duasMaos]); // Machado Grande, 2d8 dano, Propriedades: Duas Maos
 export const espada = new Arma("Espada", 1, 8, TipoDano.Cortante, []); // Espada Comum, 1d8 dano, Propriedades: Nenhuma
+export const adaga = new Arma("Adaga", 1, 4, TipoDano.Perfurante, [acuidade])
 
 
 // Lista de Armaduras
@@ -60,6 +61,7 @@ export const vazioArmadura = new Armadura("Nenhuma", "nenhuma", 0); // Nenhuma A
 export const placas = new Armadura("Placas", "pesada", 10); // Armadura de Placas, Pesada, CA 20
 export const halfPlacas = new Armadura("Meia Armadura", "media", 6); // Half Plate (Meia Armadura), Media, CA 16+Des(MAX +2)
 export const studded = new Armadura("Couro Batido", "leve", 3); // Armadura de Couro Batido, Leve, CA 13+Des
+export const couro = new Armadura("Couro", "leve", 1); // Armadura de Couro, Leve, CA 11+Des
 
 // Lista de Equipamento Secundario
 export const escudo = new EquipSecundario("Escudo", 2)

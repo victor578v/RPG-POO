@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import * as Equipamentos from "./equipamentos";
-import { duasMaos } from "./propriedades";
+import { acuidade, duasMaos } from "./propriedades";
+import { _1d20, RolarDado } from "./util";
 
 export class Atributos {
     // Valores base dos Atributos
@@ -198,6 +199,7 @@ export class Personagem {
             this.classeArmadura += this.equipSecundario.bonusCA;
         }
     }
+    // Atualiza o personagem, usado mais adiante
     atualizarPersonagem(
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
@@ -228,9 +230,56 @@ export class Personagem {
                 this.equipSecundario = novoEquip;
             }
         }
-
-        // Recalculate stats
         this.calcularClasseArmadura();
+    }
+    // Logica para ataques. TODO: Criar classe de combate.
+    ataque() {
+        _1d20.rolarVezes();
+        if (acuidade.acuidadeCheck(this)) { // Ataque com Destreza
+            console.log(`1d20 + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia})`);
+            if (+_1d20.resultados == 20) {
+                console.log("Acerto Critico!")
+            } else if (+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia >= (this.classeArmadura ?? 0)) {
+                console.log("Acerto!")
+            } else {
+                console.log("Erro!")
+            }
+        } else { // Ataque com Forca
+            console.log(`1d20 + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia})`);
+            if (+_1d20.resultados == 20) {
+                console.log("Acerto Critico!")
+            } else if (+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia >= (this.classeArmadura ?? 0)) {
+                console.log("Acerto!")
+            } else {
+                console.log("Erro!")
+            }
+        }
+    }
+    // Logica para dano.
+    dano() {
+        let dano;
+        if (this.arma.nome == "Vazia") { // Dano desarmado
+            dano = 1 + this.atributos.forcaBonus;
+            console.log(`1 + ${this.atributos.forcaBonus} = ${1 + this.atributos.forcaBonus} (1 + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
+        } else {
+            let multiplicadorDados = 1;
+            if (+_1d20.resultados == 20) {
+                multiplicadorDados = 2;
+            }
+
+            if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
+                dano = new RolarDado(this.arma.dadoTipo, this.arma.dadosDano * multiplicadorDados);
+                dano.rolarVezes();
+                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
+                dano = (dano.total + this.atributos.destrezaBonus) * multiplicadorDados;
+            } else { // Dano com Forca
+                dano = new RolarDado(this.arma.dadoTipo, this.arma.dadosDano * multiplicadorDados);
+                dano.rolarVezes();
+                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
+                dano = (dano.total + this.atributos.forcaBonus);
+            }
+        }
+        return dano;
     }
 }
 

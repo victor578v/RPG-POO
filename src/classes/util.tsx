@@ -45,3 +45,4 @@ export class RolarDado {
 }
 
 export const _1d20 = new RolarDado(20, 1);
+
