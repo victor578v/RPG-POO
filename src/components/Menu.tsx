@@ -53,6 +53,7 @@ function menu({ personagem, atualizarPersonagem }: MenuProps) {
 
   const selecionarAlvo = (alvo: Personagem) => {
     setAlvoSelecionado(alvo);
+    console.log(`${alvo.nome} Selecionado!`)
   };
 
   return (
@@ -87,7 +88,7 @@ function menu({ personagem, atualizarPersonagem }: MenuProps) {
             <div className='botaoDebug' onClick={() => { combate.iniciarCombate(); setAtt(att + 1); }}><p>Entrar em combate</p></div>
             <div className='botaoDebug' onClick={() => { personagem.descanso() }}><p>Descansar e recuperar pontos de vida</p></div>
             <div className='botaoDebug' onClick={() => { combate.iniciarRodada(personagem); setAtt(att + 1); }}><p>Passar Turno</p></div>
-            <div className='botaoDebug' onClick={() => { alvoSelecionado && combate.ataque(personagem, alvoSelecionado); setAtt(att + 1); }}><p>Atacar</p></div>
+            <div className='botaoDebug' onClick={() => { combate.ataque(personagem, alvoSelecionado); setAtt(att + 1); }}><p>Atacar</p></div>
           </div>
           <div>
             <div className='textDebug'><p>Debug de Criaturas</p></div>

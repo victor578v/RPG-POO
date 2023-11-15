@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import * as Equipamentos from "./equipamentos";
 import { acuidade, duasMaos } from "./propriedades";
 import { _1d20, RolarDado } from "./util";

@@ -50,9 +50,11 @@ export class Combate {
             this.rodada = 0;
         }
     }
-    ataque(atacante: Personagem, alvo: Personagem) {
-        if (this.rodada == 0) {
-            console.log("Inicie o combate primeiro!")
+    ataque(atacante: Personagem, alvo: Personagem | null) {
+        if (this.rodada === 0) {
+            console.log("Inicie um combate primeiro!");
+        } else if (alvo === null) {
+            console.log("Selecione um Alvo Primeiro!");
         } else if (alvo.pontosVida <= 0) {
 
         } else {
@@ -68,7 +70,6 @@ export class Combate {
             // Verifica se o alvo foi derrotado
             if (alvo.pontosVida <= 0) {
                 console.log(`${alvo.nome} foi derrotado!`);
-                // Remova o alvo do array de participantes, se desejar
                 const index = this.participantes.indexOf(alvo);
                 if (index !== -1) {
                     this.participantes.splice(index, 1);
