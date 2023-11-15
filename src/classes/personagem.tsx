@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import * as Equipamentos from "./equipamentos";
 import { acuidade, duasMaos } from "./propriedades";
 import { _1d20, RolarDado } from "./util";
+import { combate } from "./combate";
 
 export class Atributos {
     // Valores base dos Atributos
@@ -231,7 +232,7 @@ export class Personagem {
         }
         this.calcularClasseArmadura();
     }
-    // Logica para ataques. TODO: Criar classe de combate.
+    // Logica para ataques.
     ataque(alvo: Personagem) {
         _1d20.rolarVezes();
         if (acuidade.acuidadeCheck(this)) { // Ataque com Destreza
@@ -286,6 +287,15 @@ export class Personagem {
         }
         return dano;
     }
+    // Descanso longo
+    descanso() {
+        if (combate.rodada > 0) {
+            console.log("Voce nao pode descansar agora!")
+        } else {
+            this.pontosVida = this.pontosVidaMaximos
+            console.log("Pontos de vida recuperados!")
+        }
+    }
 }
 
 export function usePersonagem() {
@@ -296,21 +306,7 @@ export function usePersonagem() {
         new Personagem("Sem Nome", 1, 1, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma)
     );
 
-    useEffect(() => {
-        personagem.calcularClasseArmadura();
-        console.log("-".repeat(10));
-        console.log("Nome:", personagem.nome);
-        console.log("Forca:", personagem.atributos.forca + ` (${personagem.atributos.forcaBonus >= 0 ? '+' : ''}${personagem.atributos.forcaBonus})`);
-        console.log("Destreza:", personagem.atributos.destreza + ` (${personagem.atributos.destrezaBonus >= 0 ? '+' : ''}${personagem.atributos.destrezaBonus})`);
-        console.log("Constituicao:", personagem.atributos.constituicao + ` (${personagem.atributos.constituicaoBonus >= 0 ? '+' : ''}${personagem.atributos.constituicaoBonus})`);
-        console.log("Inteligencia:", personagem.atributos.inteligencia + ` (${personagem.atributos.inteligenciaBonus >= 0 ? '+' : ''}${personagem.atributos.inteligenciaBonus})`);
-        console.log("Sabedoria:", personagem.atributos.sabedoria + ` (${personagem.atributos.sabedoriaBonus >= 0 ? '+' : ''}${personagem.atributos.sabedoriaBonus})`);
-        console.log("Carisma:", personagem.atributos.carisma + ` (${personagem.atributos.carismaBonus >= 0 ? '+' : ''}${personagem.atributos.carismaBonus})`);
-        console.log("Mao Principal:", personagem.arma.nome);
-        console.log("Mao Secundaria:", personagem.equipSecundario.nome);
-        console.log("Armadura:", personagem.armadura.nome);
-        console.log("Classe de Armadura:", personagem.classeArmadura);
-    }, [personagem]);
+    personagem.calcularClasseArmadura()
 
     const atualizarPersonagem = (
         novaArma?: Equipamentos.Arma,
