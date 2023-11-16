@@ -1,3 +1,4 @@
+import { reiniciarContadorCriatura } from './criaturas';
 import { Personagem } from './personagem';
 
 export class Combate {
@@ -28,8 +29,10 @@ export class Combate {
         }
     }
 
-    iniciarCombate() {
-        if (this.participantes.length > 0 && this.rodada == 0 ) {
+    iniciarCombate(personagem: Personagem) {
+        if (personagem.pontosVida <= 0) {
+          console.log(`${personagem.nome} está muito machucado para lutar!`)  
+        } else if (this.participantes.length > 0 && this.rodada == 0 ) {
             console.log('Combate iniciado!');
             this.rodada = 1;
             console.log(`Iniciando rodada ${this.rodada}`);
@@ -44,10 +47,12 @@ export class Combate {
             console.log('Combate finalizado, todos inimigos eliminados!');
             this.participantes = [];
             this.rodada = 0;
+            reiniciarContadorCriatura();
         } else if (personagem.pontosVida <= 0) {
             console.log('Game Over, seus pontos de vida zeraram. :(');
             this.participantes = [];
             this.rodada = 0;
+            reiniciarContadorCriatura();
         }
     }
     ataque(atacante: Personagem, alvo: Personagem | null) {

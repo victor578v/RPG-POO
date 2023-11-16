@@ -274,12 +274,12 @@ export class Personagem {
             }
 
             if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
-                dano = new RolarDado(this.arma.dadoTipo, this.arma.dadosDano * multiplicadorDados);
+                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
                 dano.rolarVezes();
                 console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
                 dano = (dano.total + this.atributos.destrezaBonus) * multiplicadorDados;
             } else { // Dano com Forca
-                dano = new RolarDado(this.arma.dadoTipo, this.arma.dadosDano * multiplicadorDados);
+                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
                 dano.rolarVezes();
                 console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
                 dano = (dano.total + this.atributos.forcaBonus);

@@ -1,6 +1,7 @@
 import './App.css'
 import { usePersonagem } from './classes/personagem';
 import Menu from './components/Menu.tsx';
+import MenuDebug from './components/menuDebug.tsx';
 
 function App() {
     const { personagem, atualizarPersonagem } = usePersonagem();
@@ -8,7 +9,7 @@ function App() {
   return (
     <div>
       <Menu personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
-    </div>
+    </div> 
   )
 }
 
