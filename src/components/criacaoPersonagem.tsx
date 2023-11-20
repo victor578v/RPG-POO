@@ -49,8 +49,6 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
         } else {
             escolherNome(data.nome);
             escolherAtributos(data.forca, data.destreza, data.constituicao, data.inteligencia, data.sabedoria, data.carisma);
-            personagem.atributos.calcularBonus(personagem)
-            personagem.calcularClasseArmadura()
             setOpen(false)
             alert("Personagem Criado!")
             setPersonagemCriado(true);

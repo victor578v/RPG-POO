@@ -98,14 +98,6 @@ export class Atributos {
         // Inicializa o bônus de proficiência
         this.bonusProficiencia = 2; // TODO: Bonus de proficiencia baseado em nivel do personagem
     }
-    calcularBonus(personagem: Personagem) {
-        this.forcaBonus = Number(Math.floor((this.forca - 10) / 2));
-        this.destrezaBonus = Number(Math.floor((this.destreza - 10) / 2));
-        this.constituicaoBonus = Number(Math.floor((this.constituicao - 10) / 2));
-        this.inteligenciaBonus = Number(Math.floor((this.inteligencia - 10) / 2));
-        this.sabedoriaBonus = Number(Math.floor((this.sabedoria - 10) / 2));
-        this.carismaBonus = Number(Math.floor((this.carisma - 10) / 2));
-    }
 }
 
 export class Personagem {
@@ -190,6 +182,15 @@ export class Personagem {
         if (this.atributos.percepcao) {
             this.percepcaoPassiva += this.atributos.bonusProficiencia;
         }
+    }
+    // Calcula os bonus de habilidade
+    calcularBonus() {
+        this.atributos.forcaBonus = Number(Math.floor((this.atributos.forca - 10) / 2));
+        this.atributos.destrezaBonus = Number(Math.floor((this.atributos.destreza - 10) / 2));
+        this.atributos.constituicaoBonus = Number(Math.floor((this.atributos.constituicao - 10) / 2));
+        this.atributos.inteligenciaBonus = Number(Math.floor((this.atributos.inteligencia - 10) / 2));
+        this.atributos.sabedoriaBonus = Number(Math.floor((this.atributos.sabedoria - 10) / 2));
+        this.atributos.carismaBonus = Number(Math.floor((this.atributos.carisma - 10) / 2));
     }
     // Calcula a Classe de Armadura (CA)
     calcularClasseArmadura() {
@@ -348,7 +349,8 @@ export function usePersonagem() {
     const [personagem, setPersonagem] = useState(
         new Personagem("Sem Nome", 1, 1, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma)
     );
-
+    
+    personagem.calcularBonus()
     personagem.calcularClasseArmadura()
 
     const atualizarPersonagem = (
