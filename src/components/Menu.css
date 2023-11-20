@@ -45,7 +45,9 @@
 .react-responsive-modal-modal.customModal {
     padding: 1%;
     margin: 0%;
+    width: 60%;
     max-width: 80%;
+    border: #76877D solid 3px;
 }
 
 .closeButton {
@@ -99,4 +101,13 @@
 
 .separador {
     font-size: 1.4rem;
+}
+
+.separadorAtributos input {
+    width: 4%;
+    appearance: text;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
 }

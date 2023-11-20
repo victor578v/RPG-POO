@@ -1,7 +1,6 @@
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useState } from 'react';
-import * as Equipamentos from '../classes/equipamentos';
 import './Menu.css';
 import { Personagem } from '../classes/personagem';
 
@@ -10,11 +9,10 @@ interface FichaProps {
 }
 
 const Ficha: React.FC<FichaProps> = ({ personagem }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
         <>
-            <div className='botao' onClick={() => setOpen(true)}><p>Abrir Personagem</p></div>
             <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
                 <div>
                     <p className='separador'>Básicos</p>

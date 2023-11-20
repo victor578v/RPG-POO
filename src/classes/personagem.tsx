@@ -98,6 +98,14 @@ export class Atributos {
         // Inicializa o bônus de proficiência
         this.bonusProficiencia = 2; // TODO: Bonus de proficiencia baseado em nivel do personagem
     }
+    calcularBonus(personagem: Personagem) {
+        this.forcaBonus = Number(Math.floor((this.forca - 10) / 2));
+        this.destrezaBonus = Number(Math.floor((this.destreza - 10) / 2));
+        this.constituicaoBonus = Number(Math.floor((this.constituicao - 10) / 2));
+        this.inteligenciaBonus = Number(Math.floor((this.inteligencia - 10) / 2));
+        this.sabedoriaBonus = Number(Math.floor((this.sabedoria - 10) / 2));
+        this.carismaBonus = Number(Math.floor((this.carisma - 10) / 2));
+    }
 }
 
 export class Personagem {
@@ -201,10 +209,45 @@ export class Personagem {
     }
     // Atualiza o personagem, usado mais adiante
     atualizarPersonagem(
+        novoNome?: string,
+        novaForca?: number,
+        novaDestreza?: number,
+        novaConstituicao?: number,
+        novaInteligencia?: number,
+        novaSabedoria?: number,
+        novaCarisma?: number,
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
         novoEquip?: Equipamentos.EquipSecundario
     ) {
+
+        if (novaForca) {
+            this.atributos.forca = novaForca
+        }
+        
+        if (novaDestreza) {
+            this.atributos.destreza = novaDestreza;
+        }
+    
+        if (novaConstituicao) {
+            this.atributos.constituicao = novaConstituicao;
+        }
+    
+        if (novaInteligencia) {
+            this.atributos.inteligencia = novaInteligencia;
+        }
+    
+        if (novaSabedoria) {
+            this.atributos.sabedoria = novaSabedoria;
+        }
+    
+        if (novaCarisma) {
+            this.atributos.carisma = novaCarisma;
+        }
+
+        if (novoNome) {
+            this.nome = novoNome
+        }
 
         if (novaArma) {
             if (novaArma.propriedades.includes(duasMaos)) {
@@ -309,13 +352,20 @@ export function usePersonagem() {
     personagem.calcularClasseArmadura()
 
     const atualizarPersonagem = (
+        novoNome?: string,
+        novaForca?: number,
+        novaDestreza?: number,
+        novaConstituicao?: number,
+        novaInteligencia?: number,
+        novaSabedoria?: number,
+        novaCarisma?: number,
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
         novoEquip?: Equipamentos.EquipSecundario
     ) => {
         setPersonagem((basePersonagem) => {
             const mudarPersonagem = new Personagem({ ...basePersonagem });
-            mudarPersonagem.atualizarPersonagem(novaArma, novaArmadura, novoEquip);
+            mudarPersonagem.atualizarPersonagem(novoNome, novaForca, novaDestreza, novaConstituicao, novaInteligencia, novaSabedoria, novaCarisma, novaArma, novaArmadura, novoEquip);
             return mudarPersonagem;
         });
     };

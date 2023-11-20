@@ -1,4 +1,3 @@
-import { combate } from "./combate";
 import * as Equipamentos from "./equipamentos";
 import { Atributos, Personagem } from "./personagem";
 

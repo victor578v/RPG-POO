@@ -11,6 +11,13 @@ import { criarNovoGoblin } from '../classes/criaturas';
 interface MenuDebugProps {
     personagem: Personagem;
     atualizarPersonagem: (
+        novoNome?: string,
+        novaForca?: number,
+        novaDestreza?: number,
+        novaConstituicao?: number,
+        novaInteligencia?: number,
+        novaSabedoria?: number,
+        novaCarisma?: number,
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
         novoEquip?: Equipamentos.EquipSecundario
@@ -22,7 +29,7 @@ const MenuDebug: React.FC<MenuDebugProps> = ({ personagem, atualizarPersonagem }
     const [att, setAtt] = useState(0);
 
     const escolherArma = (novaArma: Equipamentos.Arma) => {
-        atualizarPersonagem(novaArma, undefined, undefined);
+        atualizarPersonagem(undefined, undefined, undefined, undefined, undefined, undefined, undefined, novaArma, undefined, undefined);
         if (novaArma.nome == 'Vazia' && personagem.arma.nome == 'Vazia') {
             console.log(`Nao há o que desequipar!`)
         } else if (novaArma.nome == 'Vazia') {
@@ -33,7 +40,7 @@ const MenuDebug: React.FC<MenuDebugProps> = ({ personagem, atualizarPersonagem }
     };
 
     const escolherArmadura = (novaArmadura: Equipamentos.Armadura) => {
-        atualizarPersonagem(undefined, novaArmadura, undefined);
+        atualizarPersonagem(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, novaArmadura, undefined);
         if (novaArmadura.tipo == 'nenhuma' && personagem.armadura.tipo == 'nenhuma') {
             console.log(`Nao há o que desequipar!`)
         } else if (novaArmadura.tipo == 'leve') {
@@ -48,7 +55,7 @@ const MenuDebug: React.FC<MenuDebugProps> = ({ personagem, atualizarPersonagem }
     };
 
     const escolherEquip = (novoEquip: Equipamentos.EquipSecundario) => {
-        atualizarPersonagem(undefined, undefined, novoEquip);
+        atualizarPersonagem(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, novoEquip);
         if (novoEquip.nome == 'Vazia' && personagem.equipSecundario.nome == 'Vazia') {
             console.log(`Nao há o que desequipar!`)
         } else if (novoEquip.nome == 'Vazia') {
