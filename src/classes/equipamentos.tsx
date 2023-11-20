@@ -1,4 +1,4 @@
-import { acuidade, duasMaos, Propriedades } from "./propriedades";
+import { acuidade, danoExtra, duasMaos, Propriedades } from "./propriedades";
 import { TipoDano } from "./util";
 
 export class Equipamento {
@@ -15,14 +15,29 @@ export class Arma extends Equipamento {
   tipoDano: TipoDano; // Tipo de dano que a arma causa
   propriedades: Propriedades[]; // Lista as propriedades que a arma possui
   bonusCA: number;
+  dadosDanoExtra?: number; // Numero de dados de dano Extra da arma
+  dadoTipoExtra?: number; // Numero de lados do dado de dano Extra
+  tipoDanoExtra?: TipoDano; // Tipo de dano Extra que a arma causa
 
-  constructor(nome: string, dadosDano: number, dadoTipo: number, tipoDano: TipoDano, propriedades: Propriedades[] = []) {
+  constructor(
+    nome: string,
+    dadosDano: number,
+    dadoTipo: number,
+    tipoDano: TipoDano,
+    propriedades: Propriedades[] = [],
+    dadosDanoExtra?: number,
+    dadoTipoExtra?: number,
+    tipoDanoExtra?: TipoDano
+  ) {
     super(nome);
     this.dadosDano = dadosDano;
     this.dadoTipo = dadoTipo;
     this.tipoDano = tipoDano;
     this.propriedades = propriedades;
     this.bonusCA = 0;
+    this.dadosDanoExtra = dadosDanoExtra;
+    this.dadoTipoExtra = dadoTipoExtra;
+    this.tipoDanoExtra = tipoDanoExtra;
   }
 }
 
@@ -54,6 +69,8 @@ export const malho = new Arma("Malho", 2, 8, TipoDano.Contundante, [duasMaos]); 
 export const machadoGrande = new Arma("Machado Grande", 2, 8, TipoDano.Cortante, [duasMaos]); // Machado Grande, 2d8 dano, Propriedades: Duas Maos
 export const espada = new Arma("Espada", 1, 8, TipoDano.Cortante, []); // Espada Comum, 1d8 dano, Propriedades: Nenhuma
 export const adaga = new Arma("Adaga", 1, 4, TipoDano.Perfurante, [acuidade])
+export const shoushaBlade = new Arma("Odachi de Amaterasu", 2, 6, TipoDano.Cortante, [duasMaos, danoExtra], 2, 6, TipoDano.Radiante)
+export const shoushaBladeCorrupted = new Arma("Odachi de Shura", 2, 6, TipoDano.Cortante, [duasMaos, danoExtra], 2, 6, TipoDano.Fogo)
 
 
 // Lista de Armaduras

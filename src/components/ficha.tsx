@@ -14,13 +14,15 @@ const Ficha: React.FC<FichaProps> = ({ personagem }) => {
     return (
         <>
             <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
-                <div>
+                <div className='basicos'>
                     <p className='separador'>Básicos</p>
                     <p>Nome do Personagem: {personagem.nome}</p>
+                    <p>Raca:</p>
+                    <p>Classe: placeholder Nivel placeholder nivel</p>
                     <p>Pontos de vida: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
                     <p>Classe de Armadura: {personagem.classeArmadura}</p>
                 </div>
-                <div>
+                <div className='atributos'>
                     <p className='separador'>Atributos</p>
                     <p>Forca: {personagem.atributos.forca} ({personagem.atributos.forcaBonus})</p>
                     <p>Destreza: {personagem.atributos.destreza} ({personagem.atributos.destrezaBonus})</p>
@@ -29,7 +31,16 @@ const Ficha: React.FC<FichaProps> = ({ personagem }) => {
                     <p>Sabedoria: {personagem.atributos.sabedoria} ({personagem.atributos.sabedoriaBonus})</p>
                     <p>Carisma: {personagem.atributos.carisma} ({personagem.atributos.carismaBonus})</p>
                 </div>
-                <div>
+                <div className='Proficiencias'>
+                    <p className='separador'>Proficiencias</p>
+                    <p>Armas:</p>
+                    <p>Equipamentos:</p>
+                    <p>Testes de Resistencia:</p>
+                    <p>Inteligencia: {personagem.atributos.inteligencia} ({personagem.atributos.inteligenciaBonus})</p>
+                    <p>Sabedoria: {personagem.atributos.sabedoria} ({personagem.atributos.sabedoriaBonus})</p>
+                    <p>Carisma: {personagem.atributos.carisma} ({personagem.atributos.carismaBonus})</p>
+                </div>
+                <div className='Equipamentos'>
                     <p className='separador'>Equipamentos</p>
                     <p>Mao Primaria: {personagem.arma.nome}</p>
                     <p>Mao Secundaria: {personagem.equipSecundario.nome}</p>

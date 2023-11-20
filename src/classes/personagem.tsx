@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as Equipamentos from "./equipamentos";
-import { acuidade, duasMaos } from "./propriedades";
+import { acuidade, danoExtra, duasMaos } from "./propriedades";
 import { _1d20, RolarDado } from "./util";
 import { combate } from "./combate";
 
@@ -109,6 +109,11 @@ export class Personagem {
     armadura: Equipamentos.Armadura;
     equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
     percepcaoPassiva: number;
+    numeroAcoes?: number;
+    numeroAcoesBonus?: number;
+    nivel?: number;
+    classePersonagem?: string;
+    racaPersonagem?: string;
     classeArmadura?: number;
 
     // Construtor que aceita um objeto com propriedades nomeadas
@@ -120,6 +125,11 @@ export class Personagem {
         arma: Equipamentos.Arma;
         armadura: Equipamentos.Armadura;
         equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
+        numeroAcoes?: number;
+        numeroAcoesBonus?: number;
+        nivel?: number;
+        classePersonagem?: string;
+        racaPersonagem?: string;
         classeArmadura?: number;
     });
     // Construtor que aceita parâmetros individuais
@@ -131,6 +141,11 @@ export class Personagem {
         arma: Equipamentos.Arma,
         armadura: Equipamentos.Armadura,
         equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario,
+        numeroAcoes?: number,
+        numeroAcoesBonus?: number,
+        nivel?: number,
+        classePersonagem?: string,
+        racaPersonagem?: string,
         classeArmadura?: number
     );
     // Assinatura combinada do construtor usando sobrecarga de método (arg = argumento)
@@ -144,6 +159,11 @@ export class Personagem {
             arma: Equipamentos.Arma;
             armadura: Equipamentos.Armadura;
             equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
+            numeroAcoes?: number;
+            numeroAcoesBonus?: number;
+            nivel?: number;
+            classePersonagem?: string;
+            racaPersonagem?: string;
             classeArmadura?: number;
         },
         // Parâmetros individuais opcionais para o restante das propriedades 
@@ -153,7 +173,12 @@ export class Personagem {
         arg5?: Equipamentos.Arma,
         arg6?: Equipamentos.Armadura,
         arg7?: Equipamentos.Arma | Equipamentos.EquipSecundario,
-        arg8?: number
+        arg8?: number,
+        arg9?: number,
+        arg10?: number,
+        arg11?: string,
+        arg12?: string,
+        arg13?: number
     ) {
         if (typeof arg1 === 'string') {
             // Usa parametros individuais
@@ -164,7 +189,12 @@ export class Personagem {
             this.arma = arg5!;
             this.armadura = arg6!;
             this.equipSecundario = arg7!;
-            this.classeArmadura = arg8;
+            this.numeroAcoes = arg8 !== undefined ? arg8 : 1;
+            this.numeroAcoesBonus = arg9 !== undefined ? arg9 : 1;
+            this.nivel = arg10 !== undefined ? arg10 : 1;
+            this.classePersonagem = arg11;
+            this.racaPersonagem = arg12;
+            this.classeArmadura = arg13;
         } else {
             // Usa os parametros de um objeto
             this.nome = arg1.nome;
@@ -174,6 +204,11 @@ export class Personagem {
             this.arma = arg1.arma;
             this.armadura = arg1.armadura;
             this.equipSecundario = arg1.equipSecundario;
+            this.numeroAcoes = arg1.numeroAcoes;
+            this.numeroAcoesBonus = arg1.numeroAcoesBonus;
+            this.nivel = arg1.nivel;
+            this.classePersonagem = arg1.classePersonagem;
+            this.racaPersonagem = arg1.racaPersonagem;
             this.classeArmadura = arg1.classeArmadura;
         }
 
@@ -225,23 +260,23 @@ export class Personagem {
         if (novaForca) {
             this.atributos.forca = novaForca
         }
-        
+
         if (novaDestreza) {
             this.atributos.destreza = novaDestreza;
         }
-    
+
         if (novaConstituicao) {
             this.atributos.constituicao = novaConstituicao;
         }
-    
+
         if (novaInteligencia) {
             this.atributos.inteligencia = novaInteligencia;
         }
-    
+
         if (novaSabedoria) {
             this.atributos.sabedoria = novaSabedoria;
         }
-    
+
         if (novaCarisma) {
             this.atributos.carisma = novaCarisma;
         }
@@ -308,6 +343,7 @@ export class Personagem {
     // Logica para dano.
     dano() {
         let dano;
+        let extra;
         if (this.arma.nome == "Vazia") { // Dano desarmado
             dano = 1 + this.atributos.forcaBonus;
             console.log(`1 + ${this.atributos.forcaBonus} = ${1 + this.atributos.forcaBonus} (1 + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
@@ -317,11 +353,34 @@ export class Personagem {
                 multiplicadorDados = 2;
             }
 
-            if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
+            if (this.arma.propriedades.includes(acuidade) &&
+                this.arma.propriedades.includes(danoExtra) &&
+                this.arma.dadoTipoExtra &&
+                this.arma.dadosDanoExtra &&
+                this.arma.dadoTipoExtra) { // Dano com Destreza + Dano extra da arma
+                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
+                extra = new RolarDado(this.arma.dadoTipoExtra, (this.arma.dadosDanoExtra * multiplicadorDados));
+                dano.rolarVezes();
+                extra.rolarVezes();
+                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
+                dano = (dano.total + this.atributos.destrezaBonus);
+                extra = (extra.total);
+            } else if (this.arma.propriedades.includes(danoExtra) &&
+                this.arma.dadoTipoExtra &&
+                this.arma.dadosDanoExtra &&
+                this.arma.dadoTipoExtra) { // Dano com Forca + Dano extra da arma
+                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
+                extra = new RolarDado(this.arma.dadoTipoExtra, (this.arma.dadosDanoExtra * multiplicadorDados));
+                dano.rolarVezes();
+                extra.rolarVezes();
+                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
+                dano = (dano.total + this.atributos.forcaBonus);
+                extra = (extra.total);
+            } else if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
                 dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
                 dano.rolarVezes();
                 console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
-                dano = (dano.total + this.atributos.destrezaBonus) * multiplicadorDados;
+                dano = (dano.total + this.atributos.destrezaBonus);
             } else { // Dano com Forca
                 dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
                 dano.rolarVezes();
@@ -329,7 +388,7 @@ export class Personagem {
                 dano = (dano.total + this.atributos.forcaBonus);
             }
         }
-        return dano;
+        return { dano, extra };
     }
     // Descanso longo
     descanso() {
@@ -344,12 +403,10 @@ export class Personagem {
 
 export function usePersonagem() {
     const atributos = new Atributos(10, 8, 8, 8, 8, 8);
-    atributos.percepcao = true;
-
     const [personagem, setPersonagem] = useState(
         new Personagem("Sem Nome", 1, 1, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma)
     );
-    
+
     personagem.calcularBonus()
     personagem.calcularClasseArmadura()
 
