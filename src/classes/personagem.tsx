@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as Equipamentos from "./equipamentos";
 import { acuidade, danoExtra, duasMaos } from "./propriedades";
-import { _1d20, RolarDado } from "./util";
+import { _1d20, RolarDado, TipoDano } from "./util";
 import { combate } from "./combate";
 
 export class Atributos {
@@ -430,4 +430,56 @@ export function usePersonagem() {
     };
 
     return { personagem, atualizarPersonagem };
+}
+
+export class Especial {
+    nome: string;
+    descricao: string;
+    chance: number;
+    dadosDano?: number;
+    dadosTipo?: number;
+    danoTipo?: TipoDano;
+    tipoEfeito?: string;
+    tipoTR?: string;
+    diffTR?: number;
+
+    constructor(
+        nome: string,
+        descricao: string,
+        chance: number,
+        dadosDano?: number,
+        dadosTipo?: number,
+        danoTipo?: TipoDano,
+        tipoEfeito?: string,
+        tipoTR?: string,
+        diffTR?: number
+    ) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.chance = chance;
+        this.dadosDano = dadosDano;
+        this.dadosTipo = dadosTipo;
+        this.danoTipo = danoTipo;
+        this.tipoEfeito = tipoEfeito;
+        this.tipoTR = tipoTR;
+        this.diffTR = diffTR;
+    }
+}
+
+export class Monstro extends Personagem {
+    ataqueEspecial?: Especial;
+
+    constructor(
+        nome: string,
+        pontosVidaMaximos: number,
+        pontosVida: number,
+        atributos: Atributos,
+        arma: Equipamentos.Arma,
+        armadura: Equipamentos.Armadura,
+        equipSecundario: Equipamentos.EquipSecundario,
+        ataqueEspecial?: Especial
+    ) {
+        super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario);
+        this.ataqueEspecial = ataqueEspecial;
+    }
 }
