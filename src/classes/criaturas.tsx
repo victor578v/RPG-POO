@@ -1,5 +1,5 @@
 import * as Equipamentos from "./equipamentos";
-import { Atributos, Especial, Monstro, Personagem } from "./personagem";
+import { Atributos, Especial, Monstro} from "./personagem";
 import { danoExtra } from "./propriedades";
 import { TipoDano } from "./util";
 

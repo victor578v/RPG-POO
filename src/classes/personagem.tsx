@@ -373,7 +373,7 @@ export class Personagem {
                 extra = new RolarDado(this.arma.dadoTipoExtra, (this.arma.dadosDanoExtra * multiplicadorDados));
                 dano.rolarVezes();
                 extra.rolarVezes();
-                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
+                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
                 dano = (dano.total + this.atributos.forcaBonus);
                 extra = (extra.total);
             } else if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
@@ -402,9 +402,9 @@ export class Personagem {
 }
 
 export function usePersonagem() {
-    const atributos = new Atributos(10, 8, 8, 8, 8, 8);
+    const atributos = new Atributos(8, 8, 8, 8, 8, 8);
     const [personagem, setPersonagem] = useState(
-        new Personagem("Sem Nome", 1, 1, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma)
+        new Personagem("Sem Nome", 1000, 1000, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma)
     );
 
     personagem.calcularBonus()

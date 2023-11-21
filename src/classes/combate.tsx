@@ -1,5 +1,6 @@
 import { reiniciarContadorCriatura } from './criaturas';
-import { Personagem } from './personagem';
+import { Monstro, Personagem } from './personagem';
+import { RolarDado } from './util';
 
 export class Combate {
     rodada: number;
@@ -94,20 +95,32 @@ export class Combate {
         if (alvo.pontosVida <= 0) {
             // Nada acontece feijoada
         } else {
-            console.log(`${atacante.nome} ataca ${alvo.nome} com ${atacante.arma.nome}`);
-            // Lógica de ataque do combate
-            if (atacante.ataque(alvo)) {
-                const { dano, extra } = atacante.dano();
-                alvo.pontosVida -= dano + (extra || 0);
-                console.log(`${alvo.nome} sofre ${dano + (extra || 0)} pontos de dano. ${alvo.pontosVida}/${alvo.pontosVidaMaximos} pontos de vida restantes.`);
+            if (atacante instanceof Monstro && atacante.ataqueEspecial && (Math.random() * 100) < atacante.ataqueEspecial.chance) {
+                console.log(atacante.ataqueEspecial.descricao)
+                if (atacante.ataqueEspecial.dadosTipo && atacante.ataqueEspecial.dadosDano) {
+                    let dano = new RolarDado(atacante.ataqueEspecial.dadosTipo, atacante.ataqueEspecial.dadosDano)
+                    dano.rolarVezes()
+                    console.log(`${atacante.ataqueEspecial.dadosDano}d${atacante.ataqueEspecial.dadosTipo} = ${dano.total} (${dano.resultados})`)
+                    console.log(`${alvo.nome} sofre ${dano.total} pontos de dano ${atacante.ataqueEspecial.danoTipo}`)
+                    alvo.pontosVida -= +dano
+                }
                 atacante.numeroAcoes = 0;
-            }
+            } else {
+                console.log(`${atacante.nome} ataca ${alvo.nome} com ${atacante.arma.nome}`);
+                // Lógica de ataque do combate
+                if (atacante.ataque(alvo)) {
+                    const { dano, extra } = atacante.dano();
+                    alvo.pontosVida -= dano + (extra || 0);
+                    console.log(`${alvo.nome} sofre ${dano + (extra || 0)} pontos de dano. ${alvo.pontosVida}/${alvo.pontosVidaMaximos} pontos de vida restantes.`);
+                    atacante.numeroAcoes = 0;
+                }
 
-            // Verifica se o alvo foi derrotado
-            if (alvo.pontosVida <= 0) {
-                console.log(`${alvo.nome} foi derrotado!`);
+                // Verifica se o alvo foi derrotado
+                if (alvo.pontosVida <= 0) {
+                    console.log(`${alvo.nome} foi derrotado!`);
+                }
+                this.finalizarCombate(alvo)
             }
-            this.finalizarCombate(alvo)
         }
     }
     ataqueInimigos(personagem: Personagem) {

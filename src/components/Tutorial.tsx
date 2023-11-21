@@ -15,6 +15,7 @@ const Tutorial: React.FC = () => {
                 <div>
                     <p className='separador'>Criacao de Personagem</p>
                     <p>A criacao de personagem é o pilar do RPG. Primeiro, crie um nome para seu personagem. </p>
+                    <p>TERMINAR O TUTORIAL POR ULTIMO </p>
                 </div>
             </Modal>
         </>
