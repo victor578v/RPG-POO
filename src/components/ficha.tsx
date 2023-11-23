@@ -1,7 +1,4 @@
-import 'react-responsive-modal/styles.css';
-import { Modal } from 'react-responsive-modal';
-import { useState } from 'react';
-import './Menu.css';
+import './geral.css';
 import { Personagem } from '../classes/personagem';
 
 interface FichaProps {
@@ -9,46 +6,70 @@ interface FichaProps {
 }
 
 const Ficha: React.FC<FichaProps> = ({ personagem }) => {
-    const [open, setOpen] = useState(true);
 
     return (
         <>
-            <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
-                <div className='basicos'>
-                    <p className='separador'>Básicos</p>
-                    <p>Nome do Personagem: {personagem.nome}</p>
-                    <p>Raca:</p>
-                    <p>Classe: placeholder Nivel placeholder nivel</p>
-                    <p>Pontos de vida: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
-                    <p>Classe de Armadura: {personagem.classeArmadura}</p>
+            <div className='basicos'>
+                <p>Básicos</p>
+                <p>Nome: {personagem.nome}</p>
+                <p>Classe: Guerreiro Nivel {personagem.nivel} (Prof +{personagem.atributos.bonusProficiencia})</p>
+                <p>Raca: Humano</p>
+                <p>Pontos de vida: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
+                <p>Classe de Armadura: {personagem.classeArmadura}</p>
+                <p>Percepcao passiva: {personagem.percepcaoPassiva}</p>
+                <p>{personagem.nome}</p>
+                <img src="../public/placeholder.png" alt="Personagem" />
+            </div>
+            <div className='atributos'>
+                <p>Atributos</p>
+                <div id='forca'>
+                    <p>Forca</p>
+                    <h1>{personagem.atributos.forca} ({personagem.atributos.forcaBonus})</h1>
                 </div>
-                <div className='atributos'>
-                    <p className='separador'>Atributos</p>
-                    <p>Forca: {personagem.atributos.forca} ({personagem.atributos.forcaBonus})</p>
-                    <p>Destreza: {personagem.atributos.destreza} ({personagem.atributos.destrezaBonus})</p>
-                    <p>Constituiçâo: {personagem.atributos.constituicao} ({personagem.atributos.constituicaoBonus})</p>
-                    <p>Inteligencia: {personagem.atributos.inteligencia} ({personagem.atributos.inteligenciaBonus})</p>
-                    <p>Sabedoria: {personagem.atributos.sabedoria} ({personagem.atributos.sabedoriaBonus})</p>
-                    <p>Carisma: {personagem.atributos.carisma} ({personagem.atributos.carismaBonus})</p>
+                <div id='destreza'>
+                    <p>Destreza</p>
+                    <h1>{personagem.atributos.destreza} ({personagem.atributos.destrezaBonus})</h1>
                 </div>
-                <div className='Proficiencias'>
-                    <p className='separador'>Proficiencias</p>
-                    <p>Armas:</p>
-                    <p>Equipamentos:</p>
-                    <p>Testes de Resistencia:</p>
-                    <p>Inteligencia: {personagem.atributos.inteligencia} ({personagem.atributos.inteligenciaBonus})</p>
-                    <p>Sabedoria: {personagem.atributos.sabedoria} ({personagem.atributos.sabedoriaBonus})</p>
-                    <p>Carisma: {personagem.atributos.carisma} ({personagem.atributos.carismaBonus})</p>
+                <div id='constituicao'>
+                    <p>Constituição</p>
+                    <h1>{personagem.atributos.constituicao} ({personagem.atributos.constituicaoBonus})</h1>
                 </div>
-                <div className='Equipamentos'>
-                    <p className='separador'>Equipamentos</p>
-                    <p>Mao Primaria: {personagem.arma.nome}</p>
-                    <p>Mao Secundaria: {personagem.equipSecundario.nome}</p>
-                    <p>Armadura: {personagem.armadura.nome}</p>
+                <div id='inteligencia'>
+                    <p>Inteligencia</p>
+                    <h1>{personagem.atributos.inteligencia} ({personagem.atributos.inteligenciaBonus})</h1>
                 </div>
-                <p></p>
-                <p></p>
-            </Modal>
+                <div id='sabedoria'>
+                    <p>Sabedoria</p>
+                    <h1>{personagem.atributos.sabedoria} ({personagem.atributos.sabedoriaBonus})</h1>
+                </div>
+                <div id='carisma'>
+                    <p>Carisma</p>
+                    <h1>{personagem.atributos.carisma} ({personagem.atributos.carismaBonus})</h1>
+                </div>
+            </div>
+            <div className='proficiencias'>
+                <p>Proficiencias</p>
+                <p>Armas:</p>
+                <p>Equipamentos:</p>
+                <p>Testes de Resistencia:</p>
+                <p>Habilidades:</p>
+            </div>
+            <div className='equipamentos'>
+                <p>Equipamentos</p>
+                <p>Mao Primaria: {personagem.arma.nome}</p>
+                <p>Mao Secundaria: {personagem.equipSecundario.nome}</p>
+                <p>Armadura: {personagem.armadura.nome}</p>
+                <p>Acessorio 1: </p>
+                <p>Acessorio 2: </p>
+                <p>Acessorio 3: </p>
+                <p>Abrir Inventario</p>
+            </div>
+            <div className='habilidades'>
+                <p>Habilidades e Magias</p>
+                <p>Ver Magias</p>
+                <p>Ver Habilidades</p>
+                <p>Mana: 0/0</p>
+            </div>
         </>
     )
 }

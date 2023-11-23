@@ -1,7 +1,7 @@
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useState } from 'react';
-import './Menu.css';
+import './geral.css';
 
 const Tutorial: React.FC = () => {
     const [open, setOpen] = useState(false);

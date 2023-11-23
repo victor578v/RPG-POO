@@ -2,7 +2,7 @@ import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useState } from 'react';
 import * as Equipamentos from '../classes/equipamentos';
-import './Menu.css';
+import './geral.css';
 import { Personagem } from '../classes/personagem';
 import { combate } from '../classes/combate';
 import { criarNovoDragaoVermelhoAdulto, criarNovoGoblin } from '../classes/criaturas';

@@ -2,7 +2,7 @@ import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useState } from 'react';
 import * as Equipamentos from '../classes/equipamentos';
-import './Menu.css';
+import './geral.css';
 import { Personagem } from '../classes/personagem';
 import { useForm } from 'react-hook-form';
 import Ficha from './ficha';
@@ -28,6 +28,7 @@ interface CriarPersonagemProps {
 const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizarPersonagem }) => {
     const { register, handleSubmit, watch } = useForm();
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
     const [pontosAtributo, setPontosAtributo] = useState(24);
     const [personagemCriado, setPersonagemCriado] = useState(false);
 
@@ -50,6 +51,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
             escolherNome(data.nome);
             escolherAtributos(data.forca, data.destreza, data.constituicao, data.inteligencia, data.sabedoria, data.carisma);
             setOpen(false)
+            setOpen2(true)
             alert("Personagem Criado!")
             setPersonagemCriado(true);
         }
@@ -86,7 +88,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
 
     return (
         <>
-            {personagemCriado && <Ficha personagem={personagem} />}
+            {personagemCriado && <Modal open={open2} onClose={() => setOpen2(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}><Ficha personagem={personagem} /></Modal>}
             <div className='botao' onClick={() => checkPersonagem(personagem)}><p>Criar Personagem</p></div>
             <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
                 <form onSubmit={handleSubmit(onSubmit)}>

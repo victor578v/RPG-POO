@@ -1,0 +1,650 @@
+.menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 0;
+    width: 45%;
+    border-right: 2px solid #76877D;
+    border-left: 2px solid #76877D;
+    text-align: center;
+    background-color: #191919;
+    height: 100vh;
+}
+
+.botao {
+    margin: 0;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 3%;
+    background-color: #76877D;
+    border-radius: 5px;
+    border: 1px black solid;
+    height: 2.5%;
+    width: 200px;
+    text-align: center;
+}
+
+.botao:hover {
+    background-color: #A63D40;
+    cursor: pointer;
+}
+
+.botao p {
+    color: white;
+    font-size: 1.3em;
+    margin: 0;
+    padding: 0;
+}
+
+.react-responsive-modal-modal.customModal {
+    padding: 1%;
+    margin: 0%;
+    width: 75%;
+    height: 75%;
+    border: #76877D solid 3px;
+    overflow: hidden;
+}
+
+.closeButton {
+    position: absolute;
+    top: -1.4rem;
+    right: -0.8rem;
+    cursor: pointer;
+    font-size: 30px;
+    color: #A63D40;
+}
+
+.debug {
+ display: flex;
+ flex-direction:row;
+}
+
+.botaoDebug {
+    margin: 0;
+    background-color: #76877D;
+    border-radius: 5px;
+    border: 1px black solid;
+    text-align: center;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    width: 100px;
+}
+
+.botaoDebug p {
+    color: white;
+}
+
+.textDebug {
+    width: 100px;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    color: #191919;
+    text-align: center;
+}
+
+.botaoDebug p {
+    font-size: 1.3em;
+    margin: 0;
+    padding: 0;
+}
+
+.botaoDebug:hover {
+    background-color: #A63D40;
+    cursor: pointer;
+}
+
+.separador {
+    font-size: 1.4rem;
+}
+
+.separadorAtributos input {
+    width: 4%;
+    appearance: text;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
+}
+
+.basicos {
+    position: absolute;
+    border-bottom: 2px #76877D solid;
+    background-image: url(../public/wood.jpg);
+    background-size: contain;
+    padding: 3px;
+    width: 99.3%;
+    height: 20%;
+    left: 0;
+    top: 0;
+}
+
+.basicos p {
+    position: absolute;
+    margin: 0;
+    color: #d3d3d3;
+    border: 2px solid black;
+    background-color: #191919;
+    border-radius: 6px;
+    max-width: fit-content;
+    min-width: 25%;
+}
+
+.basicos p:first-child {
+    font-size: 2rem;
+    font-family: fantasy;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 2%;
+    text-align: center;
+}
+
+.basicos p:nth-child(2) {
+    margin-left: 1%;
+    left: 0;
+    top: 40%;
+    min-width: 30%;
+}
+
+.basicos p:nth-child(3) {
+    margin-left: 1%;
+    left: 0;
+    top: 60%;
+    min-width: 30%;
+}
+
+.basicos p:nth-child(4) {
+    margin-left: 1%;
+    left: 0;
+    top: 80%;
+    min-width: 30%;
+}
+
+.basicos p:nth-child(5) {
+    margin-left: 1%;
+    right: 37%;
+    top: 40%;
+}
+
+.basicos p:nth-child(6) {
+    margin-left: 1%;
+    right: 37%;
+    top: 60%;
+}
+
+.basicos p:nth-child(7) {
+    margin-left: 1%;
+    right: 37%;
+    top: 80%;
+}
+
+.basicos p:nth-child(8) {
+    margin-left: 1%;
+    right: 15%;
+    min-width: 0;
+    top: 15%;
+}
+
+.basicos img {
+    position: absolute;
+    border: #191919 solid 2px;
+    border-radius: 6px;
+    padding: 0;
+    right: 13%;
+    top: 35%;
+    width: 10%;
+    height: auto;
+}
+
+.atributos {
+    position: absolute;
+    border-right: 2px #76877D solid;
+    background-image: url(../public/stone.jpg);
+    background-size:contain;
+    width: 40%;
+    height: 79%;
+    left: 0;
+    top: 21%;
+}
+
+.atributos p {
+    margin: 0;
+}
+
+.atributos p {
+    position: absolute;
+    margin: 0;
+    color: #d3d3d3;
+    border: 2px solid black;
+    background-color: #191919;
+    border-radius: 6px;
+    max-width: fit-content;
+    padding: 2px;
+    min-width: 25%;
+}
+
+.atributos p:first-child {
+    font-size: 2rem;
+    font-family: fantasy;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 2%;
+    text-align: center;
+}
+
+.atributos #forca {
+    position: absolute;
+    left: 25%;
+    transform: translateX(-50%);
+    top: 18%;
+    font-size: smaller;
+}
+
+.atributos #forca p {
+    font-size: large;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+.atributos #forca h1 {
+    position: relative;
+    margin: 0;
+    font-size: 2.5rem;
+    top: 1.8rem;
+    border: black solid 2px;
+    background-color: #191919;
+    border-radius: 6px;
+    padding: 5px;
+    min-width: 6.2rem;
+    text-align: center;
+}
+
+.atributos #destreza {
+    position: absolute;
+    right: -8%;
+    transform: translateX(-50%);
+    top: 18%;
+    font-size: smaller;
+}
+
+.atributos #destreza p {
+    font-size: large;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+.atributos #destreza h1 {
+    position: relative;
+    margin: 0;
+    font-size: 2.5rem;
+    top: 1.8rem;
+    border: black solid 2px;
+    background-color: #191919;
+    border-radius: 6px;
+    padding: 5px;
+    min-width: 6.2rem;
+    text-align: center;
+}
+
+.atributos #constituicao {
+    position: absolute;
+    left: 25%;
+    transform: translateX(-50%);
+    top: 48%;
+    font-size: smaller;
+}
+
+.atributos #constituicao p {
+    font-size: large;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+.atributos #constituicao h1 {
+    position: relative;
+    margin: 0;
+    font-size: 2.5rem;
+    top: 1.8rem;
+    border: black solid 2px;
+    background-color: #191919;
+    border-radius: 6px;
+    padding: 5px;
+    min-width: 6.2rem;
+    text-align: center;
+}
+
+.atributos #inteligencia {
+    position: absolute;
+    right: -8%;
+    transform: translateX(-50%);
+    top: 48%;
+    font-size: smaller;
+}
+
+.atributos #inteligencia p {
+    font-size: large;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+.atributos #inteligencia h1 {
+    position: relative;
+    margin: 0;
+    font-size: 2.5rem;
+    top: 1.8rem;
+    border: black solid 2px;
+    background-color: #191919;
+    border-radius: 6px;
+    padding: 5px;
+    min-width: 6.2rem;
+    text-align: center;
+}
+
+.atributos #sabedoria {
+    position: absolute;
+    left: 25%;
+    transform: translateX(-50%);
+    top: 78%;
+    font-size: smaller;
+}
+
+.atributos #sabedoria p {
+    font-size: large;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+.atributos #sabedoria h1 {
+    position: relative;
+    margin: 0;
+    font-size: 2.5rem;
+    top: 1.8rem;
+    border: black solid 2px;
+    background-color: #191919;
+    border-radius: 6px;
+    padding: 5px;
+    min-width: 6.2rem;
+    text-align: center;
+}
+
+.atributos #carisma {
+    position: absolute;
+    right: -8%;
+    transform: translateX(-50%);
+    top: 78%;
+    font-size: smaller;
+}
+
+.atributos #carisma p {
+    font-size: large;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+.atributos #carisma h1 {
+    position: relative;
+    margin: 0;
+    font-size: 2.5rem;
+    top: 1.8rem;
+    border: black solid 2px;
+    background-color: #191919;
+    border-radius: 6px;
+    padding: 5px;
+    min-width: 6.2rem;
+    text-align: center;
+}
+
+.proficiencias {
+    position: absolute;
+    border-bottom: 2px #76877D solid;
+    background-image: url(../public/stone_smooth.png);
+    background-size:contain;
+    width: 59.8%;
+    height: 25%;
+    left: 40.2%;
+    top: 21%;
+}
+
+.proficiencias p {
+    position: absolute;
+    margin: 0;
+    color: #d3d3d3;
+    border: 2px solid black;
+    background-color: #191919;
+    border-radius: 6px;
+    max-width: fit-content;
+    padding: 2px;
+    min-width: 25%;
+}
+
+.proficiencias p:first-child {
+    font-size: 2rem;
+    font-family: fantasy;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 2%;
+    text-align: center;
+}
+
+.proficiencias p:nth-child(2) {
+    font-size: 1rem;
+    left: 2%;
+    top: 35%;
+    text-align: left;
+    min-width: 95%;
+    max-width: 95%;
+}
+
+.proficiencias p:nth-child(3) {
+    font-size: 1rem;
+    left: 2%;
+    top: 50%;
+    text-align: left;
+    min-width: 95%;
+    max-width: 95%;
+}
+
+.proficiencias p:nth-child(4) {
+    font-size: 1rem;
+    left: 2%;
+    top: 65%;
+    text-align: left;
+    min-width: 95%;
+    max-width: 95%;
+}
+
+.proficiencias p:nth-child(5) {
+    font-size: 1rem;
+    left: 2%;
+    top: 80%;
+    text-align: left;
+    min-width: 95%;
+    max-width: 95%;
+}
+
+.equipamentos {
+    position: absolute;
+    border-bottom: 1px solid #76877D ;
+    background-image: url(../public/stone_smooth.png);
+    background-size:contain;
+    width: 59.8%;
+    height: 26%;
+    left: 40.2%;
+    top: 46.3%;
+}
+
+.equipamentos p {
+    position: absolute;
+    margin: 0;
+    color: #d3d3d3;
+    border: 2px solid black;
+    background-color: #191919;
+    border-radius: 6px;
+    max-width: fit-content;
+    padding: 2px;
+    min-width: 25%;
+}
+
+.equipamentos p:first-child {
+    font-size: 2rem;
+    font-family: fantasy;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 2%;
+    text-align: center;
+}
+
+.equipamentos p:nth-child(2) {
+    font-size: 1rem;
+    left: 27.5%;
+    transform: translateX(-50%);
+    top: 28%;
+    text-align: left;
+    min-width: 52%;
+}
+
+.equipamentos p:nth-child(3) {
+    font-size: 1rem;
+    left: 27.5%;
+    transform: translateX(-50%);
+    top: 45%;
+    text-align: left;
+    min-width: 52%;
+}
+
+.equipamentos p:nth-child(4) {
+    font-size: 1rem;
+    left: 27.5%;
+    transform: translateX(-50%);
+    top: 63%;
+    text-align: left;
+    min-width: 52%;
+}
+
+.equipamentos p:nth-child(5) {
+    font-size: 1rem;
+    left: 55%;
+    top: 28%;
+    text-align: left;
+    min-width: 43%;
+    max-width: 43%;
+}
+
+.equipamentos p:nth-child(6) {
+    font-size: 1rem;
+    left: 55%;
+    top: 45%;
+    text-align: left;
+    min-width: 43%;
+    max-width: 43%;
+}
+
+.equipamentos p:nth-child(7) {
+    font-size: 1rem;
+    left: 55%;
+    top: 63%;
+    text-align: left;
+    min-width: 43%;
+    max-width: 43%;
+}
+
+.equipamentos p:nth-child(8) {
+    font-size: 1.6rem;
+    font-family: fantasy;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 78%;
+    text-align: center;
+    background-color: #76877D;
+    cursor: pointer;
+    
+}
+
+.equipamentos p:nth-child(8):hover {
+    background-color: #A63D40;
+}
+
+.habilidades {
+    position: absolute;
+    background-image: url(../public/stone_smooth.png);
+    background-size:contain;
+    width: 59.8%;
+    height: 27.8%;
+    left: 40.2%;
+    top: 72.4%;
+}
+
+.habilidades p {
+    position: absolute;
+    margin: 0;
+    color: #d3d3d3;
+    border: 2px solid black;
+    background-color: #191919;
+    border-radius: 6px;
+    max-width: fit-content;
+    padding: 2px;
+    min-width: 25%;
+}
+
+.habilidades p:first-child {
+    font-size: 2rem;
+    font-family: fantasy;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 3%;
+    text-align: center;
+    min-width: 80%;
+    
+}
+
+.habilidades p:nth-child(2) {
+    font-size: 1.5rem;
+    left: 25%;
+    transform: translateX(-50%);
+    top: 70%;
+    text-align: center;
+    min-width: 25%;
+    padding: 2%;
+    background-color: #76877D;
+    font-family: fantasy;
+    cursor: pointer;
+}
+
+.habilidades p:nth-child(3) {
+    font-size: 1.5rem;
+    right: -10%;
+    transform: translateX(-50%);
+    top: 70%;
+    text-align: center;
+    min-width: 25%;
+    padding: 2%;
+    background-color: #76877D;
+    font-family: fantasy;
+    cursor: pointer;
+}
+
+.habilidades p:nth-child(2):hover {
+    background-color: #A63D40;
+}
+
+.habilidades p:nth-child(3):hover {
+    background-color: #A63D40;
+}
+
+.habilidades p:nth-child(4) {
+    font-size: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 35%;
+    text-align: left;
+    min-width: 25%;
+    padding: 2%;
+}
