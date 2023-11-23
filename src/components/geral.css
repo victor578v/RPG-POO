@@ -182,9 +182,11 @@ input[type=number]::-webkit-inner-spin-button {
 
 .basicos p:nth-child(8) {
     margin-left: 1%;
-    right: 15%;
+    left: 79%;
+    transform: translateX(-50%);
     min-width: 0;
-    top: 15%;
+    top: 25%;
+    text-align: center;
 }
 
 .basicos img {
@@ -192,8 +194,9 @@ input[type=number]::-webkit-inner-spin-button {
     border: #191919 solid 2px;
     border-radius: 6px;
     padding: 0;
-    right: 13%;
-    top: 35%;
+    left: 80%;
+    transform: translateX(-50%);
+    top: 40%;
     width: 10%;
     height: auto;
 }
@@ -644,7 +647,7 @@ input[type=number]::-webkit-inner-spin-button {
     left: 50%;
     transform: translateX(-50%);
     top: 35%;
-    text-align: left;
+    text-align: center;
     min-width: 25%;
     padding: 2%;
 }

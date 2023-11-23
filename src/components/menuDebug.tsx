@@ -114,7 +114,7 @@ const MenuDebug: React.FC<MenuDebugProps> = ({ personagem, atualizarPersonagem }
                         <div className='botaoDebug' onClick={() => escolherArmadura(Equipamentos.vazioArmadura)}><p>Desequipar Armadura</p></div>
                         <div className='botaoDebug' onClick={() => escolherEquip(Equipamentos.vazioArma)}><p>Largar Equip Secundario</p></div>
                         <div className='botaoDebug' onClick={() => { combate.iniciarCombate(personagem); setAtt(att + 1); }}><p>Entrar em combate</p></div>
-                        <div className='botaoDebug' onClick={() => { personagem.descanso() }}><p>Descansar e recuperar pontos de vida</p></div>
+                        <div className='botaoDebug' onClick={() => { personagem.descanso(combate) }}><p>Descansar e recuperar pontos de vida</p></div>
                         <div className='botaoDebug' onClick={() => { combate.iniciarRodada(personagem); setAtt(att + 1); }}><p>Passar Turno</p></div>
                         <div className='botaoDebug' onClick={() => { combate.ataque(personagem, alvoSelecionado); setAtt(att + 1); }}><p>Atacar</p></div>
                         <div className='botaoDebug' onClick={() => { getNumAcao(personagem)}}><p>Receber numero de Acoes</p></div>

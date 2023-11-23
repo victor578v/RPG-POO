@@ -2,7 +2,11 @@ import { useState } from "react";
 import * as Equipamentos from "./equipamentos";
 import { acuidade, danoExtra, duasMaos } from "./propriedades";
 import { _1d20, RolarDado, TipoDano } from "./util";
-import { combate } from "./combate";
+import { Combate } from "./combate";
+
+interface LogCallback {
+    (message: string): void;
+}
 
 export class Atributos {
     // Valores base dos Atributos
@@ -312,91 +316,98 @@ export class Personagem {
         this.calcularClasseArmadura();
     }
     // Logica para ataques.
-    ataque(alvo: Personagem) {
+    ataque(alvo: Personagem, logCallback?: LogCallback) {
         _1d20.rolarVezes();
-        if (acuidade.acuidadeCheck(this)) { // Ataque com Destreza
-            console.log(`1d20 + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia})`);
-            if (+_1d20.resultados == 20) {
-                console.log("Acerto Critico!")
-                return true;
-            } else if (+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
-                console.log("Acerto!")
-                return true;
-            } else {
-                console.log("Erro!")
-                return false;
-            }
-        } else { // Ataque com Forca
-            console.log(`1d20 + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia})`);
-            if (+_1d20.resultados == 20) {
-                console.log("Acerto Critico!")
-                return true;
-            } else if (+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
-                console.log("Acerto!")
-                return true;
-            } else {
-                console.log("Erro!")
-                return false;
+
+        if (logCallback) {
+            if (acuidade.acuidadeCheck(this)) { // Ataque com Destreza
+                logCallback(`1d20 + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia})`);
+                if (+_1d20.resultados == 20) {
+                    logCallback("Acerto Crítico!");
+                    return true;
+                } else if (+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
+                    logCallback("Acerto!");
+                    return true;
+                } else {
+                    logCallback("Erro!");
+                    return false;
+                }
+            } else { // Ataque com Força
+                logCallback(`1d20 + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia})`);
+                if (+_1d20.resultados == 20) {
+                    logCallback("Acerto Crítico!");
+                    return true;
+                } else if (+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
+                    logCallback("Acerto!");
+                    return true;
+                } else {
+                    logCallback("Erro!");
+                    return false;
+                }
             }
         }
     }
     // Logica para dano.
-    dano() {
+    dano(logCallback?: LogCallback) {
         let dano;
         let extra;
-        if (this.arma.nome == "Vazia") { // Dano desarmado
-            dano = 1 + this.atributos.forcaBonus;
-            console.log(`1 + ${this.atributos.forcaBonus} = ${1 + this.atributos.forcaBonus} (1 + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
-        } else {
-            let multiplicadorDados = 1;
-            if (+_1d20.resultados == 20) {
-                multiplicadorDados = 2;
-            }
+        if (logCallback) {
+            if (this.arma.nome == "Vazia") { // Dano desarmado
+                dano = 1 + this.atributos.forcaBonus;
+                logCallback(`1 + ${this.atributos.forcaBonus} = ${1 + this.atributos.forcaBonus} (1 + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
+            } else {
+                let multiplicadorDados = 1;
+                if (+_1d20.resultados == 20) {
+                    multiplicadorDados = 2;
+                }
 
-            if (this.arma.propriedades.includes(acuidade) &&
-                this.arma.propriedades.includes(danoExtra) &&
-                this.arma.dadoTipoExtra &&
-                this.arma.dadosDanoExtra &&
-                this.arma.dadoTipoExtra) { // Dano com Destreza + Dano extra da arma
-                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
-                extra = new RolarDado(this.arma.dadoTipoExtra, (this.arma.dadosDanoExtra * multiplicadorDados));
-                dano.rolarVezes();
-                extra.rolarVezes();
-                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
-                dano = (dano.total + this.atributos.destrezaBonus);
-                extra = (extra.total);
-            } else if (this.arma.propriedades.includes(danoExtra) &&
-                this.arma.dadoTipoExtra &&
-                this.arma.dadosDanoExtra &&
-                this.arma.dadoTipoExtra) { // Dano com Forca + Dano extra da arma
-                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
-                extra = new RolarDado(this.arma.dadoTipoExtra, (this.arma.dadosDanoExtra * multiplicadorDados));
-                dano.rolarVezes();
-                extra.rolarVezes();
-                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
-                dano = (dano.total + this.atributos.forcaBonus);
-                extra = (extra.total);
-            } else if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
-                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
-                dano.rolarVezes();
-                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
-                dano = (dano.total + this.atributos.destrezaBonus);
-            } else { // Dano com Forca
-                dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
-                dano.rolarVezes();
-                console.log(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
-                dano = (dano.total + this.atributos.forcaBonus);
+                if (this.arma.propriedades.includes(acuidade) &&
+                    this.arma.propriedades.includes(danoExtra) &&
+                    this.arma.dadoTipoExtra &&
+                    this.arma.dadosDanoExtra &&
+                    this.arma.dadoTipoExtra) { // Dano com Destreza + Dano extra da arma
+                    dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
+                    extra = new RolarDado(this.arma.dadoTipoExtra, (this.arma.dadosDanoExtra * multiplicadorDados));
+                    dano.rolarVezes();
+                    extra.rolarVezes();
+                    logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
+                    dano = (dano.total + this.atributos.destrezaBonus);
+                    extra = (extra.total);
+                } else if (this.arma.propriedades.includes(danoExtra) &&
+                    this.arma.dadoTipoExtra &&
+                    this.arma.dadosDanoExtra &&
+                    this.arma.dadoTipoExtra) { // Dano com Forca + Dano extra da arma
+                    dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
+                    extra = new RolarDado(this.arma.dadoTipoExtra, (this.arma.dadosDanoExtra * multiplicadorDados));
+                    dano.rolarVezes();
+                    extra.rolarVezes();
+                    logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
+                    dano = (dano.total + this.atributos.forcaBonus);
+                    extra = (extra.total);
+                } else if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
+                    dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
+                    dano.rolarVezes();
+                    logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
+                    dano = (dano.total + this.atributos.destrezaBonus);
+                } else { // Dano com Forca
+                    dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
+                    dano.rolarVezes();
+                    logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano}`);
+                    dano = (dano.total + this.atributos.forcaBonus);
+                }
             }
         }
         return { dano, extra };
     }
     // Descanso longo
-    descanso() {
-        if (combate.rodada > 0) {
-            console.log("Voce nao pode descansar agora!")
-        } else {
-            this.pontosVida = this.pontosVidaMaximos
-            console.log("Pontos de vida recuperados!")
+    descanso(combate: Combate, logCallback?: LogCallback) {
+        if (logCallback) {
+            if (combate.rodada > 0) {
+                logCallback(`Voce nao pode descansar agora! ${combate.rodada}`)
+            } else {
+                this.pontosVida = this.pontosVidaMaximos
+                logCallback("Pontos de vida recuperados!")
+            }
         }
     }
 }
