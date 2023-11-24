@@ -92,9 +92,64 @@
 
 .monstros {
     position: relative;
-    text-align: center;
+    display: inline-block;
+    cursor: pointer;
 }
 
-.monstros p {
-    color: white;
+.monstros:hover {
+    top: -1vh;
+}
+
+.monstros img {
+    max-width: fit-content;
+    height: auto;
+}
+
+.monstros.Pequeno {
+    position: relative;
+    width: 23vh;
+}
+
+.monstros.Pequeno img {
+    display: inline;
+    position: absolute;
+    max-width: 25vh; /* Tamanho para criaturas "Pequeno" */
+    left: 12vh;
+}
+
+.monstros.Pequeno img:hover {
+    top: -1vh;
+}
+
+.monstros.Pequeno:nth-child(1) {
+    top: 30vh;
+    left: -35vh;
+}
+
+.monstros.Pequeno:nth-child(2) {
+    top: 35vh;
+    left: -35vh;
+}
+.monstros.Pequeno:nth-child(3) {
+    top: 30vh;
+    left: -35vh;
+}
+.monstros.Pequeno:nth-child(4) {
+    top: 35vh;
+    left: -35vh;
+}
+.monstros.Pequeno:nth-child(5) {
+    top: 30vh;
+    left: -35vh;
+}
+
+.monstros.Medio img {
+    max-width: 100px; /* Tamanho para criaturas "Médio" */
+}
+
+.monstros.Grande img {
+    position: absolute;
+    max-width: 180vh; /* Tamanho para criaturas "Grande" */
+    top: -15vh;
+    left: -5vh;
 }

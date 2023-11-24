@@ -20,7 +20,8 @@ interface CriarPersonagemProps {
         novaCarisma?: number,
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
-        novoEquip?: Equipamentos.EquipSecundario
+        novoEquip?: Equipamentos.EquipSecundario,
+        novaImagem?: string,
     ) => void;
 }
 
@@ -30,6 +31,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [pontosAtributo, setPontosAtributo] = useState(24);
+    const [personagemImg, setPersonagemImg] = useState('')
     const [personagemCriado, setPersonagemCriado] = useState(false);
 
     function checkPersonagem(personagem: Personagem) {
@@ -48,7 +50,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
         } else if (pontosAtributo > 0) {
             alert("Voce ainda tem pontos para alocar!")
         } else {
-            escolherNome(data.nome);
+            escolherBasicos(data.nome, personagemImg);
             escolherAtributos(data.forca, data.destreza, data.constituicao, data.inteligencia, data.sabedoria, data.carisma);
             setOpen(false)
             setOpen2(true)
@@ -57,8 +59,8 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
         }
     };
 
-    const escolherNome = (novoNome: string) => {
-        atualizarPersonagem(novoNome);
+    const escolherBasicos = (novoNome: string, novaImagem: string) => {
+        atualizarPersonagem(novoNome, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, novaImagem);
     }
 
     const escolherAtributos = (
@@ -71,6 +73,25 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
     ) => {
         atualizarPersonagem(undefined, novaForca, novaDestreza, novaConstituicao, novaInteligencia, novaSabedoria, novaCarisma);
     };
+
+    const mudaImagem = () => {
+        const novaImagem = watch('imgPersonagem');
+    
+        if (urlValido(novaImagem)) {
+            setPersonagemImg(novaImagem);
+        } else {
+            setPersonagemImg(novaImagem);
+        }
+    }
+    
+    function urlValido(url?: string): boolean {
+        if (!url) {
+            return false; // Se url for undefined, não é uma URL válida
+        }
+    
+        const regex = /^(ftp|http|https):\/\/[^ "]+$/;
+        return regex.test(url);
+    }
 
     const alocarPontos = () => {
         const forca = +watch('forca');
@@ -112,6 +133,12 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
                         <input type="number" id="sabedoria" min={8} max={18} defaultValue={8} step={1} {...register('sabedoria', { onChange: alocarPontos, onBlur: alocarPontos })} />
                         <label htmlFor="carisma">Carisma</label>
                         <input type="number" id="carisma" min={8} max={18} defaultValue={8} step={1}  {...register('carisma', { onChange: alocarPontos, onBlur: alocarPontos })} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="imagemUrl">URL da Imagem:</label>
+                        <input type="url" id="imagemUrl" placeholder="Insira o URL da imagem" value={personagemImg} {...register('imgPersonagem', { onChange: mudaImagem })} />
+                        <img className='imagemPersonagem' src={urlValido(personagemImg) ? personagemImg : personagem.imagem} alt="Imagem do Personagem" width="100" height="100"/>
                     </div>
 
                     <button type="submit">Salvar Personagem</button>

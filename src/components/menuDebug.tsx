@@ -21,7 +21,8 @@ interface MenuDebugProps {
         novaCarisma?: number,
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
-        novoEquip?: Equipamentos.EquipSecundario
+        novoEquip?: Equipamentos.EquipSecundario,
+        novaImagem?: string,
     ) => void;
 }
 

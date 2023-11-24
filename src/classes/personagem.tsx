@@ -119,6 +119,8 @@ export class Personagem {
     classePersonagem?: string;
     racaPersonagem?: string;
     classeArmadura?: number;
+    imagem?: string;
+    tamanho?: "Pequeno" | "Medio" | "Grande";
 
     // Construtor que aceita um objeto com propriedades nomeadas
     constructor(options: {
@@ -135,6 +137,8 @@ export class Personagem {
         classePersonagem?: string;
         racaPersonagem?: string;
         classeArmadura?: number;
+        imagem?: string;
+        tamanho?: "Pequeno" | "Medio" | "Grande";
     });
     // Construtor que aceita parâmetros individuais
     constructor(
@@ -150,7 +154,9 @@ export class Personagem {
         nivel?: number,
         classePersonagem?: string,
         racaPersonagem?: string,
-        classeArmadura?: number
+        classeArmadura?: number,
+        imagem?: string,
+        tamanho?: "Pequeno" | "Medio" | "Grande",
     );
     // Assinatura combinada do construtor usando sobrecarga de método (arg = argumento)
     constructor(
@@ -169,6 +175,8 @@ export class Personagem {
             classePersonagem?: string;
             racaPersonagem?: string;
             classeArmadura?: number;
+            imagem?: string;
+            tamanho?: "Pequeno" | "Medio" | "Grande";
         },
         // Parâmetros individuais opcionais para o restante das propriedades 
         arg2?: number,
@@ -182,7 +190,9 @@ export class Personagem {
         arg10?: number,
         arg11?: string,
         arg12?: string,
-        arg13?: number
+        arg13?: number,
+        arg14?: string,
+        arg15?: "Pequeno" | "Medio" | "Grande",
     ) {
         if (typeof arg1 === 'string') {
             // Usa parametros individuais
@@ -199,6 +209,8 @@ export class Personagem {
             this.classePersonagem = arg11;
             this.racaPersonagem = arg12;
             this.classeArmadura = arg13;
+            this.imagem = arg14;
+            this.tamanho = arg15;
         } else {
             // Usa os parametros de um objeto
             this.nome = arg1.nome;
@@ -214,6 +226,8 @@ export class Personagem {
             this.classePersonagem = arg1.classePersonagem;
             this.racaPersonagem = arg1.racaPersonagem;
             this.classeArmadura = arg1.classeArmadura;
+            this.imagem = arg1.imagem;
+            this.tamanho = arg1.tamanho;
         }
 
         // Calcula a Percepcao Passiva (PP)
@@ -258,7 +272,8 @@ export class Personagem {
         novaCarisma?: number,
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
-        novoEquip?: Equipamentos.EquipSecundario
+        novoEquip?: Equipamentos.EquipSecundario,
+        novaImagem?: string,
     ) {
 
         if (novaForca) {
@@ -286,7 +301,11 @@ export class Personagem {
         }
 
         if (novoNome) {
-            this.nome = novoNome
+            this.nome = novoNome;
+        }
+
+        if (novaImagem) {
+            this.imagem = novaImagem;
         }
 
         if (novaArma) {
@@ -415,7 +434,7 @@ export class Personagem {
 export function usePersonagem() {
     const atributos = new Atributos(8, 8, 8, 8, 8, 8);
     const [personagem, setPersonagem] = useState(
-        new Personagem("Sem Nome", 1000, 1000, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma)
+        new Personagem("Sem Nome", 1000, 1000, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, 1, 1, 1, undefined, undefined, undefined, '/placeholder.png', "Medio")
     );
 
     personagem.calcularBonus()
@@ -431,11 +450,12 @@ export function usePersonagem() {
         novaCarisma?: number,
         novaArma?: Equipamentos.Arma,
         novaArmadura?: Equipamentos.Armadura,
-        novoEquip?: Equipamentos.EquipSecundario
+        novoEquip?: Equipamentos.EquipSecundario,
+        novaImagem?: string,
     ) => {
         setPersonagem((basePersonagem) => {
             const mudarPersonagem = new Personagem({ ...basePersonagem });
-            mudarPersonagem.atualizarPersonagem(novoNome, novaForca, novaDestreza, novaConstituicao, novaInteligencia, novaSabedoria, novaCarisma, novaArma, novaArmadura, novoEquip);
+            mudarPersonagem.atualizarPersonagem(novoNome, novaForca, novaDestreza, novaConstituicao, novaInteligencia, novaSabedoria, novaCarisma, novaArma, novaArmadura, novoEquip, novaImagem);
             return mudarPersonagem;
         });
     };
@@ -479,6 +499,7 @@ export class Especial {
 
 export class Monstro extends Personagem {
     ataqueEspecial?: Especial;
+    
 
     constructor(
         nome: string,
@@ -488,9 +509,12 @@ export class Monstro extends Personagem {
         arma: Equipamentos.Arma,
         armadura: Equipamentos.Armadura,
         equipSecundario: Equipamentos.EquipSecundario,
+        imagem: string,
+        tamanho: "Pequeno" | "Medio" | "Grande",
         ataqueEspecial?: Especial
+        
     ) {
-        super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario);
+        super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario, undefined, undefined, undefined, undefined, undefined, undefined, imagem, tamanho) ;
         this.ataqueEspecial = ataqueEspecial;
     }
 }

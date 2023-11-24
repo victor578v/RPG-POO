@@ -18,7 +18,7 @@ const Ficha: React.FC<FichaProps> = ({ personagem }) => {
                 <p>Classe de Armadura: {personagem.classeArmadura}</p>
                 <p>Percepcao passiva: {personagem.percepcaoPassiva}</p>
                 <p>{personagem.nome}</p>
-                <div><img src="./placeholder.png" alt="Personagem" /></div>
+                <div><img src={`${personagem.imagem}`} width={10} height={10} alt="Personagem" /></div>
             </div>
             <div className='atributos'>
                 <p>Atributos</p>
