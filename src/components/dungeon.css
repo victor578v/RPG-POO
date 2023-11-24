@@ -7,6 +7,9 @@
     background-color: #191919;
     text-align: center;
     height: 99.4vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .MenuDungeon p {
@@ -14,12 +17,17 @@
 }
 
 .botaoMenuDungeon {
-    position: relative;
     border: 0;
-    padding: 3%;
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 50%;
+    padding: 0%;
+    width: 60%;
+    border: black solid 2px;
+    border-radius: 6px;
+    background-color: #76877D;
+}
+
+.botaoMenuDungeon:hover {
+    background-color: #A63D40;
+    cursor: pointer;
 }
 
 .botaoMenuDungeon p {
@@ -60,6 +68,18 @@
 .botoesDungeon div {
     display: inline-block;
     margin-left: 6%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-bottom: 0.4%;
+    padding-top: 0.4%;
+    border: black solid 2px;
+    border-radius: 6px;
+    background-color: #76877D;
+}
+
+.botoesDungeon div:hover {
+    background-color: #A63D40;
+    cursor: pointer;
 }
 
 .botoesDungeon p {
@@ -153,3 +173,4 @@
     top: -15vh;
     left: -5vh;
 }
+

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './dungeon.css';
 import { Personagem } from '../classes/personagem';
 import { combate } from '../classes/combate';
-import { criarNovoDragaoVermelhoAdulto, criarNovoGoblin, reiniciarContadorCriatura } from '../classes/criaturas';
+import { criarNovoDragaoVermelhoAdulto, criarNovoEsqueleto, criarNovoGoblin } from '../classes/criaturas';
 import Modal from 'react-responsive-modal';
 import Ficha from './ficha';
 
@@ -70,7 +70,6 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
         } else {
             combate.participantes = [];
             combate.rodada = 0;
-            reiniciarContadorCriatura();
             personagem.numeroAcoes = 1;
             addToBuffer("Combate Terminado!")
         }
@@ -83,7 +82,8 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
                 "Goblin",
                 "Goblin",
                 "Goblin",
-                "Goblin",
+                "Esqueleto",
+                "Esqueleto",
                 "Dragao Vermelho Adulto"
             ];
             // Determina aleatoriamente o número de criaturas a serem adicionadas (entre 1 e 5)
@@ -105,7 +105,9 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
 
                 if (criaturaAleatoria === "Goblin") {
                     criaturaEscolhida = criarNovoGoblin();
-                } else if (criaturaAleatoria === "Dragao Vermelho Adulto") {
+                } else if (criaturaAleatoria === "Esqueleto") {
+                    criaturaEscolhida = criarNovoEsqueleto();
+                }  else if (criaturaAleatoria === "Dragao Vermelho Adulto") {
                     criaturaEscolhida = criarNovoDragaoVermelhoAdulto();
                 }
 
@@ -170,8 +172,8 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
 
                     {combate.rodada === 0 && (
                         <>
-                            <div>
-                                <p onClick={adicionarCriaturaAleatoria}>ADD criatura aleatoria</p>
+                            <div onClick={adicionarCriaturaAleatoria}>
+                                <p>Avancar nas masmorras</p>
                             </div>
                             <div onClick={() => { personagem.descanso(combate, (message) => { addToBuffer(message); }) }}>
                                 <p>Descansar e recuperar pontos de vida</p>

@@ -3,30 +3,25 @@ import { Atributos, Especial, Monstro} from "./personagem";
 import { danoExtra } from "./propriedades";
 import { TipoDano } from "./util";
 
-let contadorCriatura = 1;
-
-export function getContadorCriatura(): number {
-  return contadorCriatura;
-}
-
-export function incrementarContadorCriatura(): void {
-  contadorCriatura++;
-}
-
-export function reiniciarContadorCriatura(): void {
-  contadorCriatura = 1;
-}
-
 export function criarNovoGoblin(): Monstro {
   const atributos = new Atributos(8, 14, 10, 10, 8, 8);
-  const nome = `Goblin ${getContadorCriatura()}`;
-  incrementarContadorCriatura();
+  const nome = `Goblin Escudeiro`;
 
-  const novoGoblin = new Monstro(nome, 7, 7, atributos, Equipamentos.adaga, Equipamentos.couro, Equipamentos.vazioArma, './goblin.png', "Pequeno");
+  const novoGoblin = new Monstro(nome, 7, 7, atributos, Equipamentos.espada, Equipamentos.couro, Equipamentos.escudo, './goblin.png', "Pequeno");
   novoGoblin.atributos.furtividade = true;
   novoGoblin.calcularClasseArmadura();
 
   return novoGoblin;
+}
+
+export function criarNovoEsqueleto(): Monstro {
+  const atributos = new Atributos(10, 14, 15, 6, 8, 5);
+  const nome = `Esqueleto Guerreiro`;
+
+  const novoEsqueleto = new Monstro(nome, 13, 13, atributos, Equipamentos.espada, Equipamentos.halfPlacas, Equipamentos.escudo, './esqueleto.png', "Pequeno");
+  novoEsqueleto.calcularClasseArmadura();
+
+  return novoEsqueleto;
 }
 
 export function criarNovoDragaoVermelhoAdulto(): Monstro {

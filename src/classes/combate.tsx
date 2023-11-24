@@ -1,4 +1,3 @@
-import { reiniciarContadorCriatura } from './criaturas';
 import { Monstro, Personagem } from './personagem';
 import { RolarDado } from './util';
 
@@ -44,6 +43,9 @@ export class Combate {
                 logCallback(`${personagem.nome} está muito machucado para lutar!`)
             } else if (this.participantes.length > 0 && this.rodada == 0) {
                 logCallback('Combate iniciado!');
+                logCallback("-".repeat(10))
+                logCallback('Turno do Jogador');
+                logCallback("-".repeat(10))
                 this.rodada = 1;
                 logCallback(`Iniciando rodada ${this.rodada}`);
             } else if (this.rodada >= 1) {
@@ -59,13 +61,11 @@ export class Combate {
                 logCallback('Combate finalizado, todos inimigos eliminados!');
                 this.participantes = [];
                 this.rodada = 0;
-                reiniciarContadorCriatura();
                 personagem.numeroAcoes = 1;
             } else if (personagem.pontosVida <= 0) {
                 logCallback('Game Over, seus pontos de vida zeraram. :(');
                 this.participantes = [];
                 this.rodada = 0;
-                reiniciarContadorCriatura();
                 personagem.numeroAcoes = 1;
             }
         }
