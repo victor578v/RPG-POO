@@ -434,7 +434,7 @@ export class Personagem {
 export function usePersonagem() {
     const atributos = new Atributos(8, 8, 8, 8, 8, 8);
     const [personagem, setPersonagem] = useState(
-        new Personagem("Sem Nome", 1000, 1000, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, 1, 1, 1, undefined, undefined, undefined, '/placeholder.png', "Medio")
+        new Personagem("Sem Nome", 1000, 1000, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, 1, 1, 1, undefined, undefined, undefined, './placeholder.png', "Medio")
     );
 
     personagem.calcularBonus()

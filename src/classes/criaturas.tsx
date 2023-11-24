@@ -22,7 +22,7 @@ export function criarNovoGoblin(): Monstro {
   const nome = `Goblin ${getContadorCriatura()}`;
   incrementarContadorCriatura();
 
-  const novoGoblin = new Monstro(nome, 7, 7, atributos, Equipamentos.adaga, Equipamentos.couro, Equipamentos.vazioArma, '/goblin.png', "Pequeno");
+  const novoGoblin = new Monstro(nome, 7, 7, atributos, Equipamentos.adaga, Equipamentos.couro, Equipamentos.vazioArma, './goblin.png', "Pequeno");
   novoGoblin.atributos.furtividade = true;
   novoGoblin.calcularClasseArmadura();
 
@@ -36,7 +36,7 @@ export function criarNovoDragaoVermelhoAdulto(): Monstro {
   const soproFogo = new Especial("Sopro Flamejante", "O Dragao utiliza seu sopro flamejante!", 20, 18, 6, TipoDano.Fogo, "Area", "Destreza", 21)
   const escamasDragaoVermelho = new Equipamentos.Armadura("Escamas do Dragao Vermelho", "nenhuma", 9);
 
-  const novoDragaoVermelhoAdulto = new Monstro(nome, 256, 256, atributos, mordida, escamasDragaoVermelho, Equipamentos.vazioArma, '/redDragon.png', "Grande",soproFogo);
+  const novoDragaoVermelhoAdulto = new Monstro(nome, 256, 256, atributos, mordida, escamasDragaoVermelho, Equipamentos.vazioArma, './redDragon.png', "Grande",soproFogo);
   novoDragaoVermelhoAdulto.atributos.furtividade = true;
   novoDragaoVermelhoAdulto.atributos.percepcao = true;
   novoDragaoVermelhoAdulto.calcularClasseArmadura();

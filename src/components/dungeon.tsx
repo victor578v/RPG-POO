@@ -92,6 +92,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
             let criaturasAdicionadas = 0;
             let podeAdicionarGrande = true;
             let podeAdicionarPequeno = true;
+            const criaturas = []
 
             console.log(numeroCriaturas)
 
@@ -111,19 +112,21 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
                 // Verifica o tamanho da criatura
                 if (criaturaEscolhida && criaturaEscolhida.tamanho === "Pequeno" && podeAdicionarPequeno) {
                     combate.adicionarParticipante(criaturaEscolhida);
-                    addToBuffer(`Você encontrou ${criaturaEscolhida.nome}!`);
+                    criaturas.push(criaturaEscolhida.nome)
                     criaturasAdicionadas++;
                     podeAdicionarGrande = false;
                 } else if (criaturaEscolhida && criaturaEscolhida.tamanho === "Grande" && podeAdicionarGrande) {
                     combate.adicionarParticipante(criaturaEscolhida);
-                    addToBuffer(`Você encontrou um ${criaturaEscolhida.nome}!`);
+                    criaturas.push(criaturaEscolhida.nome)
                     criaturasAdicionadas++;
                     podeAdicionarGrande = false;
                     podeAdicionarPequeno = false;
-                } else {                 // Caso contrário, nenhuma adicionada e o contador se encherá até o fim
+                } else {// Caso contrário, nenhuma adicionada e o contador se encherá até o fim
                     criaturasAdicionadas++;
                 }
             }
+            addToBuffer(`Você encontrou ${criaturas}!`);
+            combate.iniciarCombate(personagem, (message) => { addToBuffer(message); })
         } else {
             addToBuffer("Voce já possui inimigos!")
         }
@@ -141,7 +144,6 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
                 </Modal>
             </div>
             <div className='dungeonRoom'>
-                {/* adicionar formas de aleatorizar salas depois */}
                 <div>
                     {combate.participantes.map((participante, index) => (
                         <div key={index} className={`monstros ${participante.tamanho}`} onClick={() => selecionarAlvo(participante)}>
@@ -155,21 +157,27 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
                     <p key={index}>{text}</p>
                 ))}
                 <div className='botoesDungeon'>
-                    <div>
-                        <p onClick={adicionarCriaturaAleatoria}>ADD criatura aleatoria</p>
-                    </div>
-                    <div onClick={() => combate.ataque(personagem, alvoSelecionado, (message) => { addToBuffer(message); })}>
-                        <p>Atacar</p>
-                    </div>
-                    <div onClick={() => { combate.iniciarCombate(personagem, (message) => { addToBuffer(message); }) }}>
-                        <p>Entrar em combate</p>
-                    </div>
-                    <div onClick={() => { combate.iniciarRodada(personagem, (message) => { addToBuffer(message); }) }}>
-                        <p>Passar Turno</p>
-                    </div>
-                    <div onClick={() => { personagem.descanso(combate, (message) => { addToBuffer(message); }) }}>
-                        <p>Descansar e recuperar pontos de vida</p>
-                    </div>
+                    {combate.rodada > 0 && (
+                        <>
+                            <div onClick={() => combate.ataque(personagem, alvoSelecionado, (message) => { addToBuffer(message); })}>
+                                <p>Atacar</p>
+                            </div>
+                            <div onClick={() => { combate.iniciarRodada(personagem, (message) => { addToBuffer(message); }) }}>
+                                <p>Passar Turno</p>
+                            </div>
+                        </>
+                    )}
+
+                    {combate.rodada === 0 && (
+                        <>
+                            <div>
+                                <p onClick={adicionarCriaturaAleatoria}>ADD criatura aleatoria</p>
+                            </div>
+                            <div onClick={() => { personagem.descanso(combate, (message) => { addToBuffer(message); }) }}>
+                                <p>Descansar e recuperar pontos de vida</p>
+                            </div>
+                        </>
+                    )}
                 </div>
                 <div>
                     <button onClick={clearBuffer}>Limpar Buffer</button>

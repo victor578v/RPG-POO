@@ -138,7 +138,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
                     <div>
                         <label htmlFor="imagemUrl">URL da Imagem:</label>
                         <input type="url" id="imagemUrl" placeholder="Insira o URL da imagem" value={personagemImg} {...register('imgPersonagem', { onChange: mudaImagem })} />
-                        <img className='imagemPersonagem' src={urlValido(personagemImg) ? personagemImg : personagem.imagem} alt="Imagem do Personagem" width="100" height="100"/>
+                        <img className='imagemPersonagem' src={`${urlValido(personagemImg) ? personagemImg : personagem.imagem}`} alt="Imagem do Personagem" width="100" height="100"/>
                     </div>
 
                     <button type="submit">Salvar Personagem</button>
