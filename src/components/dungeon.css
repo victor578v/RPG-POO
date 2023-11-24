@@ -1,11 +1,12 @@
 .MenuDungeon {
     margin: 0;
     float: left;
-    border-right: 3px solid #76877D;
+    border: 3px solid #76877D;
+    border-left: none;
     width: 20%;
     background-color: #191919;
     text-align: center;
-    height: 100vh;
+    height: 99.4vh;
 }
 
 .MenuDungeon p {
@@ -28,13 +29,14 @@
 }
 
 .DungeonTexto {
-    border-top: 3px solid #76877D;
+    border-top: 1px solid #76877D;
+    border-bottom: 3px solid #76877D;
     position: relative;
     top: 0vh;
     background-color: #191919;
     width: 79.7%;
-    min-height: 24.7vh;
-    max-height: 24.7vh;
+    min-height: 24.6vh;
+    max-height: 24.6vh;
     overflow-y: auto;
 }
 
@@ -69,11 +71,12 @@
     margin: 0;
     padding: 0;
     border: #76877D solid 3px;
+    border-right: none;
     position: relative;
     left: 20%;
-    width: 79.6%;
+    width: 79.7%;
     height: 74.3vh;
-    background-image: url(../public/dungeon.jpg);
+    background-image: url("/dungeon.jpg");
     background-size: 100% 100%;
 }
 
