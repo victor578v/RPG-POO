@@ -95,7 +95,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
 combate.lootPool = []
 
         // Verifica se já existem participantes no combate
-        if (combate.participantes.length === 0) {
+        if (combate.participantes.length === 0 && personagem.pontosVida > 0) {
             const criaturasDisponiveis = [
                 "Goblin",
                 "Goblin",
@@ -147,6 +147,8 @@ combate.lootPool = []
             }
             addToBuffer(`Você encontrou ${criaturas}!`);
             combate.iniciarCombate(personagem, (message) => { addToBuffer(message); })
+        } else if (personagem.pontosVida <= 0) {
+            addToBuffer(`${personagem.nome} está muito machucado para lutar!`)
         } else {
             addToBuffer("Voce já possui inimigos!")
         }
