@@ -25,7 +25,7 @@ const Espolios: React.FC<lootProps> = ({ personagem }) => {
 
     return (
         <>
-            <p onClick={() => setLoot(true)}>Espólios</p>
+            <div><p className='botaoEspolio' onClick={() => setLoot(true)}>Espólios</p></div>
             <Modal open={loot} onClose={() => setLoot(false)} center classNames={{ overlay: 'customOverlay', modal: 'lootInvModal' }} >
                 <div>
                     <p>Espólios:</p>

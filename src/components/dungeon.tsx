@@ -92,7 +92,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
     }
 
     const adicionarCriaturaAleatoria = () => {
-combate.lootPool = []
+        combate.lootPool = []
 
         // Verifica se já existem participantes no combate
         if (combate.participantes.length === 0 && personagem.pontosVida > 0) {
@@ -198,12 +198,9 @@ combate.lootPool = []
                             <div onClick={() => { personagem.descanso(combate, (message) => { addToBuffer(message); }) }}>
                                 <p>Descansar e recuperar pontos de vida</p>
                             </div>
-
-                            {/* Renderiza o botão "Espólios" apenas se houver itens na lootPool */}
+                            
                             {combate.lootPool.length > 0 && (
-                                <div>
-                                    <Espolios personagem={personagem}/>
-                                </div>
+                                <Espolios personagem={personagem} />
                             )}
                         </>
                     )}
