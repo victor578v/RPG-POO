@@ -78,6 +78,7 @@
     margin-bottom: 5px;
     margin-left: 5px;
     width: 100px;
+    color: white;
 }
 
 .botaoDebug p {
@@ -504,6 +505,11 @@ input[type=number]::-webkit-inner-spin-button {
     min-width: 25%;
 }
 
+.equipamentos p:hover {
+    background-color: #A63D40;
+    cursor: pointer;
+}
+
 .equipamentos p:first-child {
     font-size: 2rem;
     font-family: fantasy;
@@ -511,6 +517,11 @@ input[type=number]::-webkit-inner-spin-button {
     transform: translateX(-50%);
     top: 2%;
     text-align: center;
+}
+
+.equipamentos p:first-child:hover {
+    background-color: #191919;
+    cursor: auto;
 }
 
 .equipamentos p:nth-child(2) {

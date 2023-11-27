@@ -1,7 +1,9 @@
 import './geral.css';
 import { Personagem } from '../classes/personagem';
 import Inventario from './inventario';
-import { Arma, Armadura, EquipSecundario } from '../classes/equipamentos';
+import { Arma, Armadura, EquipSecundario, Item, vazioArma, vazioArmadura } from '../classes/equipamentos';
+import { useState } from 'react';
+import Modal from 'react-responsive-modal';
 
 interface FichaProps {
     personagem: Personagem;
@@ -18,10 +20,45 @@ interface FichaProps {
         novoEquip?: EquipSecundario,
         novaRaca?: string,
         novaClasse?: string,
-      ) => void;
+    ) => void;
 }
 
 const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
+    const [att, setAtt] = useState(0);
+    const [verItem, setVerItem] = useState<Arma | EquipSecundario | Armadura | null>(null);
+
+    function desequiparItem(item: Item | Arma | Armadura | EquipSecundario) {
+        if (item instanceof Arma) {
+            if (item.nome == 'Vazia') {
+                alert(`Nao há o que desequipar!`);
+            } else {
+                alert(`${personagem.arma.nome} foi Desequipado!`);
+                personagem.inventario.push(personagem.arma)
+            }
+            atualizarPersonagem(undefined, undefined, undefined, undefined, undefined, undefined, undefined, vazioArma, undefined, undefined);
+            setVerItem(null)
+        } else if (item instanceof Armadura) {
+            if (item.tipo == 'nenhuma') {
+                alert(`Nao há o que desequipar!`);
+            } else {
+                alert(`${personagem.armadura.nome} foi Desequipado!`);
+                personagem.inventario.push(personagem.armadura)
+            }
+            atualizarPersonagem(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, vazioArmadura, undefined);
+            setVerItem(null)
+        } else if (item instanceof EquipSecundario) {
+            if (item.nome == 'Vazia') {
+                alert(`Nao há o que desequipar!`);
+            } else {
+                alert(`${personagem.equipSecundario.nome} foi Desequipado!`);
+                personagem.inventario.push(personagem.equipSecundario)
+            }
+            atualizarPersonagem(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, vazioArma);
+            setAtt(att + 1);
+            setVerItem(null)
+        }
+    }
+
 
     return (
         <>
@@ -72,13 +109,13 @@ const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
             </div>
             <div className='equipamentos'>
                 <p>Equipamentos</p>
-                <p>Mao Primaria: {personagem.arma.nome}</p>
-                <p>Mao Secundaria: {personagem.equipSecundario.nome}</p>
-                <p>Armadura: {personagem.armadura.nome}</p>
+                <p onClick={() => setVerItem(personagem.arma)}>Mao Primaria: {personagem.arma.nome} </p>
+                <p onClick={() => setVerItem(personagem.equipSecundario)}>Mao Secundaria: {personagem.equipSecundario.nome} </p>
+                <p onClick={() => setVerItem(personagem.armadura)}>Armadura: {personagem.armadura.nome} </p>
                 <p>Acessorio 1: </p>
                 <p>Acessorio 2: </p>
                 <p>Acessorio 3: </p>
-                <Inventario personagem={personagem} atualizarPersonagem={atualizarPersonagem}/>
+                <Inventario personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
             </div>
             <div className='habilidades'>
                 <p>Habilidades e Magias</p>
@@ -86,6 +123,17 @@ const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
                 <p>Ver Habilidades</p>
                 <p>Mana: 0/0</p>
             </div>
+
+            <Modal open={verItem !== null} onClose={() => setVerItem(null)} center classNames={{ overlay: 'customOverlay', modal: 'itemInfoModal' }} >
+                {verItem && (
+                    <div>
+                        <p>Nome: {verItem.nome}</p>
+                        <p>Descrição: descricao</p>
+                        <p>Bônus: {verItem.bonusCA}</p>
+                        <button onClick={() => desequiparItem(verItem)}>Desequipar</button>
+                    </div>
+                )}
+            </Modal>
         </>
     )
 }

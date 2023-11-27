@@ -51,6 +51,10 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
             alert("De um nome ao personagem!")
         } else if (pontosAtributo > 0) {
             alert("Voce ainda tem pontos para alocar!")
+        } else if (data.raca == "") {
+            alert("Escolha uma Raca!")
+        } else if (data.classe == "") {
+            alert("Escolha uma Classe!")
         } else {
             escolherAtributos(data.forca, data.destreza, data.constituicao, data.inteligencia, data.sabedoria, data.carisma);
             escolherBasicos(data.nome, personagemImg, data.raca, data.classe);

@@ -345,22 +345,22 @@ export class Personagem {
         if (novaRaca) {
             this.racaPersonagem = novaRaca;
             if (this.racaPersonagem == "Humano") {
-                this.atributos.forca = +this.atributos.forca + 0.5
-                this.atributos.destreza = +this.atributos.destreza + 0.5
-                this.atributos.constituicao = +this.atributos.constituicao + 0.5
-                this.atributos.inteligencia = +this.atributos.inteligencia + 0.5
-                this.atributos.sabedoria = +this.atributos.sabedoria + 0.5
-                this.atributos.carisma = +this.atributos.carisma + 0.5
-            } else if (this.racaPersonagem == "Elfo") {
-                this.atributos.inteligencia = +this.atributos.inteligencia + 1
-                this.atributos.carisma = +this.atributos.carisma + 0.5
-            } else if (this.racaPersonagem == "Anao") {
-                this.atributos.constituicao = +this.atributos.constituicao + 1
-                this.atributos.forca = +this.atributos.forca + 0.5
-            } else if (this.racaPersonagem == "Orc") {
                 this.atributos.forca = +this.atributos.forca + 1
+                this.atributos.destreza = +this.atributos.destreza + 1
                 this.atributos.constituicao = +this.atributos.constituicao + 1
-                this.atributos.inteligencia = +this.atributos.inteligencia - 1
+                this.atributos.inteligencia = +this.atributos.inteligencia + 1
+                this.atributos.sabedoria = +this.atributos.sabedoria + 1
+                this.atributos.carisma = +this.atributos.carisma + 1
+            } else if (this.racaPersonagem == "Elfo") {
+                this.atributos.inteligencia = +this.atributos.inteligencia + 2
+                this.atributos.carisma = +this.atributos.carisma + 1
+            } else if (this.racaPersonagem == "Anao") {
+                this.atributos.constituicao = +this.atributos.constituicao + 2
+                this.atributos.forca = +this.atributos.forca + 1
+            } else if (this.racaPersonagem == "Orc") {
+                this.atributos.forca = +this.atributos.forca + 2
+                this.atributos.constituicao = +this.atributos.constituicao + 2
+                this.atributos.inteligencia = +this.atributos.inteligencia - 2
             }
             console.log(this.atributos)
         }
