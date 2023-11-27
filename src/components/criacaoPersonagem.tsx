@@ -1,12 +1,12 @@
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useState } from 'react';
-import * as Equipamentos from '../classes/equipamentos';
 import './geral.css';
 import { Personagem } from '../classes/personagem';
 import { useForm } from 'react-hook-form';
 import Ficha from './ficha';
 import Tutorial from './Tutorial';
+import { Arma, Armadura, EquipSecundario } from '../classes/equipamentos';
 
 interface CriarPersonagemProps {
     personagem: Personagem;
@@ -18,10 +18,12 @@ interface CriarPersonagemProps {
         novaInteligencia?: number,
         novaSabedoria?: number,
         novaCarisma?: number,
-        novaArma?: Equipamentos.Arma,
-        novaArmadura?: Equipamentos.Armadura,
-        novoEquip?: Equipamentos.EquipSecundario,
+        novaArma?: Arma,
+        novaArmadura?: Armadura,
+        novoEquip?: EquipSecundario,
         novaImagem?: string,
+        novaRaca?: string,
+        novaClasse?: string,
     ) => void;
 }
 
@@ -50,8 +52,8 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
         } else if (pontosAtributo > 0) {
             alert("Voce ainda tem pontos para alocar!")
         } else {
-            escolherBasicos(data.nome, personagemImg);
             escolherAtributos(data.forca, data.destreza, data.constituicao, data.inteligencia, data.sabedoria, data.carisma);
+            escolherBasicos(data.nome, personagemImg, data.raca, data.classe);
             setOpen(false)
             setOpen2(true)
             alert("Personagem Criado!")
@@ -59,8 +61,8 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
         }
     };
 
-    const escolherBasicos = (novoNome: string, novaImagem: string) => {
-        atualizarPersonagem(novoNome, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, novaImagem);
+    const escolherBasicos = (novoNome: string, novaImagem: string, novaRaca: string, novaClasse: string) => {
+        atualizarPersonagem(novoNome, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, novaImagem, novaRaca, novaClasse);
     }
 
     const escolherAtributos = (
@@ -76,19 +78,18 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
 
     const mudaImagem = () => {
         const novaImagem = watch('imgPersonagem');
-    
         if (urlValido(novaImagem)) {
             setPersonagemImg(novaImagem);
         } else {
             setPersonagemImg(novaImagem);
         }
     }
-    
+
     function urlValido(url?: string): boolean {
         if (!url) {
             return false; // Se url for undefined, não é uma URL válida
         }
-    
+
         const regex = /^(ftp|http|https):\/\/[^ "]+$/;
         return regex.test(url);
     }
@@ -109,7 +110,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
 
     return (
         <>
-            {personagemCriado && <Modal open={open2} onClose={() => setOpen2(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}><Ficha personagem={personagem} /></Modal>}
+            {personagemCriado && <Modal open={open2} onClose={() => setOpen2(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}><Ficha personagem={personagem} atualizarPersonagem={atualizarPersonagem}/></Modal>}
             <div className='botao' onClick={() => checkPersonagem(personagem)}><p>Criar Personagem</p></div>
             <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -138,7 +139,28 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
                     <div>
                         <label htmlFor="imagemUrl">URL da Imagem:</label>
                         <input type="url" id="imagemUrl" placeholder="Insira o URL da imagem" value={personagemImg} {...register('imgPersonagem', { onChange: mudaImagem })} />
-                        <img className='imagemPersonagem' src={`${urlValido(personagemImg) ? personagemImg : personagem.imagem}`} alt="Imagem do Personagem" width="100" height="100"/>
+                        <img className='imagemPersonagem' src={`${urlValido(personagemImg) ? personagemImg : personagem.imagem}`} alt="Imagem do Personagem" width="100" height="100" />
+                    </div>
+
+                    <div>
+                        <label htmlFor="racas">Raça:</label>
+                        <select id="racas" {...register('raca')}>
+                            <option value="" defaultValue={'' as string}>Selecione uma raça</option>
+                            <option value="Humano">Humano</option>
+                            <option value="Elfo">Elfo</option>
+                            <option value="Anao">Anao</option>
+                            <option value="Orc">Orc</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label htmlFor="classes">Classe:</label>
+                        <select id="classes" {...register('classe')}>
+                            <option value="" defaultValue={'' as string}>Selecione uma classe</option>
+                            <option value="Guerreiro">Guerreiro</option>
+                            <option value="Mago">Mago</option>
+                            <option value="Ladino">Ladino</option>
+                        </select>
                     </div>
 
                     <button type="submit">Salvar Personagem</button>

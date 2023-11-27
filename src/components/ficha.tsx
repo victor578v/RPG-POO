@@ -1,19 +1,35 @@
 import './geral.css';
 import { Personagem } from '../classes/personagem';
+import Inventario from './inventario';
+import { Arma, Armadura, EquipSecundario } from '../classes/equipamentos';
 
 interface FichaProps {
     personagem: Personagem;
+    atualizarPersonagem: (
+        novoNome?: string,
+        novaForca?: number,
+        novaDestreza?: number,
+        novaConstituicao?: number,
+        novaInteligencia?: number,
+        novaSabedoria?: number,
+        novaCarisma?: number,
+        novaArma?: Arma,
+        novaArmadura?: Armadura,
+        novoEquip?: EquipSecundario,
+        novaRaca?: string,
+        novaClasse?: string,
+      ) => void;
 }
 
-const Ficha: React.FC<FichaProps> = ({ personagem }) => {
+const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
 
     return (
         <>
             <div className='basicos'>
                 <p>Básicos</p>
                 <p>Nome: {personagem.nome}</p>
-                <p>Classe: Guerreiro Nivel {personagem.nivel} (Prof +{personagem.atributos.bonusProficiencia})</p>
-                <p>Raca: Humano</p>
+                <p>Classe: {personagem.classePersonagem} Nivel {personagem.nivel} (Prof +{personagem.atributos.bonusProficiencia})</p>
+                <p>Raca: {personagem.racaPersonagem}</p>
                 <p>Pontos de vida: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
                 <p>Classe de Armadura: {personagem.classeArmadura}</p>
                 <p>Percepcao passiva: {personagem.percepcaoPassiva}</p>
@@ -62,7 +78,7 @@ const Ficha: React.FC<FichaProps> = ({ personagem }) => {
                 <p>Acessorio 1: </p>
                 <p>Acessorio 2: </p>
                 <p>Acessorio 3: </p>
-                <p>Abrir Inventario</p>
+                <Inventario personagem={personagem} atualizarPersonagem={atualizarPersonagem}/>
             </div>
             <div className='habilidades'>
                 <p>Habilidades e Magias</p>

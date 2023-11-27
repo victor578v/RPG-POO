@@ -3,15 +3,31 @@ import './dungeon.css';
 import { Personagem } from '../classes/personagem';
 import { combate } from '../classes/combate';
 import { criarNovoDragaoVermelhoAdulto, criarNovoEsqueleto, criarNovoGoblin } from '../classes/criaturas';
+import * as Equipamentos from '../classes/equipamentos';
 import Modal from 'react-responsive-modal';
 import Ficha from './ficha';
+import Espolios from './espolios';
 
 interface DungeonProps {
     personagem: Personagem;
+    atualizarPersonagem: (
+        novoNome?: string,
+        novaForca?: number,
+        novaDestreza?: number,
+        novaConstituicao?: number,
+        novaInteligencia?: number,
+        novaSabedoria?: number,
+        novaCarisma?: number,
+        novaArma?: Equipamentos.Arma,
+        novaArmadura?: Equipamentos.Armadura,
+        novoEquip?: Equipamentos.EquipSecundario,
+        novaRaca?: string,
+        novaClasse?: string,
+    ) => void;
     voltarParaMenu: () => void;
 }
 
-const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
+const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizarPersonagem }) => {
     const dungeonRef = useRef<HTMLDivElement | null>(null);
     const [textBuffer, setTextBuffer] = useState<string[]>([]);
     const [open, setOpen] = useState(false)
@@ -76,6 +92,8 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
     }
 
     const adicionarCriaturaAleatoria = () => {
+combate.lootPool = []
+
         // Verifica se já existem participantes no combate
         if (combate.participantes.length === 0) {
             const criaturasDisponiveis = [
@@ -107,7 +125,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
                     criaturaEscolhida = criarNovoGoblin();
                 } else if (criaturaAleatoria === "Esqueleto") {
                     criaturaEscolhida = criarNovoEsqueleto();
-                }  else if (criaturaAleatoria === "Dragao Vermelho Adulto") {
+                } else if (criaturaAleatoria === "Dragao Vermelho Adulto") {
                     criaturaEscolhida = criarNovoDragaoVermelhoAdulto();
                 }
 
@@ -142,7 +160,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
                 <div className='botaoMenuDungeon' onClick={voltarParaMenu}><p>Voltar para o Menu</p></div>
                 <div className='botaoMenuDungeon' onClick={() => setOpen(true)}><p>Abrir Personagem</p></div>
                 <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
-                    <Ficha personagem={personagem} />
+                    <Ficha personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
                 </Modal>
             </div>
             <div className='dungeonRoom'>
@@ -173,11 +191,18 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu }) => {
                     {combate.rodada === 0 && (
                         <>
                             <div onClick={adicionarCriaturaAleatoria}>
-                                <p>Avancar nas masmorras</p>
+                                <p>Avançar nas masmorras</p>
                             </div>
                             <div onClick={() => { personagem.descanso(combate, (message) => { addToBuffer(message); }) }}>
                                 <p>Descansar e recuperar pontos de vida</p>
                             </div>
+
+                            {/* Renderiza o botão "Espólios" apenas se houver itens na lootPool */}
+                            {combate.lootPool.length > 0 && (
+                                <div>
+                                    <Espolios personagem={personagem}/>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>

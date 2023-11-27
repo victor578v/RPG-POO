@@ -47,6 +47,14 @@
     overflow: hidden;
 }
 
+.react-responsive-modal-modal.lootInvModal {
+    padding: 1%;
+    margin: 0%;
+    width: 75%;
+    height: 75%;
+    border: #76877D solid 3px;
+}
+
 .closeButton {
     position: absolute;
     top: -1.4rem;
@@ -650,4 +658,9 @@ input[type=number]::-webkit-inner-spin-button {
     text-align: center;
     min-width: 25%;
     padding: 2%;
+}
+
+.botaoInv {
+    color: white;
+    height: 3.5vh;
 }

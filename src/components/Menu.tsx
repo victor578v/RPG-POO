@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import 'react-responsive-modal/styles.css';
 import './geral.css';
 import { Personagem } from '../classes/personagem';
-import * as Equipamentos from '../classes/equipamentos';
 import Tutorial from './Tutorial';
 import CriarPersonagem from './criacaoPersonagem';
 import FichaMenu from './fichaMenu';
 import Dungeon from './dungeon';
+import { Arma, Armadura, EquipSecundario } from '../classes/equipamentos';
 
 interface MenuProps {
   personagem: Personagem;
@@ -18,9 +18,11 @@ interface MenuProps {
     novaInteligencia?: number,
     novaSabedoria?: number,
     novaCarisma?: number,
-    novaArma?: Equipamentos.Arma,
-    novaArmadura?: Equipamentos.Armadura,
-    novoEquip?: Equipamentos.EquipSecundario
+    novaArma?: Arma,
+    novaArmadura?: Armadura,
+    novoEquip?: EquipSecundario,
+    novaRaca?: string,
+    novaClasse?: string,
   ) => void;
 }
 
@@ -38,14 +40,14 @@ const Menu: React.FC<MenuProps> = ({ personagem, atualizarPersonagem }) => {
   return (
     <>
       {mostrarDungeon ? (
-        <Dungeon personagem={personagem} voltarParaMenu={() => setMostrarDungeon(false)} />
+        <Dungeon personagem={personagem} atualizarPersonagem={atualizarPersonagem} voltarParaMenu={() => setMostrarDungeon(false)} />
       ) : (
         <>
           <div className='menu'>
             <div><img src="./logo.png" alt="logo" height={450} width={300} /></div>
             <div className='botao' onClick={() => checkPersonagem(personagem)}><p>Entrar na Dungeon</p></div>
             <CriarPersonagem personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
-            <FichaMenu personagem={personagem} />
+            <FichaMenu personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
             <Tutorial />
           </div>
         </>

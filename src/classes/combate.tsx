@@ -1,3 +1,4 @@
+import { Item } from './equipamentos';
 import { Monstro, Personagem } from './personagem';
 import { RolarDado } from './util';
 
@@ -8,10 +9,12 @@ interface LogCallback {
 export class Combate {
     rodada: number;
     participantes: Personagem[];
+    lootPool: Item[];
 
     constructor() {
         this.rodada = 0;
         this.participantes = [];
+        this.lootPool = [];
     }
 
     adicionarParticipante(participante: Personagem) {
@@ -96,6 +99,9 @@ export class Combate {
                 // Verifica se o alvo foi derrotado
                 if (alvo.pontosVida <= 0) {
                     logCallback(`${alvo.nome} foi derrotado!`);
+                    alvo.inventario.forEach(item => {
+                        this.lootPool.push(item);
+                    });
                     const index = this.participantes.indexOf(alvo);
                     if (index !== -1) {
                         this.participantes.splice(index, 1);

@@ -1,7 +1,7 @@
 import { acuidade, danoExtra, duasMaos, Propriedades } from "./propriedades";
 import { TipoDano } from "./util";
 
-export class Equipamento {
+export class Item {
   nome: string;
 
   constructor(nome:string) {
@@ -9,7 +9,7 @@ export class Equipamento {
   }
 }
 
-export class Arma extends Equipamento {
+export class Arma extends Item {
   dadosDano: number; // Numero de dados de dano da arma
   dadoTipo: number; // Numero de lados do dado de dano Ex: d6, dado de 6 lados
   tipoDano: TipoDano; // Tipo de dano que a arma causa
@@ -41,7 +41,7 @@ export class Arma extends Equipamento {
   }
 }
 
-export class Armadura extends Equipamento {
+export class Armadura extends Item {
   tipo: "leve" | "media" | "pesada" | "nenhuma";
   bonusCA: number;
 
@@ -52,7 +52,7 @@ export class Armadura extends Equipamento {
   }
 }
 
-export class EquipSecundario extends Equipamento {
+export class EquipSecundario extends Item {
   bonusCA: number;
 
   constructor(nome: string, bonusCA: number) {
