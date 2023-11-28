@@ -10,11 +10,13 @@ export class Combate {
     rodada: number;
     participantes: Personagem[];
     lootPool: Item[];
+    xpPool: number;
 
     constructor() {
         this.rodada = 0;
         this.participantes = [];
         this.lootPool = [];
+        this.xpPool = 0;
     }
 
     adicionarParticipante(participante: Personagem) {
@@ -65,11 +67,19 @@ export class Combate {
                 this.participantes = [];
                 this.rodada = 0;
                 personagem.numeroAcoes = 1;
+                console.log(personagem.exp)
+                if (personagem.exp != undefined) {
+                personagem.exp = personagem.exp + +this.xpPool;
+                personagem.calcularNivel();
+                }
+                this.xpPool = 0;
             } else if (personagem.pontosVida <= 0) {
                 logCallback('Game Over, seus pontos de vida zeraram. :(');
                 this.participantes = [];
                 this.rodada = 0;
                 personagem.numeroAcoes = 1;
+                this.xpPool = 0;
+                combate.lootPool = []
             }
         }
     }
@@ -97,15 +107,17 @@ export class Combate {
                 }
 
                 // Verifica se o alvo foi derrotado
-                if (alvo.pontosVida <= 0) {
+                if (alvo.pontosVida <= 0 && alvo.exp) {
                     logCallback(`${alvo.nome} foi derrotado!`);
                     alvo.inventario.forEach(item => {
                         this.lootPool.push(item);
                     });
+                    this.xpPool = this.xpPool + alvo.exp
                     const index = this.participantes.indexOf(alvo);
                     if (index !== -1) {
                         this.participantes.splice(index, 1);
                     }
+                    console.log(this.xpPool)
                 }
                 this.finalizarCombate(atacante, logCallback);
             }
@@ -142,8 +154,8 @@ export class Combate {
                     if (alvo.pontosVida <= 0) {
                         logCallback(`${alvo.nome} foi derrotado!`);
                     }
-                    this.finalizarCombate(alvo, logCallback)
                 }
+                this.finalizarCombate(alvo, logCallback)
             }
         }
     }

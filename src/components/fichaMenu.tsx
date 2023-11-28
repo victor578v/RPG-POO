@@ -39,7 +39,7 @@ const FichaMenu: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) =>
     return (
         <>
             <div className='botao' onClick={() => checkPersonagem(personagem)}><p>Abrir Personagem</p></div>
-            <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
+            <Modal open={open} onClose={() => {setOpen(false)}} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
                 <Ficha personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
             </Modal>
         </>

@@ -7,7 +7,7 @@ export function criarNovoGoblin(): Monstro {
   const atributos = new Atributos(8, 14, 10, 10, 8, 8);
   const nome = `Goblin Escudeiro`;
 
-  const novoGoblin = new Monstro(nome, 7, 7, atributos, Equipamentos.espada, Equipamentos.couro, Equipamentos.escudo, './goblin.png', "Pequeno", undefined, 0.25);
+  const novoGoblin = new Monstro(nome, 7, 7, atributos, Equipamentos.espada, Equipamentos.couro, Equipamentos.escudo, './goblin.png', "Pequeno", 0.25, 25, undefined,);
   novoGoblin.atributos.furtividade = true;
   novoGoblin.inventario = [Equipamentos.espada, Equipamentos.couro, Equipamentos.escudo]
   novoGoblin.calcularClasseArmadura();
@@ -19,7 +19,7 @@ export function criarNovoEsqueleto(): Monstro {
   const atributos = new Atributos(10, 14, 15, 6, 8, 5);
   const nome = `Esqueleto Guerreiro`;
 
-  const novoEsqueleto = new Monstro(nome, 13, 13, atributos, Equipamentos.espada, Equipamentos.halfPlacas, Equipamentos.escudo, './esqueleto.png', "Pequeno", undefined, 0.25);
+  const novoEsqueleto = new Monstro(nome, 13, 13, atributos, Equipamentos.espada, Equipamentos.halfPlacas, Equipamentos.escudo, './esqueleto.png', "Pequeno",  0.5, 50, undefined,);
   novoEsqueleto.calcularClasseArmadura();
   novoEsqueleto.inventario = [Equipamentos.espada, Equipamentos.halfPlacas, Equipamentos.escudo]
   return novoEsqueleto;
@@ -32,7 +32,7 @@ export function criarNovoDragaoVermelhoAdulto(): Monstro {
   const soproFogo = new Especial("Sopro Flamejante", "O Dragao utiliza seu sopro flamejante!", 20, 18, 6, TipoDano.Fogo, "Area", "Destreza", 21)
   const escamasDragaoVermelho = new Equipamentos.Armadura("Escamas do Dragao Vermelho", "item Monstro", "nenhuma", 9);
 
-  const novoDragaoVermelhoAdulto = new Monstro(nome, 256, 256, atributos, mordida, escamasDragaoVermelho, Equipamentos.vazioArma, './redDragon.png', "Grande",soproFogo, 17);
+  const novoDragaoVermelhoAdulto = new Monstro(nome, 256, 256, atributos, mordida, escamasDragaoVermelho, Equipamentos.vazioArma, './redDragon.png', "Grande", 17, 18000, soproFogo);
   novoDragaoVermelhoAdulto.atributos.furtividade = true;
   novoDragaoVermelhoAdulto.atributos.percepcao = true;
   novoDragaoVermelhoAdulto.inventario = [Equipamentos.shoushaBladeCorrupted]

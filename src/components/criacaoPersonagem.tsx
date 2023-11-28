@@ -37,10 +37,16 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
     const [personagemCriado, setPersonagemCriado] = useState(false);
 
     function checkPersonagem(personagem: Personagem) {
-        if (personagem.nome != "Sem Nome") {
-            alert("Voce já possui um personagem!")
+        if (personagem.nome !== "Sem Nome") {
+            const confirma = window.confirm("Você já possui um personagem! Criar um novo irá resetar todo o progresso. Tem certeza que deseja criar um novo personagem?");
+            if (confirma) {
+                personagem.imagem = './placeholder.png'
+                personagem.nome = 'Sem Nome'
+                localStorage.clear();
+                setOpen(true);
+            }
         } else {
-            setOpen(true)
+            setOpen(true);
         }
     }
 
@@ -89,6 +95,10 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
         }
     }
 
+    function salvarPersonagem(personagem: Personagem) {
+        localStorage.setItem("personagem", JSON.stringify(personagem));
+    }
+
     function urlValido(url?: string): boolean {
         if (!url) {
             return false; // Se url for undefined, não é uma URL válida
@@ -114,7 +124,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
 
     return (
         <>
-            {personagemCriado && <Modal open={open2} onClose={() => setOpen2(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}><Ficha personagem={personagem} atualizarPersonagem={atualizarPersonagem}/></Modal>}
+            {personagemCriado && <Modal open={open2} onClose={() => {setOpen2(false); salvarPersonagem(personagem)}} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}><Ficha personagem={personagem} atualizarPersonagem={atualizarPersonagem}/></Modal>}
             <div className='botao' onClick={() => checkPersonagem(personagem)}><p>Criar Personagem</p></div>
             <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
                 <form onSubmit={handleSubmit(onSubmit)}>

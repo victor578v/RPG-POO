@@ -4,6 +4,7 @@ import Inventario from './inventario';
 import { Arma, Armadura, EquipSecundario, Item, vazioArma, vazioArmadura } from '../classes/equipamentos';
 import { useState } from 'react';
 import Modal from 'react-responsive-modal';
+import { danoExtra } from '../classes/propriedades';
 
 interface FichaProps {
     personagem: Personagem;
@@ -129,7 +130,21 @@ const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
                     <div>
                         <p>Nome: {verItem.nome}</p>
                         <p>Descrição: {verItem.descricao}</p>
-                        <p>Bônus: {verItem.bonusCA}</p>
+                        {verItem instanceof Armadura &&
+                            <>
+                                <p>CA: {+verItem.bonusCA + 10}</p>
+                                <p>Tipo: {verItem.tipo}</p>
+                            </>
+                        }
+
+                        {verItem instanceof Arma && (<>
+                            <p>Dano: {verItem.dadosDano}d{verItem.dadoTipo} {verItem.tipoDano}</p>
+                        </>
+                        )}
+
+                        {verItem instanceof Arma && verItem.propriedades.includes(danoExtra) && (
+                            <p>Dano Adicional: {verItem.dadosDanoExtra}d{verItem.dadoTipoExtra} {verItem.tipoDanoExtra}</p>
+                        )}
                         <button onClick={() => desequiparItem(verItem)}>Desequipar</button>
                     </div>
                 )}

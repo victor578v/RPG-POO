@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Equipamentos from "./equipamentos";
 import { acuidade, danoExtra, duasMaos } from "./propriedades";
 import { _1d20, RolarDado, TipoDano } from "./util";
@@ -122,6 +122,7 @@ export class Personagem {
     imagem?: string;
     tamanho?: "Pequeno" | "Medio" | "Grande";
     inventario: Equipamentos.Item[];
+    exp?: number;
 
     // Construtor que aceita um objeto com propriedades nomeadas
     constructor(options: {
@@ -141,6 +142,7 @@ export class Personagem {
         imagem?: string;
         tamanho?: "Pequeno" | "Medio" | "Grande";
         inventario?: Equipamentos.Item[];
+        exp?: number;
     });
     // Construtor que aceita parâmetros individuais
     constructor(
@@ -160,6 +162,7 @@ export class Personagem {
         imagem?: string,
         tamanho?: "Pequeno" | "Medio" | "Grande",
         inventario?: Equipamentos.Item[],
+        exp?: number,
     );
     // Assinatura combinada do construtor usando sobrecarga de método (arg = argumento)
     constructor(
@@ -181,6 +184,7 @@ export class Personagem {
             imagem?: string;
             tamanho?: "Pequeno" | "Medio" | "Grande";
             inventario?: Equipamentos.Item[];
+            exp?: number;
         },
         // Parâmetros individuais opcionais para o restante das propriedades 
         arg2?: number,
@@ -198,6 +202,7 @@ export class Personagem {
         arg14?: string,
         arg15?: "Pequeno" | "Medio" | "Grande",
         arg16?: Equipamentos.Item[],
+        arg17?: number,
     ) {
         if (typeof arg1 === 'string') {
             // Usa parametros individuais
@@ -217,6 +222,7 @@ export class Personagem {
             this.imagem = arg14;
             this.tamanho = arg15;
             this.inventario = arg16 || [];
+            this.exp = arg17 !== undefined ? arg17 : 0;
         } else {
             // Usa os parametros de um objeto
             this.nome = arg1.nome;
@@ -235,6 +241,7 @@ export class Personagem {
             this.imagem = arg1.imagem;
             this.tamanho = arg1.tamanho;
             this.inventario = arg1.inventario || [];
+            this.exp = arg1.exp;
         }
 
         // Calcula a Percepcao Passiva (PP)
@@ -269,7 +276,32 @@ export class Personagem {
             this.classeArmadura += this.equipSecundario.bonusCA;
         }
     }
-    // Atualiza o personagem, usado mais adiante
+
+    calcularNivel() {
+        const xpNecessario = [0, 100, 300, 900, 2700, 6500, 23000, 34000, 48000, 64000];
+        const bonusProf = [2, 2, 2, 3, 3, 3, 3, 4, 4, 4];
+    
+        if (this.exp && this.nivel) {
+            for (let nivel = this.nivel; nivel <= 10; nivel++) {
+                if (this.exp >= xpNecessario[nivel]) {
+                    this.nivel = nivel + 1;
+                    this.atributos.bonusProficiencia = bonusProf[nivel - 1];
+    
+                    if (this.classePersonagem == "Guerreiro") {
+                        this.pontosVidaMaximos += 7 + this.atributos.constituicaoBonus;
+                    } else if (this.classePersonagem == "Ladino") {
+                        this.pontosVidaMaximos += 5 + this.atributos.constituicaoBonus;
+                    } else if (this.classePersonagem == "Mago") {
+                        this.pontosVidaMaximos += 4 + this.atributos.constituicaoBonus;
+                    }
+    
+                    break;
+                }
+            }
+        }
+    }
+
+    // Atualiza o personagem
     atualizarPersonagem(
         novoNome?: string,
         novaForca?: number,
@@ -367,17 +399,28 @@ export class Personagem {
 
         if (novaClasse) {
             this.classePersonagem = novaClasse;
+            if (this.classePersonagem == "Guerreiro") {
+                this.pontosVidaMaximos = 24 + this.atributos.constituicaoBonus
+                this.pontosVida = this.pontosVidaMaximos
+            } else if (this.classePersonagem == "Ladino") {
+                this.pontosVidaMaximos = 16 + this.atributos.constituicaoBonus
+                this.pontosVida = this.pontosVidaMaximos
+            } else if (this.classePersonagem == "Mago") {
+                this.pontosVidaMaximos = 12 + this.atributos.constituicaoBonus
+                this.pontosVida = this.pontosVidaMaximos
+            }
         }
-         
+
         this.calcularClasseArmadura();
         this.calcularBonus();
+        this.calcularNivel();
     }
     // Logica para ataques.
     ataque(alvo: Personagem, logCallback?: LogCallback) {
         _1d20.rolarVezes();
 
         if (logCallback) {
-            if (acuidade.acuidadeCheck(this)) { // Ataque com Destreza
+            if (this.arma.propriedades.includes(acuidade)) { // Ataque com Destreza
                 logCallback(`1d20 + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia})`);
                 if (+_1d20.resultados == 20) {
                     logCallback("Acerto Crítico!");
@@ -441,7 +484,7 @@ export class Personagem {
                     logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
                     dano = (dano.total + this.atributos.forcaBonus);
                     extra = (extra.total);
-                } else if (acuidade.acuidadeCheck(this)) { // Dano com Destreza
+                } else if (this.arma.propriedades.includes(acuidade)) { // Dano com Destreza
                     dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
                     dano.rolarVezes();
                     logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
@@ -470,13 +513,23 @@ export class Personagem {
 }
 
 export function usePersonagem() {
+    
     const atributos = new Atributos(8, 8, 8, 8, 8, 8);
-    const [personagem, setPersonagem] = useState(
-        new Personagem("Sem Nome", 1000, 1000, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, 1, 1, 1, undefined, undefined, undefined, './placeholder.png', "Medio")
-    );
+    const initialPersonagem = new Personagem("Sem Nome", 0, 0, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, 1, 1, 1, undefined, undefined, undefined, './placeholder.png', "Medio", [], 0);
+    const [personagem, setPersonagem] = useState(initialPersonagem);
+    let storedCharacter = localStorage.getItem("personagem");
+
+    useEffect(() => {
+        if (storedCharacter !== null) {
+            const parsedCharacter = JSON.parse(storedCharacter);
+            setPersonagem(new Personagem(parsedCharacter));
+        }
+    }, []);
 
     personagem.calcularBonus()
     personagem.calcularClasseArmadura()
+    personagem.calcularNivel()
+    
 
     const atualizarPersonagem = (
         novoNome?: string,
@@ -539,7 +592,6 @@ export class Especial {
 
 export class Monstro extends Personagem {
     ataqueEspecial?: Especial;
-    nivel?: number;
 
     constructor(
         nome: string,
@@ -551,11 +603,11 @@ export class Monstro extends Personagem {
         equipSecundario: Equipamentos.EquipSecundario,
         imagem: string,
         tamanho: "Pequeno" | "Medio" | "Grande",
+        nivel?: number,
+        exp?: number,
         ataqueEspecial?: Especial,
-        nivel?: number 
     ) {
-        super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario, undefined, undefined, undefined, undefined, undefined, undefined, imagem, tamanho);
+        super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario, undefined, undefined, nivel, undefined, undefined, undefined, imagem, tamanho, undefined, exp);
         this.ataqueEspecial = ataqueEspecial;
-        this.nivel = nivel; 
     }
 }

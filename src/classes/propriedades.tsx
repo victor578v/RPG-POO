@@ -1,5 +1,3 @@
-import { Personagem } from "./personagem";
-
 export class Propriedades {
   nome: string;
   desc: string;
@@ -8,13 +6,6 @@ export class Propriedades {
   constructor(nome: string, desc: string) {
     this.nome = nome;
     this.desc = desc;
-  }
-  acuidadeCheck(personagem: Personagem) {
-    if (personagem.atributos.destreza >  personagem.atributos.forca && personagem.arma.propriedades.includes(acuidade)) {
-      return true;
-    } else {
-      return false;
-    }
   }
 }
 

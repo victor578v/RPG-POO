@@ -31,12 +31,14 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
     const dungeonRef = useRef<HTMLDivElement | null>(null);
     const [textBuffer, setTextBuffer] = useState<string[]>([]);
     const [open, setOpen] = useState(false)
+    const [att, setAtt] = useState(0);
     const [alvoSelecionado, setAlvoSelecionado] = useState<Personagem | null>(null);
 
     const selecionarAlvo = (alvo: Personagem) => {
         setAlvoSelecionado(alvo);
         addToBuffer(`${alvo.nome} Selecionado!`)
     };
+
 
     useEffect(() => {
         // Function to scroll to the bottom of the dungeonRef
@@ -89,6 +91,10 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
             personagem.numeroAcoes = 1;
             addToBuffer("Combate Terminado!")
         }
+    }
+
+    function salvarPersonagem(personagem: Personagem) {
+        localStorage.setItem("personagem", JSON.stringify(personagem));
     }
 
     const adicionarCriaturaAleatoria = () => {
@@ -147,11 +153,13 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
             }
             addToBuffer(`Você encontrou ${criaturas}!`);
             combate.iniciarCombate(personagem, (message) => { addToBuffer(message); })
+            personagem.calcularNivel();
         } else if (personagem.pontosVida <= 0) {
             addToBuffer(`${personagem.nome} está muito machucado para lutar!`)
         } else {
             addToBuffer("Voce já possui inimigos!")
         }
+        setAtt(att + 1)
     };
 
     return (
@@ -160,9 +168,10 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
                 <p>{personagem.nome}</p>
                 <div><img src={`${personagem.imagem}`} width={150} height={150} alt="Personagem" /></div>
                 <p>Pontos de vida: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
-                <p>Classe de armadura: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
+                <p>Exp: {personagem.exp}</p>
+                <p>Classe de armadura: {personagem.classeArmadura}</p>
                 <p>Arma Equipada: {personagem.arma.nome}</p>
-                <div className='botaoMenuDungeon' onClick={voltarParaMenu}><p>Voltar para o Menu</p></div>
+                <div className='botaoMenuDungeon' onClick={() => { voltarParaMenu(); salvarPersonagem(personagem);}}><p>Voltar para o Menu e Salvar o Personagem</p></div>
                 <div className='botaoMenuDungeon' onClick={() => setOpen(true)}><p>Abrir Personagem</p></div>
                 <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
                     <Ficha personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
