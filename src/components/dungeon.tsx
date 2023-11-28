@@ -158,7 +158,10 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
         <>
             <div className='MenuDungeon'>
                 <p>{personagem.nome}</p>
-                <div><img src={`${personagem.imagem}`} width={10} height={10} alt="Personagem" /></div>
+                <div><img src={`${personagem.imagem}`} width={150} height={150} alt="Personagem" /></div>
+                <p>Pontos de vida: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
+                <p>Classe de armadura: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
+                <p>Arma Equipada: {personagem.arma.nome}</p>
                 <div className='botaoMenuDungeon' onClick={voltarParaMenu}><p>Voltar para o Menu</p></div>
                 <div className='botaoMenuDungeon' onClick={() => setOpen(true)}><p>Abrir Personagem</p></div>
                 <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
@@ -198,7 +201,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
                             <div onClick={() => { personagem.descanso(combate, (message) => { addToBuffer(message); }) }}>
                                 <p>Descansar e recuperar pontos de vida</p>
                             </div>
-                            
+
                             {combate.lootPool.length > 0 && (
                                 <Espolios personagem={personagem} />
                             )}
