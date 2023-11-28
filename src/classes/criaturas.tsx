@@ -28,9 +28,9 @@ export function criarNovoEsqueleto(): Monstro {
 export function criarNovoDragaoVermelhoAdulto(): Monstro {
   const atributos = new Atributos(27, 10, 25, 16, 13, 21);
   const nome = `Dragao Vermelho Adulto`;
-  const mordida = new Equipamentos.Arma("Mordida", 2, 10, TipoDano.Perfurante, [danoExtra], 2, 6, TipoDano.Fogo)
+  const mordida = new Equipamentos.Arma("Mordida", "item Monstro", 2, 10, TipoDano.Perfurante, [danoExtra], 2, 6, TipoDano.Fogo)
   const soproFogo = new Especial("Sopro Flamejante", "O Dragao utiliza seu sopro flamejante!", 20, 18, 6, TipoDano.Fogo, "Area", "Destreza", 21)
-  const escamasDragaoVermelho = new Equipamentos.Armadura("Escamas do Dragao Vermelho", "nenhuma", 9);
+  const escamasDragaoVermelho = new Equipamentos.Armadura("Escamas do Dragao Vermelho", "item Monstro", "nenhuma", 9);
 
   const novoDragaoVermelhoAdulto = new Monstro(nome, 256, 256, atributos, mordida, escamasDragaoVermelho, Equipamentos.vazioArma, './redDragon.png', "Grande",soproFogo, 17);
   novoDragaoVermelhoAdulto.atributos.furtividade = true;
