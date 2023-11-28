@@ -128,7 +128,7 @@ const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
                 {verItem && (
                     <div>
                         <p>Nome: {verItem.nome}</p>
-                        <p>Descrição: descricao</p>
+                        <p>Descrição: {verItem.descricao}</p>
                         <p>Bônus: {verItem.bonusCA}</p>
                         <button onClick={() => desequiparItem(verItem)}>Desequipar</button>
                     </div>
