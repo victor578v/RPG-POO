@@ -7,6 +7,8 @@ import * as Equipamentos from '../classes/equipamentos';
 import Modal from 'react-responsive-modal';
 import Ficha from './ficha';
 import Espolios from './espolios';
+import SpelList from './menuMagias';
+import { Magia } from '../classes/magias';
 
 interface DungeonProps {
     personagem: Personagem;
@@ -33,6 +35,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
     const [open, setOpen] = useState(false)
     const [att, setAtt] = useState(0);
     const [alvoSelecionado, setAlvoSelecionado] = useState<Personagem | null>(null);
+    const [magiaSelecionada, setMagiaSelecionada] = useState<Magia | undefined>(undefined);
 
     const selecionarAlvo = (alvo: Personagem) => {
         setAlvoSelecionado(alvo);
@@ -93,6 +96,11 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
         }
     }
 
+    const handleSelecionarMagia = (magiaSelecionada: Magia) => {
+        console.log(`Magia selecionada: ${magiaSelecionada.nome}`);
+        setMagiaSelecionada(magiaSelecionada);
+    };
+
     function salvarPersonagem(personagem: Personagem) {
         localStorage.setItem("personagem", JSON.stringify(personagem));
     }
@@ -100,20 +108,15 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
     const adicionarCriaturaAleatoria = () => {
         combate.lootPool = []
 
-        // Verifica se já existem participantes no combate
         if (combate.participantes.length === 0 && personagem.pontosVida > 0) {
             const criaturasDisponiveis = [
                 "Goblin",
-                "Goblin",
-                "Goblin",
-                "Esqueleto",
                 "Esqueleto",
                 "Dragao Vermelho Adulto"
             ];
-            // Determina aleatoriamente o número de criaturas a serem adicionadas (entre 1 e 5)
             const numeroCriaturas = Math.ceil(Math.random() * 5);
-
-            let criaturasAdicionadas = 0;
+            const nivelMaximoCriatura = (personagem.nivel || 0) * 0.5;
+            let nivelTotalCriaturas = 0;
             let podeAdicionarGrande = true;
             let podeAdicionarPequeno = true;
             const criaturas = []
@@ -121,7 +124,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
             console.log(numeroCriaturas)
 
 
-            while (criaturasAdicionadas < numeroCriaturas) {
+            while ((combate.participantes.length == 0 || combate.participantes[0].tamanho != "Grande") && combate.participantes.length < numeroCriaturas) {
                 const criaturaAleatoria = criaturasDisponiveis[Math.floor(Math.random() * criaturasDisponiveis.length)];
                 let criaturaEscolhida;
 
@@ -136,19 +139,22 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
                 }
 
                 // Verifica o tamanho da criatura
-                if (criaturaEscolhida && criaturaEscolhida.tamanho === "Pequeno" && podeAdicionarPequeno) {
+                if (criaturaEscolhida?.tamanho === "Pequeno" && (nivelTotalCriaturas + (criaturaEscolhida.nivel || 0)) <= nivelMaximoCriatura && podeAdicionarPequeno) {
                     combate.adicionarParticipante(criaturaEscolhida);
-                    criaturas.push(criaturaEscolhida.nome)
-                    criaturasAdicionadas++;
+                    criaturas.push(criaturaAleatoria)
+                    nivelTotalCriaturas = nivelTotalCriaturas + (criaturaEscolhida.nivel || 0)
                     podeAdicionarGrande = false;
-                } else if (criaturaEscolhida && criaturaEscolhida.tamanho === "Grande" && podeAdicionarGrande) {
+                } else if (criaturaEscolhida?.tamanho === "Grande" && (nivelTotalCriaturas + (criaturaEscolhida.nivel || 0)) <= nivelMaximoCriatura && podeAdicionarGrande) {
                     combate.adicionarParticipante(criaturaEscolhida);
-                    criaturas.push(criaturaEscolhida.nome)
-                    criaturasAdicionadas++;
+                    criaturas.push(criaturaAleatoria)
                     podeAdicionarGrande = false;
                     podeAdicionarPequeno = false;
-                } else {// Caso contrário, nenhuma adicionada e o contador se encherá até o fim
-                    criaturasAdicionadas++;
+                } else {
+                    if (criaturaEscolhida?.tamanho === "Grande") {
+                        continue;
+                    } else {
+                        break;
+                    }
                 }
             }
             addToBuffer(`Você encontrou ${criaturas}!`);
@@ -171,7 +177,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
                 <p>Exp: {personagem.exp}</p>
                 <p>Classe de armadura: {personagem.classeArmadura}</p>
                 <p>Arma Equipada: {personagem.arma.nome}</p>
-                <div className='botaoMenuDungeon' onClick={() => { voltarParaMenu(); salvarPersonagem(personagem);}}><p>Voltar para o Menu e Salvar o Personagem</p></div>
+                <div className='botaoMenuDungeon' onClick={() => { voltarParaMenu(); salvarPersonagem(personagem); }}><p>Voltar para o Menu e Salvar o Personagem</p></div>
                 <div className='botaoMenuDungeon' onClick={() => setOpen(true)}><p>Abrir Personagem</p></div>
                 <Modal open={open} onClose={() => setOpen(false)} center classNames={{ overlay: 'customOverlay', modal: 'customModal' }} closeIcon={<span className='closeButton'>&times;</span>}>
                     <Ficha personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
@@ -196,8 +202,14 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
                             <div onClick={() => combate.ataque(personagem, alvoSelecionado, (message) => { addToBuffer(message); })}>
                                 <p>Atacar</p>
                             </div>
+                            <div onClick={() => combate.conjurarMagia(personagem, magiaSelecionada, (message) => { addToBuffer(message); })}>
+                                <p>Conjurar Magia</p>
+                            </div>
                             <div onClick={() => { combate.iniciarRodada(personagem, (message) => { addToBuffer(message); }) }}>
                                 <p>Passar Turno</p>
+                            </div>
+                            <div>
+                                <SpelList personagem={personagem} onSelectMagia={handleSelecionarMagia} />
                             </div>
                         </>
                     )}

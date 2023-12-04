@@ -137,7 +137,8 @@ const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
                             </>
                         }
 
-                        {verItem instanceof Arma && (<>
+                        {verItem instanceof Arma && (
+                        <>
                             <p>Dano: {verItem.dadosDano}d{verItem.dadoTipo} {verItem.tipoDano}</p>
                         </>
                         )}

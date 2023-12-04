@@ -3,105 +3,11 @@ import * as Equipamentos from "./equipamentos";
 import { acuidade, danoExtra, duasMaos } from "./propriedades";
 import { _1d20, RolarDado, TipoDano } from "./util";
 import { Combate } from "./combate";
+import { Atributos } from "./atributos";
+import { Magia, SpellBuff } from "./magias";
 
 interface LogCallback {
     (message: string): void;
-}
-
-export class Atributos {
-    // Valores base dos Atributos
-    forca: number;
-    destreza: number;
-    constituicao: number;
-    inteligencia: number;
-    sabedoria: number;
-    carisma: number;
-
-    // Bônus dos Atributos
-    forcaBonus: number;
-    destrezaBonus: number;
-    constituicaoBonus: number;
-    inteligenciaBonus: number;
-    sabedoriaBonus: number;
-    carismaBonus: number;
-
-    // Proficiências em Testes de Resistência
-    testeForca: boolean;
-    testeDestreza: boolean;
-    testeConstituicao: boolean;
-    testeInteligencia: boolean;
-    testeSabedoria: boolean;
-    testeCarisma: boolean;
-
-    // Proficiencias em Perícias
-    atletismo: boolean;
-    sobrevivencia: boolean;
-    maoHabil: boolean;
-    furtividade: boolean;
-    acrobacias: boolean;
-    arcanismo: boolean;
-    natureza: boolean;
-    medicina: boolean;
-    percepcao: boolean;
-    historia: boolean;
-    intuicao: boolean;
-    persuasao: boolean;
-    enganacao: boolean;
-    intimidacao: boolean;
-
-    // Bônus de Proficiência
-    bonusProficiencia: number;
-
-    constructor(
-        forca: number,
-        destreza: number,
-        constituicao: number,
-        inteligencia: number,
-        sabedoria: number,
-        carisma: number,
-    ) {
-        // Inicializa os atributos
-        this.forca = forca;
-        this.destreza = destreza;
-        this.constituicao = constituicao;
-        this.inteligencia = inteligencia;
-        this.sabedoria = sabedoria;
-        this.carisma = carisma;
-
-        // Inicializa o bonus dos atributos
-        this.forcaBonus = Number(Math.floor((this.forca - 10) / 2));
-        this.destrezaBonus = Number(Math.floor((this.destreza - 10) / 2));
-        this.constituicaoBonus = Number(Math.floor((this.constituicao - 10) / 2));
-        this.inteligenciaBonus = Number(Math.floor((this.inteligencia - 10) / 2));
-        this.sabedoriaBonus = Number(Math.floor((this.sabedoria - 10) / 2));
-        this.carismaBonus = Number(Math.floor((this.carisma - 10) / 2));
-
-        // Inicializa as proficiências em testes de resistência
-        this.testeForca = false;
-        this.testeDestreza = false;
-        this.testeConstituicao = false;
-        this.testeInteligencia = false;
-        this.testeSabedoria = false;
-        this.testeCarisma = false;
-        // Inicializa as proficiencias em pericias
-        this.atletismo = false;
-        this.sobrevivencia = false;
-        this.maoHabil = false;
-        this.furtividade = false;
-        this.acrobacias = false;
-        this.arcanismo = false;
-        this.natureza = false;
-        this.medicina = false;
-        this.percepcao = false;
-        this.historia = false;
-        this.intuicao = false;
-        this.persuasao = false;
-        this.enganacao = false;
-        this.intimidacao = false;
-
-        // Inicializa o bônus de proficiência
-        this.bonusProficiencia = 2; // TODO: Bonus de proficiencia baseado em nivel do personagem
-    }
 }
 
 export class Personagem {
@@ -123,6 +29,18 @@ export class Personagem {
     tamanho?: "Pequeno" | "Medio" | "Grande";
     inventario: Equipamentos.Item[];
     exp?: number;
+    mana?: number;
+    manaMaximo?: number;
+    magiasConhecidas: Magia[];
+    efeitos: {
+        bonusCA?: number;
+        bonusAtaque?: number;
+        bonusDano?: number;
+        bonusDanoDadoTipo?: number;
+        bonusDanoDadoLados?: number;
+        bonusDanoTipo?: number;
+    };
+    efeitosAtivos: { [key: string]: { rodadasRestantes: number, tipoEfeito: string } } = {};
 
     // Construtor que aceita um objeto com propriedades nomeadas
     constructor(options: {
@@ -143,6 +61,10 @@ export class Personagem {
         tamanho?: "Pequeno" | "Medio" | "Grande";
         inventario?: Equipamentos.Item[];
         exp?: number;
+        mana?: number;
+        manaMaximo?: number;
+        magiasConhecidas?: Magia[];
+        efeitos?: {};
     });
     // Construtor que aceita parâmetros individuais
     constructor(
@@ -163,6 +85,10 @@ export class Personagem {
         tamanho?: "Pequeno" | "Medio" | "Grande",
         inventario?: Equipamentos.Item[],
         exp?: number,
+        mana?: number,
+        manaMaximo?: number,
+        magiasConhecidas?: Magia[],
+        efeitos?: {}
     );
     // Assinatura combinada do construtor usando sobrecarga de método (arg = argumento)
     constructor(
@@ -185,6 +111,10 @@ export class Personagem {
             tamanho?: "Pequeno" | "Medio" | "Grande";
             inventario?: Equipamentos.Item[];
             exp?: number;
+            mana?: number;
+            manaMaximo?: number;
+            magiasConhecidas?: Magia[];
+            efeitos?: {};
         },
         // Parâmetros individuais opcionais para o restante das propriedades 
         arg2?: number,
@@ -203,6 +133,10 @@ export class Personagem {
         arg15?: "Pequeno" | "Medio" | "Grande",
         arg16?: Equipamentos.Item[],
         arg17?: number,
+        arg18?: number,
+        arg19?: number,
+        arg20?: Magia[],
+        arg21?: {},
     ) {
         if (typeof arg1 === 'string') {
             // Usa parametros individuais
@@ -223,6 +157,10 @@ export class Personagem {
             this.tamanho = arg15;
             this.inventario = arg16 || [];
             this.exp = arg17 !== undefined ? arg17 : 0;
+            this.mana = arg18 !== undefined ? arg18 : 0;
+            this.manaMaximo = arg19 !== undefined ? arg19 : 0;
+            this.magiasConhecidas = arg20 || [];
+            this.efeitos = arg21 || {};
         } else {
             // Usa os parametros de um objeto
             this.nome = arg1.nome;
@@ -242,6 +180,10 @@ export class Personagem {
             this.tamanho = arg1.tamanho;
             this.inventario = arg1.inventario || [];
             this.exp = arg1.exp;
+            this.mana = arg1.mana || 0;
+            this.manaMaximo = arg1.manaMaximo || 0;
+            this.magiasConhecidas = arg1.magiasConhecidas || [];
+            this.efeitos = arg1.efeitos || {};
         }
 
         // Calcula a Percepcao Passiva (PP)
@@ -275,26 +217,35 @@ export class Personagem {
         if (this.equipSecundario) {
             this.classeArmadura += this.equipSecundario.bonusCA;
         }
+        this.classeArmadura += (this.efeitos.bonusCA || 0)
     }
+    
+    calcularEfeitos(magia: Magia) {
+            if (magia instanceof SpellBuff) {
+                this.efeitos.bonusCA = magia.bonusCA
+            }
+    }
+    
 
     calcularNivel() {
         const xpNecessario = [0, 100, 300, 900, 2700, 6500, 23000, 34000, 48000, 64000];
         const bonusProf = [2, 2, 2, 3, 3, 3, 3, 4, 4, 4];
-    
+
         if (this.exp && this.nivel) {
             for (let nivel = this.nivel; nivel <= 10; nivel++) {
                 if (this.exp >= xpNecessario[nivel]) {
                     this.nivel = nivel + 1;
                     this.atributos.bonusProficiencia = bonusProf[nivel - 1];
-    
+
                     if (this.classePersonagem == "Guerreiro") {
                         this.pontosVidaMaximos += 7 + this.atributos.constituicaoBonus;
                     } else if (this.classePersonagem == "Ladino") {
                         this.pontosVidaMaximos += 5 + this.atributos.constituicaoBonus;
                     } else if (this.classePersonagem == "Mago") {
                         this.pontosVidaMaximos += 4 + this.atributos.constituicaoBonus;
+                        this.manaMaximo = (this.manaMaximo || 0) * (this.nivel || 0)
                     }
-    
+
                     break;
                 }
             }
@@ -394,7 +345,6 @@ export class Personagem {
                 this.atributos.constituicao = +this.atributos.constituicao + 2
                 this.atributos.inteligencia = +this.atributos.inteligencia - 2
             }
-            console.log(this.atributos)
         }
 
         if (novaClasse) {
@@ -402,12 +352,18 @@ export class Personagem {
             if (this.classePersonagem == "Guerreiro") {
                 this.pontosVidaMaximos = 24 + this.atributos.constituicaoBonus
                 this.pontosVida = this.pontosVidaMaximos
+                this.manaMaximo = 0
+                this.mana = 0
             } else if (this.classePersonagem == "Ladino") {
                 this.pontosVidaMaximos = 16 + this.atributos.constituicaoBonus
                 this.pontosVida = this.pontosVidaMaximos
+                this.manaMaximo = 0
+                this.mana = 0
             } else if (this.classePersonagem == "Mago") {
                 this.pontosVidaMaximos = 12 + this.atributos.constituicaoBonus
                 this.pontosVida = this.pontosVidaMaximos
+                this.manaMaximo = this.atributos.inteligenciaBonus * (this.nivel || 0)
+                this.mana = this.manaMaximo
             }
         }
 
@@ -419,31 +375,28 @@ export class Personagem {
     ataque(alvo: Personagem, logCallback?: LogCallback) {
         _1d20.rolarVezes();
 
+        let bonusAtaque = 0;
+
+        if (this.arma.propriedades.includes(acuidade) && this.atributos.destreza >= this.atributos.forca) {
+            bonusAtaque = this.atributos.destrezaBonus + this.atributos.bonusProficiencia;
+        } else {
+            bonusAtaque = this.atributos.forcaBonus + this.atributos.bonusProficiencia;
+        }
+
         if (logCallback) {
-            if (this.arma.propriedades.includes(acuidade)) { // Ataque com Destreza
-                logCallback(`1d20 + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.destrezaBonus + this.atributos.bonusProficiencia})`);
-                if (+_1d20.resultados == 20) {
-                    logCallback("Acerto Crítico!");
-                    return true;
-                } else if (+_1d20.resultados + this.atributos.destrezaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
-                    logCallback("Acerto!");
-                    return true;
-                } else {
-                    logCallback("Erro!");
-                    return false;
-                }
-            } else { // Ataque com Força
-                logCallback(`1d20 + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia} = ${+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia} (${_1d20.resultados} + ${this.atributos.forcaBonus + this.atributos.bonusProficiencia})`);
-                if (+_1d20.resultados == 20) {
-                    logCallback("Acerto Crítico!");
-                    return true;
-                } else if (+_1d20.resultados + this.atributos.forcaBonus + this.atributos.bonusProficiencia >= (alvo.classeArmadura ?? 0)) {
-                    logCallback("Acerto!");
-                    return true;
-                } else {
-                    logCallback("Erro!");
-                    return false;
-                }
+            const totalAtaque = +_1d20.resultados + bonusAtaque;
+
+            logCallback(`1d20 + ${bonusAtaque} = ${totalAtaque} (${_1d20.resultados} + ${bonusAtaque})`);
+
+            if (+_1d20.resultados == 20) {
+                logCallback("Acerto Crítico!");
+                return true;
+            } else if (totalAtaque >= (alvo.classeArmadura ?? 0)) {
+                logCallback("Acerto!");
+                return true;
+            } else {
+                logCallback("Erro!");
+                return false;
             }
         }
     }
@@ -461,7 +414,7 @@ export class Personagem {
                     multiplicadorDados = 2;
                 }
 
-                if (this.arma.propriedades.includes(acuidade) &&
+                if ((this.arma.propriedades.includes(acuidade) && this.atributos.destreza >= this.atributos.forca) &&
                     this.arma.propriedades.includes(danoExtra) &&
                     this.arma.dadoTipoExtra &&
                     this.arma.dadosDanoExtra &&
@@ -484,7 +437,7 @@ export class Personagem {
                     logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
                     dano = (dano.total + this.atributos.forcaBonus);
                     extra = (extra.total);
-                } else if (this.arma.propriedades.includes(acuidade)) { // Dano com Destreza
+                } else if (this.arma.propriedades.includes(acuidade) && this.atributos.destreza >= this.atributos.forca) { // Dano com Destreza
                     dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
                     dano.rolarVezes();
                     logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
@@ -499,6 +452,42 @@ export class Personagem {
         }
         return { dano, extra };
     }
+
+    conjurarMagia(magia: Magia, logCallback?: LogCallback) {
+        if (logCallback && this.mana !== undefined) {
+            if (this.mana >= magia.custoMana) {
+                logCallback(`${this.nome} conjurou ${magia.nome}.`);
+                // Verifica se a magia é uma instância de SpellBuff
+                if (magia instanceof SpellBuff) {
+                    // Verifica se o efeito já está ativo
+                    if (this.efeitosAtivos[magia.nome]) {
+                        // Se sim, renova a duração
+                        this.efeitosAtivos[magia.nome].rodadasRestantes = magia.duracaoRodadas;
+                        logCallback(`Duracao de ${magia.nome} renovada.`);
+                    } else {
+                        // Se não, conjura a magia e adiciona o efeito ativo
+                        magia.conjurar(this);
+                        this.efeitosAtivos[magia.nome] = { rodadasRestantes: magia.duracaoRodadas, tipoEfeito: magia.tipoEfeito };
+                        if (magia.tipoEfeito == "CA") {
+                            this.calcularClasseArmadura()
+                        }
+                    }
+                } else {
+                    // Se não for uma instância de SpellBuff, apenas conjura a magia
+                    magia.conjurar(this);
+                }
+
+                // Reduz a mana
+                this.mana -= magia.custoMana;
+            } else {
+                logCallback(`Sem mana suficiente!`);
+            }
+        }
+    }
+
+
+
+
     // Descanso longo
     descanso(combate: Combate, logCallback?: LogCallback) {
         if (logCallback) {
@@ -506,30 +495,38 @@ export class Personagem {
                 logCallback(`Voce nao pode descansar agora! ${combate.rodada}`)
             } else {
                 this.pontosVida = this.pontosVidaMaximos
-                logCallback("Pontos de vida recuperados!")
+                this.mana = this.manaMaximo
+                logCallback("Pontos de vida e mana recuperados!")
+
             }
         }
     }
 }
 
 export function usePersonagem() {
-    
+
     const atributos = new Atributos(8, 8, 8, 8, 8, 8);
-    const initialPersonagem = new Personagem("Sem Nome", 0, 0, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, 1, 1, 1, undefined, undefined, undefined, './placeholder.png', "Medio", [], 0);
+    const initialPersonagem = new Personagem("Sem Nome", 0, 0, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, 1, 1, 1, undefined, undefined, undefined, './placeholder.png', "Medio", [], 0, 0, 0, [], {});
     const [personagem, setPersonagem] = useState(initialPersonagem);
     let storedCharacter = localStorage.getItem("personagem");
 
     useEffect(() => {
         if (storedCharacter !== null) {
             const parsedCharacter = JSON.parse(storedCharacter);
+
+            // Reconstruir instâncias apropriadas, dependendo dos tipos esperados
+            parsedCharacter.magiasConhecidas = parsedCharacter.magiasConhecidas.map((magia: any) => Magia.reconstruir(magia));
+
             setPersonagem(new Personagem(parsedCharacter));
         }
     }, []);
 
+
+
     personagem.calcularBonus()
     personagem.calcularClasseArmadura()
     personagem.calcularNivel()
-    
+
 
     const atualizarPersonagem = (
         novoNome?: string,
@@ -554,60 +551,4 @@ export function usePersonagem() {
     };
 
     return { personagem, atualizarPersonagem };
-}
-
-export class Especial {
-    nome: string;
-    descricao: string;
-    chance: number;
-    dadosDano?: number;
-    dadosTipo?: number;
-    danoTipo?: TipoDano;
-    tipoEfeito?: string;
-    tipoTR?: string;
-    diffTR?: number;
-
-    constructor(
-        nome: string,
-        descricao: string,
-        chance: number,
-        dadosDano?: number,
-        dadosTipo?: number,
-        danoTipo?: TipoDano,
-        tipoEfeito?: string,
-        tipoTR?: string,
-        diffTR?: number
-    ) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.chance = chance;
-        this.dadosDano = dadosDano;
-        this.dadosTipo = dadosTipo;
-        this.danoTipo = danoTipo;
-        this.tipoEfeito = tipoEfeito;
-        this.tipoTR = tipoTR;
-        this.diffTR = diffTR;
-    }
-}
-
-export class Monstro extends Personagem {
-    ataqueEspecial?: Especial;
-
-    constructor(
-        nome: string,
-        pontosVidaMaximos: number,
-        pontosVida: number,
-        atributos: Atributos,
-        arma: Equipamentos.Arma,
-        armadura: Equipamentos.Armadura,
-        equipSecundario: Equipamentos.EquipSecundario,
-        imagem: string,
-        tamanho: "Pequeno" | "Medio" | "Grande",
-        nivel?: number,
-        exp?: number,
-        ataqueEspecial?: Especial,
-    ) {
-        super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario, undefined, undefined, nivel, undefined, undefined, undefined, imagem, tamanho, undefined, exp);
-        this.ataqueEspecial = ataqueEspecial;
-    }
 }

@@ -6,7 +6,8 @@ import { Personagem } from '../classes/personagem';
 import { useForm } from 'react-hook-form';
 import Ficha from './ficha';
 import Tutorial from './Tutorial';
-import { Arma, Armadura, EquipSecundario } from '../classes/equipamentos';
+import { Arma, Armadura, EquipSecundario, adaga, espadaGrande, placas, staff, studded, vazioArma, vazioArmadura } from '../classes/equipamentos';
+import { escudo } from '../classes/magias';
 
 interface CriarPersonagemProps {
     personagem: Personagem;
@@ -42,6 +43,11 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
             if (confirma) {
                 personagem.imagem = './placeholder.png'
                 personagem.nome = 'Sem Nome'
+                personagem.inventario = []
+                personagem.arma = vazioArma
+                personagem.equipSecundario = vazioArma
+                personagem.armadura = vazioArmadura
+                personagem.magiasConhecidas = []
                 localStorage.clear();
                 setOpen(true);
             }
@@ -62,6 +68,18 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
         } else if (data.classe == "") {
             alert("Escolha uma Classe!")
         } else {
+            if (data.classe == "Guerreiro") {
+                personagem.arma = espadaGrande
+                personagem.equipSecundario = espadaGrande
+                personagem.armadura = placas
+            } else if (data.classe == "Ladino") {
+                personagem.arma = adaga
+                personagem.armadura = studded
+            } else if (data.classe == "Mago") {
+                personagem.arma = staff
+                personagem.equipSecundario = staff
+                personagem.magiasConhecidas.push(escudo)
+            }
             escolherAtributos(data.forca, data.destreza, data.constituicao, data.inteligencia, data.sabedoria, data.carisma);
             escolherBasicos(data.nome, personagemImg, data.raca, data.classe);
             setOpen(false)
@@ -97,6 +115,7 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
 
     function salvarPersonagem(personagem: Personagem) {
         localStorage.setItem("personagem", JSON.stringify(personagem));
+     console.log(personagem.magiasConhecidas[0])
     }
 
     function urlValido(url?: string): boolean {

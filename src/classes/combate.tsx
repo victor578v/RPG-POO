@@ -1,5 +1,7 @@
+import { Monstro } from './criaturas';
 import { Item } from './equipamentos';
-import { Monstro, Personagem } from './personagem';
+import { Magia, SpellBuff, SpellDano, escudo } from './magias';
+import { Personagem } from './personagem';
 import { RolarDado } from './util';
 
 interface LogCallback {
@@ -7,10 +9,10 @@ interface LogCallback {
 }
 
 export class Combate {
-    rodada: number;
-    participantes: Personagem[];
-    lootPool: Item[];
-    xpPool: number;
+    public rodada: number;
+    public participantes: Personagem[];
+    public lootPool: Item[];
+    private xpPool: number;
 
     constructor() {
         this.rodada = 0;
@@ -30,14 +32,32 @@ export class Combate {
                 this.rodada++;
                 logCallback(`Iniciando rodada ${this.rodada}`);
                 this.ataqueInimigos(personagem, logCallback);
+
+                // Reduz a duração de todos os efeitos ativos sobre o jogador em 1
+                for (const efeito in personagem.efeitosAtivos) {
+                    if (personagem.efeitosAtivos.hasOwnProperty(efeito)) {
+                        personagem.efeitosAtivos[efeito].rodadasRestantes--;
+
+                        // Se a duração chegou a 0, remova o efeito
+                        if (personagem.efeitosAtivos[efeito].rodadasRestantes === 0) {
+                            if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA" && personagem.efeitos.bonusCA) {
+                                personagem.efeitos.bonusCA -= escudo.bonusCA
+                                personagem.calcularClasseArmadura()
+                            }
+                            delete personagem.efeitosAtivos[efeito];
+                            logCallback(`${efeito} terminou.`);
+                        }
+                    }
+                }
+
                 if (personagem.pontosVida > 0) {
-                    logCallback("-".repeat(10))
+                    logCallback("-".repeat(10));
                     logCallback('Turno do Jogador');
-                    logCallback("-".repeat(10))
+                    logCallback("-".repeat(10));
                     personagem.numeroAcoes = 1;
                 }
             } else {
-                logCallback("Nenhum combate encontrado!")
+                logCallback("Nenhum combate encontrado!");
             }
         }
     }
@@ -67,12 +87,23 @@ export class Combate {
                 this.participantes = [];
                 this.rodada = 0;
                 personagem.numeroAcoes = 1;
-                console.log(personagem.exp)
                 if (personagem.exp != undefined) {
-                personagem.exp = personagem.exp + +this.xpPool;
-                personagem.calcularNivel();
+                    personagem.exp = personagem.exp + +this.xpPool;
+                    personagem.calcularNivel();
                 }
                 this.xpPool = 0;
+
+                for (const efeito in personagem.efeitosAtivos) {
+                    if (personagem.efeitosAtivos.hasOwnProperty(efeito)) {
+                        personagem.efeitosAtivos[efeito].rodadasRestantes = 0
+                        if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA" && personagem.efeitos.bonusCA) {
+                            personagem.efeitos.bonusCA -= escudo.bonusCA
+                            personagem.calcularClasseArmadura()
+                        }
+                        delete personagem.efeitosAtivos[efeito];
+                        logCallback(`${efeito} terminou.`);
+                    }
+                }
             } else if (personagem.pontosVida <= 0) {
                 logCallback('Game Over, seus pontos de vida zeraram. :(');
                 this.participantes = [];
@@ -80,6 +111,39 @@ export class Combate {
                 personagem.numeroAcoes = 1;
                 this.xpPool = 0;
                 combate.lootPool = []
+
+                for (const efeito in personagem.efeitosAtivos) {
+                    if (personagem.efeitosAtivos.hasOwnProperty(efeito)) {
+                        personagem.efeitosAtivos[efeito].rodadasRestantes = 0
+                        if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA" && personagem.efeitos.bonusCA) {
+                            personagem.efeitos.bonusCA -= escudo.bonusCA
+                            personagem.calcularClasseArmadura()
+                        }
+                        delete personagem.efeitosAtivos[efeito];
+                        logCallback(`${efeito} terminou.`);
+                    }
+                }
+            }
+        }
+    }
+    conjurarMagia(personagem: Personagem, magia?: Magia, logCallback?: LogCallback) {
+        if (logCallback) {
+            if (magia) {
+                console.log(magia.tempoCast)
+                if (magia.tempoCast == "Acao" && (personagem.numeroAcoes || 0) == 0) {
+                    logCallback("Sem Acoes Restantes!")
+                } else if (magia.tempoCast == "Acao Bonus" && (personagem.numeroAcoesBonus || 0) == 0) {
+                    logCallback("Sem Acoes Bonus Restantes!")
+                } else {
+                    personagem.conjurarMagia(magia, logCallback)
+                    if (magia.tempoCast == "Acao") {
+                        personagem.numeroAcoes = (personagem.numeroAcoes || 0) - 1
+                    } else if (magia.tempoCast == "Acao Bonus") {
+                        personagem.numeroAcoesBonus = (personagem.numeroAcoesBonus || 0) - 1
+                    }
+                }
+            } else {
+                logCallback("Escolha uma magia para conjurar")
             }
         }
     }
