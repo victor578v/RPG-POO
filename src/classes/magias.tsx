@@ -1,5 +1,7 @@
 import { Personagem } from "./personagem";
 
+// Aqui tem classes abstratas e abstracao
+
 export abstract class Magia {
     nome: string;
     custoMana: number;
@@ -28,8 +30,7 @@ export abstract class Magia {
     static reconstruir(obj: any): Magia {
         switch (obj.tipoEfeito) {
             case 'CA2':
-                return new SpellBuff(obj.nome, obj.custoMana, obj.descricao, obj.duracaoRodadas, obj.tipoEfeito, obj.bonusCA, obj.tempoCast);
-            // Adicione casos para outros tipos, se necessário
+                return new SpellBuff(obj.nome, obj.custoMana, obj.descricao, obj.duracaoRodadas, obj.tipoEfeito, obj.tempoCast, obj.bonusCA);
             default:
                 throw new Error(`Tipo de magia desconhecido: ${obj.tipoEfeito}`);
         }
@@ -38,12 +39,12 @@ export abstract class Magia {
 
 export class SpellDano extends Magia {
     conjurar(): void {
-        // Implementação específica para a magia de dano
+        // TODO: Magia de dano
     }
 }
 
 export class SpellBuff extends Magia {
-    bonusCA: number;
+    bonusCA?: number;
 
     constructor(
         nome: string,
@@ -51,8 +52,8 @@ export class SpellBuff extends Magia {
         descricao: string,
         duracaoRodadas: number,
         tipoEfeito: string,
-        bonusCA: number,
         tempoCast: string,
+        bonusCA?: number,
     ) {
         super(nome, custoMana, descricao, duracaoRodadas, tipoEfeito, tempoCast);
         this.bonusCA = bonusCA;
@@ -63,4 +64,4 @@ export class SpellBuff extends Magia {
     }
 }
 
-export const escudo = new SpellBuff("Escudo Magico", 1, "Aumenta a CA em +2", 2, "CA2", 2, "Acao");
+export const escudo = new SpellBuff("Escudo Magico", 1, "Aumenta a CA em +2", 2, "CA2", "Acao", 2);

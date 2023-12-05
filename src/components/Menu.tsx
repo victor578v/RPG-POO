@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import 'react-responsive-modal/styles.css';
 import './geral.css';
 import { Personagem } from '../classes/personagem';
-import Tutorial from './Tutorial';
 import CriarPersonagem from './criacaoPersonagem';
 import FichaMenu from './fichaMenu';
 import Dungeon from './dungeon';

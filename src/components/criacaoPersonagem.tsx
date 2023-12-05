@@ -5,7 +5,6 @@ import './geral.css';
 import { Personagem } from '../classes/personagem';
 import { useForm } from 'react-hook-form';
 import Ficha from './ficha';
-import Tutorial from './Tutorial';
 import { Arma, Armadura, EquipSecundario, adaga, espadaGrande, placas, staff, studded, vazioArma, vazioArmadura } from '../classes/equipamentos';
 import { escudo } from '../classes/magias';
 

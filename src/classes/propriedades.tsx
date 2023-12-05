@@ -1,3 +1,5 @@
+// Construtores aqui
+
 export class Propriedades {
   nome: string;
   desc: string;

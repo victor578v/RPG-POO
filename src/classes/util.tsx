@@ -12,7 +12,7 @@ export enum TipoDano {
   Necrotico = "Necrótico",
   Acido = "Acido",
 }
-
+// Construtores e metodos de retorno aqui
 export class RolarDado {
   public lados: number;
   public quantidade: number;

@@ -1,3 +1,7 @@
+
+// Aqui tem encapsulamento c/ Getter e Setters
+// Aqui tem construtores
+
 export class Atributos {
     // Valores base dos Atributos
     private _forca: number;

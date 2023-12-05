@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Personagem } from '../classes/personagem';
 import Modal from 'react-responsive-modal';
 import * as Equipamentos from '../classes/equipamentos';
-import { danoExtra } from '../classes/propriedades';
 import { combate } from '../classes/combate';
 
 

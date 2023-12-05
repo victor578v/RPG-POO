@@ -1,6 +1,9 @@
 import { acuidade, danoExtra, duasMaos, magico, Propriedades } from "./propriedades";
 import { TipoDano } from "./util";
 
+// Aqui tem Construtores
+// Aqui tem Heranca e Polimorfismo
+
 export class Item {
   public nome: string;
   public descricao: string;

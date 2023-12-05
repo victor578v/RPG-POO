@@ -4,24 +4,29 @@ import { Magia, escudo } from './magias';
 import { Personagem } from './personagem';
 import { RolarDado } from './util';
 
-interface LogCallback {
+// Aqui tem interfaces
+// Aqui tem associacoes
+// Aqui tem construtores
+// Aqui tem metodos de retorno.
+
+interface LogCallback { // Interface
     (message: string): void;
 }
 
 export class Combate {
     public rodada: number;
-    public participantes: Personagem[];
-    public lootPool: Item[];
+    public participantes: Personagem[]; // Associacao: Personagens sao participantes
+    public lootPool: Item[]; // Associacao: Itens existem na lootPool
     private xpPool: number;
 
-    constructor() {
+    constructor() { // Simples construtor
         this.rodada = 0;
         this.participantes = [];
         this.lootPool = [];
         this.xpPool = 0;
     }
 
-    adicionarParticipante(participante: Personagem) {
+    adicionarParticipante(participante: Personagem) { // Metodo de retorno
         this.participantes.push(participante);
         return participante;
     }
@@ -33,12 +38,10 @@ export class Combate {
                 logCallback(`Iniciando rodada ${this.rodada}`);
                 this.ataqueInimigos(personagem, logCallback);
 
-                // Reduz a duração de todos os efeitos ativos sobre o jogador em 1
                 for (const efeito in personagem.efeitosAtivos) {
                     if (personagem.efeitosAtivos.hasOwnProperty(efeito)) {
                         personagem.efeitosAtivos[efeito].rodadasRestantes--;
 
-                        // Se a duração chegou a 0, remova o efeito
                         if (personagem.efeitosAtivos[efeito].rodadasRestantes === 0) {
                             if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA2" && personagem.efeitos.bonusCA) {
                                 personagem.efeitos.bonusCA -= 2
@@ -83,6 +86,7 @@ export class Combate {
             }
         }
     }
+
     finalizarCombate(personagem: Personagem, logCallback?: LogCallback) {
         if (logCallback) {
             if (this.participantes.length === 0) {
@@ -118,8 +122,8 @@ export class Combate {
                 for (const efeito in personagem.efeitosAtivos) {
                     if (personagem.efeitosAtivos.hasOwnProperty(efeito)) {
                         personagem.efeitosAtivos[efeito].rodadasRestantes = 0
-                        if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA" && personagem.efeitos.bonusCA) {
-                            personagem.efeitos.bonusCA -= escudo.bonusCA
+                        if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA2" && personagem.efeitos.bonusCA) {
+                            personagem.efeitos.bonusCA -= 2
                             personagem.calcularClasseArmadura()
                         }
                         delete personagem.efeitosAtivos[efeito];

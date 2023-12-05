@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import * as Equipamentos from "./equipamentos";
-import { Propriedades, acuidade, danoExtra, duasMaos, magico } from "./propriedades";
+import { Propriedades, duasMaos } from "./propriedades";
 import { _1d20, RolarDado } from "./util";
 import { Combate } from "./combate";
 import { Atributos } from "./atributos";
 import { Magia, SpellBuff } from "./magias";
-import { Arma } from "./equipamentos";
+
+// Aqui tem interfaces, associacoes e metodos de retorno aqui (nos ataques e dano)
 
 interface LogCallback {
     (message: string): void;
@@ -15,10 +16,10 @@ export class Personagem {
     nome: string;
     pontosVida: number;
     pontosVidaMaximos: number;
-    atributos: Atributos;
-    arma: Equipamentos.Arma;
-    armadura: Equipamentos.Armadura;
-    equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario;
+    atributos: Atributos; // Associacao: Personagem tem atributos
+    arma: Equipamentos.Arma; // Associacao: Personagem tem arma
+    armadura: Equipamentos.Armadura; // Associacao: Personagem tem armadura
+    equipSecundario: Equipamentos.Arma | Equipamentos.EquipSecundario; // Associacao: Personagem tem equip secundario ou arma
     percepcaoPassiva: number;
     numeroAcoes?: number;
     numeroAcoesBonus?: number;
@@ -28,11 +29,11 @@ export class Personagem {
     classeArmadura?: number;
     imagem?: string;
     tamanho?: "Pequeno" | "Medio" | "Grande";
-    inventario: Equipamentos.Item[];
+    inventario: Equipamentos.Item[]; // Associacao: Personagem tem itens
     exp?: number;
     mana?: number;
     manaMaximo?: number;
-    magiasConhecidas: Magia[];
+    magiasConhecidas: Magia[]; // Associacao: Personagem sabe magias
     efeitos: {
         bonusCA?: number;
         bonusAtaque?: number;
@@ -43,7 +44,7 @@ export class Personagem {
     };
     efeitosAtivos: { [key: string]: { rodadasRestantes: number, tipoEfeito: string } } = {};
 
-    // Construtor que aceita um objeto com propriedades nomeadas
+    // Construtor com overloading
     constructor(options: {
         nome: string;
         pontosVida: number;
@@ -91,9 +92,7 @@ export class Personagem {
         magiasConhecidas?: Magia[],
         efeitos?: {}
     );
-    // Assinatura combinada do construtor usando sobrecarga de método (arg = argumento)
     constructor(
-        // Primeiro parâmetro: Pode ser uma string (para 'nome') ou um objeto com propriedades nomeadas
         arg1: string | {
             nome: string;
             pontosVida: number;
@@ -140,7 +139,6 @@ export class Personagem {
         arg21?: {},
     ) {
         if (typeof arg1 === 'string') {
-            // Usa parametros individuais
             this.nome = arg1;
             this.pontosVida = arg2!;
             this.pontosVidaMaximos = arg3!;
@@ -163,7 +161,6 @@ export class Personagem {
             this.magiasConhecidas = arg20 || [];
             this.efeitos = arg21 || {};
         } else {
-            // Usa os parametros de um objeto
             this.nome = arg1.nome;
             this.pontosVida = arg1.pontosVida;
             this.pontosVidaMaximos = arg1.pontosVidaMaximos;
@@ -187,7 +184,6 @@ export class Personagem {
             this.efeitos = arg1.efeitos || {};
         }
 
-        // Calcula a Percepcao Passiva (PP)
         this.percepcaoPassiva = 10 + (this.atributos.sabedoriaBonus || 0);
         if (this.atributos.percepcao) {
             this.percepcaoPassiva += this.atributos.bonusProficiencia;
@@ -222,16 +218,17 @@ export class Personagem {
         this.classeArmadura += (this.efeitos.bonusCA || 0)
     }
 
+    // Detecta os tipos de efeito causados por magia e aplica
     calcularEfeitos(magia: Magia) {
         if (magia instanceof SpellBuff) {
             this.efeitos.bonusCA = magia.bonusCA
         }
     }
 
-
+    // Calcula o nivel do personagem e aplica seus efeitos dependendo da classe
     calcularNivel() {
-        const xpNecessario = [0, 100, 300, 900, 2700, 6500, 23000, 34000, 48000, 64000];
-        const bonusProf = [2, 2, 2, 3, 3, 3, 3, 4, 4, 4];
+        const xpNecessario = [0, 100, 200, 300, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3500, 4000];
+        const bonusProf = [2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5 , 5, 5, 5, 6, 6, 6, 6, 7, 7];
 
         if (this.exp && this.nivel) {
             for (let nivel = this.nivel; nivel <= 10; nivel++) {

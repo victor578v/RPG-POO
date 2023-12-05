@@ -4,6 +4,10 @@ import { Personagem } from "./personagem";
 import { danoExtra } from "./propriedades";
 import { TipoDano } from "./util";
 
+// Aqui tem Heranca e Polimorfismo (Monstro é um Personagem e herda seus atributos)
+// Aqui tem Associacao (Monstro tem um ataque especial)
+// Aqui tem Sobre escrita de metodos (calcularNivel de monstro é diferente)
+
 export class Especial {
   protected nome: string;
   public descricao: string;
@@ -58,6 +62,13 @@ export class Monstro extends Personagem {
     super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario, undefined, undefined, nivel, undefined, undefined, undefined, imagem, tamanho, undefined, exp);
     this.ataqueEspecial = ataqueEspecial;
   }
+
+  calcularNivel() { // Sobre escrita de metodos
+    const bonusProf = [2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7];
+    if (this.nivel) {
+      this.atributos.bonusProficiencia = bonusProf[Math.ceil(this.nivel) - 1];
+    }
+  }
 }
 
 
@@ -69,6 +80,7 @@ export function criarNovoGoblin(): Monstro {
   novoGoblin.atributos.furtividade = true;
   novoGoblin.inventario = [Equipamentos.espada, Equipamentos.couro, Equipamentos.escudo]
   novoGoblin.calcularClasseArmadura();
+  novoGoblin.calcularNivel();
 
   return novoGoblin;
 }
@@ -95,6 +107,7 @@ export function criarNovoEsqueleto(): Monstro {
 
   const novoEsqueleto = new Monstro(nome, 13, 13, atributos, Equipamentos.espada, Equipamentos.broken, Equipamentos.escudo, './esqueleto.png', "Pequeno", 0.5, 50, undefined,);
   novoEsqueleto.calcularClasseArmadura();
+  novoEsqueleto.calcularNivel();
   novoEsqueleto.inventario = [Equipamentos.espada, Equipamentos.broken, Equipamentos.escudo]
   return novoEsqueleto;
 }
@@ -111,6 +124,7 @@ export function criarNovoDragaoVermelhoAdulto(): Monstro {
   novoDragaoVermelhoAdulto.atributos.percepcao = true;
   novoDragaoVermelhoAdulto.inventario = [Equipamentos.shoushaBladeCorrupted]
   novoDragaoVermelhoAdulto.calcularClasseArmadura();
+  novoDragaoVermelhoAdulto.calcularNivel();
 
   return novoDragaoVermelhoAdulto;
 }
