@@ -1,4 +1,4 @@
-import { acuidade, danoExtra, duasMaos, Propriedades } from "./propriedades";
+import { acuidade, danoExtra, duasMaos, magico, Propriedades } from "./propriedades";
 import { TipoDano } from "./util";
 
 export class Item {
@@ -45,8 +45,8 @@ export class Arma extends Item {
 }
 
 export class Armadura extends Item {
-  tipo: "leve" | "media" | "pesada" | "nenhuma";
-  bonusCA: number;
+  public tipo: "leve" | "media" | "pesada" | "nenhuma";
+  public bonusCA: number;
 
   constructor(nome: string, descricao: string, tipo: "leve" | "media" | "pesada" | "nenhuma", bonusCA: number) {
     super(nome, descricao);
@@ -56,7 +56,7 @@ export class Armadura extends Item {
 }
 
 export class EquipSecundario extends Item {
-  bonusCA: number;
+  public bonusCA: number;
 
   constructor(nome: string, descricao: string, bonusCA: number) {
     super(nome, descricao);
@@ -72,7 +72,7 @@ export const malho = new Arma("Malho", "Um tipo grande de martelo feito para com
 export const machadoGrande = new Arma("Machado Grande", "Um machado de haste longa e cabeça pesada feito para combate.", 2, 8, TipoDano.Cortante, [duasMaos]); // Machado Grande, 2d8 dano, Propriedades: Duas Mãos
 export const espada = new Arma("Espada", "Uma espada comum para combate.", 1, 8, TipoDano.Cortante, [acuidade]); // Espada Comum, 1d8 dano, Propriedades: Nenhuma
 export const adaga = new Arma("Adaga", "Uma lâmina curta e afiada para ataques rápidos.", 1, 4, TipoDano.Perfurante, [acuidade]); // Adaga, 1d4 dano, Propriedades: Acuidade
-export const staff = new Arma("Cajado", "Um bastao que pode ser usado tanto para bater, quanto foco magico.", 1, 4, TipoDano.Contundante, [duasMaos]);
+export const staff = new Arma("Cajado", "Um bastao que pode ser usado tanto para bater, quanto foco magico.", 2, 6, TipoDano.Forca, [magico, duasMaos]);
 export const shoushaBlade = new Arma("Odachi de Amaterasu", "Uma imponente odachi imbuida com a bencao da deusa solar Amaterasu.", 2, 6, TipoDano.Cortante, [duasMaos, danoExtra], 2, 6, TipoDano.Radiante); // Odachi de Amaterasu, 2d6 dano, Propriedades: Duas Mãos, Dano Extra (Radiante)
 export const shoushaBladeCorrupted = new Arma("Furia do Dragao Vermelho", "Uma espada grande imbuida com a terrível fúria de um dragão vermelho. A lâmina emite um calor intenso e ondas de energia flamejante.", 2, 6, TipoDano.Cortante, [duasMaos, danoExtra], 2, 6, TipoDano.Fogo); // Odachi de Shura, 2d6 dano, Propriedades: Duas Mãos, Dano Extra (Fogo)
 

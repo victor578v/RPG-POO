@@ -14,15 +14,15 @@ export enum TipoDano {
 }
 
 export class RolarDado {
-  lados: number;
-  quantidade: number;
-  resultados: number[];
-  total: number;
+  public lados: number;
+  public quantidade: number;
+  public resultados: number[];
+  public total: number;
 
   constructor(lados: number, quantidade: number) {
     this.lados = lados;
     this.quantidade = quantidade;
-    this.resultados = []; // Initialize the array here
+    this.resultados = []; 
     this.total = 0;
   }
 
@@ -45,4 +45,3 @@ export class RolarDado {
 }
 
 export const _1d20 = new RolarDado(20, 1);
-

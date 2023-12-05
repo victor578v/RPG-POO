@@ -78,27 +78,27 @@ const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
                 <p>Atributos</p>
                 <div id='forca'>
                     <p>Forca</p>
-                    <h1>{personagem.atributos.forca} ({personagem.atributos.forcaBonus})</h1>
+                    <h1>{+personagem.atributos.forca} ({personagem.atributos.forcaBonus})</h1>
                 </div>
                 <div id='destreza'>
                     <p>Destreza</p>
-                    <h1>{personagem.atributos.destreza} ({personagem.atributos.destrezaBonus})</h1>
+                    <h1>{+personagem.atributos.destreza} ({personagem.atributos.destrezaBonus})</h1>
                 </div>
                 <div id='constituicao'>
                     <p>Constituição</p>
-                    <h1>{personagem.atributos.constituicao} ({personagem.atributos.constituicaoBonus})</h1>
+                    <h1>{+personagem.atributos.constituicao} ({personagem.atributos.constituicaoBonus})</h1>
                 </div>
                 <div id='inteligencia'>
                     <p>Inteligencia</p>
-                    <h1>{personagem.atributos.inteligencia} ({personagem.atributos.inteligenciaBonus})</h1>
+                    <h1>{+personagem.atributos.inteligencia} ({personagem.atributos.inteligenciaBonus})</h1>
                 </div>
                 <div id='sabedoria'>
                     <p>Sabedoria</p>
-                    <h1>{personagem.atributos.sabedoria} ({personagem.atributos.sabedoriaBonus})</h1>
+                    <h1>{+personagem.atributos.sabedoria} ({personagem.atributos.sabedoriaBonus})</h1>
                 </div>
                 <div id='carisma'>
                     <p>Carisma</p>
-                    <h1>{personagem.atributos.carisma} ({personagem.atributos.carismaBonus})</h1>
+                    <h1>{+personagem.atributos.carisma} ({personagem.atributos.carismaBonus})</h1>
                 </div>
             </div>
             <div className='proficiencias'>
@@ -122,7 +122,7 @@ const Ficha: React.FC<FichaProps> = ({ personagem, atualizarPersonagem }) => {
                 <p>Habilidades e Magias</p>
                 <p>Ver Magias</p>
                 <p>Ver Habilidades</p>
-                <p>Mana: 0/0</p>
+                <p>Mana: {personagem.mana}/{personagem.manaMaximo}</p>
             </div>
 
             <Modal open={verItem !== null} onClose={() => setVerItem(null)} center classNames={{ overlay: 'customOverlay', modal: 'itemInfoModal' }} >

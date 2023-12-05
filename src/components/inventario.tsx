@@ -39,7 +39,7 @@ const Inventario: React.FC<invProps> = ({ personagem, atualizarPersonagem }) => 
                 personagem.inventario.push(personagem.arma)
             } else if (item.nome == personagem.arma.nome) {
                 alert(`${item.nome} já está equipado!`);
-            } else if (item.propriedades.includes(danoExtra)) {
+            } else if (item.propriedades.some(propriedade => propriedade.nome === "Dano Extra")) {
                 alert(`${item.nome} foi Equipado! (Dano: ${item.dadosDano}d${item.dadoTipo} ${item.tipoDano} + ${item.dadosDanoExtra}d${item.dadoTipoExtra} ${item.tipoDanoExtra})`);
                 if (indexItem !== -1) { personagem.inventario.splice(indexItem, 1); }
                 if (personagem.arma.nome != "Vazia") { personagem.inventario.push(personagem.arma) }

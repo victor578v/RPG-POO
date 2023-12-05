@@ -198,7 +198,6 @@ const CriarPersonagem: React.FC<CriarPersonagemProps> = ({ personagem, atualizar
 
                     <button type="submit">Salvar Personagem</button>
                 </form>
-                <Tutorial />
             </Modal>
         </>
     )

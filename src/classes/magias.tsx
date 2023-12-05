@@ -1,5 +1,4 @@
 import { Personagem } from "./personagem";
-import { TipoDano } from "./util";
 
 export abstract class Magia {
     nome: string;
@@ -28,7 +27,7 @@ export abstract class Magia {
     abstract conjurar(personagem: Personagem): void;
     static reconstruir(obj: any): Magia {
         switch (obj.tipoEfeito) {
-            case 'CA':
+            case 'CA2':
                 return new SpellBuff(obj.nome, obj.custoMana, obj.descricao, obj.duracaoRodadas, obj.tipoEfeito, obj.bonusCA, obj.tempoCast);
             // Adicione casos para outros tipos, se necessário
             default:
@@ -64,4 +63,4 @@ export class SpellBuff extends Magia {
     }
 }
 
-export const escudo = new SpellBuff("Escudo Magico", 1, "Aumenta a CA em +2", 2, "CA", 2, "Acao");
+export const escudo = new SpellBuff("Escudo Magico", 1, "Aumenta a CA em +2", 2, "CA2", 2, "Acao");

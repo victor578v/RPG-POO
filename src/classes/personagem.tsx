@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import * as Equipamentos from "./equipamentos";
-import { acuidade, danoExtra, duasMaos } from "./propriedades";
-import { _1d20, RolarDado, TipoDano } from "./util";
+import { Propriedades, acuidade, danoExtra, duasMaos, magico } from "./propriedades";
+import { _1d20, RolarDado } from "./util";
 import { Combate } from "./combate";
 import { Atributos } from "./atributos";
 import { Magia, SpellBuff } from "./magias";
+import { Arma } from "./equipamentos";
 
 interface LogCallback {
     (message: string): void;
@@ -195,13 +196,14 @@ export class Personagem {
 
     // Calcula os bonus de habilidade
     calcularBonus() {
-        this.atributos.forcaBonus = Number(Math.floor((this.atributos.forca - 10) / 2));
-        this.atributos.destrezaBonus = Number(Math.floor((this.atributos.destreza - 10) / 2));
-        this.atributos.constituicaoBonus = Number(Math.floor((this.atributos.constituicao - 10) / 2));
-        this.atributos.inteligenciaBonus = Number(Math.floor((this.atributos.inteligencia - 10) / 2));
-        this.atributos.sabedoriaBonus = Number(Math.floor((this.atributos.sabedoria - 10) / 2));
-        this.atributos.carismaBonus = Number(Math.floor((this.atributos.carisma - 10) / 2));
+        this.atributos.forcaBonus = Math.floor((this.atributos.forca - 10) / 2);
+        this.atributos.destrezaBonus = Math.floor((this.atributos.destreza - 10) / 2);
+        this.atributos.constituicaoBonus = Math.floor((this.atributos.constituicao - 10) / 2);
+        this.atributos.inteligenciaBonus = Math.floor((this.atributos.inteligencia - 10) / 2);
+        this.atributos.sabedoriaBonus = Math.floor((this.atributos.sabedoria - 10) / 2);
+        this.atributos.carismaBonus = Math.floor((this.atributos.carisma - 10) / 2);
     }
+
     // Calcula a Classe de Armadura (CA)
     calcularClasseArmadura() {
         if (this.armadura) {
@@ -219,13 +221,13 @@ export class Personagem {
         }
         this.classeArmadura += (this.efeitos.bonusCA || 0)
     }
-    
+
     calcularEfeitos(magia: Magia) {
-            if (magia instanceof SpellBuff) {
-                this.efeitos.bonusCA = magia.bonusCA
-            }
+        if (magia instanceof SpellBuff) {
+            this.efeitos.bonusCA = magia.bonusCA
+        }
     }
-    
+
 
     calcularNivel() {
         const xpNecessario = [0, 100, 300, 900, 2700, 6500, 23000, 34000, 48000, 64000];
@@ -268,27 +270,27 @@ export class Personagem {
         novaRaca?: string,
         novaClasse?: string,
     ) {
-        if (novaForca) {
-            this.atributos.forca = novaForca
+        if (novaForca !== undefined) {
+            this.atributos.forca = novaForca;
         }
 
-        if (novaDestreza) {
+        if (novaDestreza !== undefined) {
             this.atributos.destreza = novaDestreza;
         }
 
-        if (novaConstituicao) {
+        if (novaConstituicao !== undefined) {
             this.atributos.constituicao = novaConstituicao;
         }
 
-        if (novaInteligencia) {
+        if (novaInteligencia !== undefined) {
             this.atributos.inteligencia = novaInteligencia;
         }
 
-        if (novaSabedoria) {
+        if (novaSabedoria !== undefined) {
             this.atributos.sabedoria = novaSabedoria;
         }
 
-        if (novaCarisma) {
+        if (novaCarisma !== undefined) {
             this.atributos.carisma = novaCarisma;
         }
 
@@ -328,24 +330,25 @@ export class Personagem {
         if (novaRaca) {
             this.racaPersonagem = novaRaca;
             if (this.racaPersonagem == "Humano") {
-                this.atributos.forca = +this.atributos.forca + 1
-                this.atributos.destreza = +this.atributos.destreza + 1
-                this.atributos.constituicao = +this.atributos.constituicao + 1
-                this.atributos.inteligencia = +this.atributos.inteligencia + 1
-                this.atributos.sabedoria = +this.atributos.sabedoria + 1
-                this.atributos.carisma = +this.atributos.carisma + 1
+                this.atributos.forca = Number(this.atributos.forca) + 1;
+                this.atributos.destreza = Number(this.atributos.destreza) + 1;
+                this.atributos.constituicao = Number(this.atributos.constituicao) + 1;
+                this.atributos.inteligencia = Number(this.atributos.inteligencia) + 1;
+                this.atributos.sabedoria = Number(this.atributos.sabedoria) + 1;
+                this.atributos.carisma = Number(this.atributos.carisma) + 1;
             } else if (this.racaPersonagem == "Elfo") {
-                this.atributos.inteligencia = +this.atributos.inteligencia + 2
-                this.atributos.carisma = +this.atributos.carisma + 1
+                this.atributos.inteligencia = Number(this.atributos.inteligencia) + 2;
+                this.atributos.carisma = Number(this.atributos.carisma) + 1;
             } else if (this.racaPersonagem == "Anao") {
-                this.atributos.constituicao = +this.atributos.constituicao + 2
-                this.atributos.forca = +this.atributos.forca + 1
+                this.atributos.constituicao = Number(this.atributos.constituicao) + 2;
+                this.atributos.forca = Number(this.atributos.forca) + 1;
             } else if (this.racaPersonagem == "Orc") {
-                this.atributos.forca = +this.atributos.forca + 2
-                this.atributos.constituicao = +this.atributos.constituicao + 2
-                this.atributos.inteligencia = +this.atributos.inteligencia - 2
+                this.atributos.forca = Number(this.atributos.forca) + 2;
+                this.atributos.constituicao = Number(this.atributos.constituicao) + 2;
+                this.atributos.inteligencia = Number(this.atributos.inteligencia) - 2;
             }
         }
+
 
         if (novaClasse) {
             this.classePersonagem = novaClasse;
@@ -354,16 +357,22 @@ export class Personagem {
                 this.pontosVida = this.pontosVidaMaximos
                 this.manaMaximo = 0
                 this.mana = 0
+                this.atributos.testeForca = true
+                this.atributos.testeConstituicao = true
             } else if (this.classePersonagem == "Ladino") {
                 this.pontosVidaMaximos = 16 + this.atributos.constituicaoBonus
                 this.pontosVida = this.pontosVidaMaximos
                 this.manaMaximo = 0
                 this.mana = 0
+                this.atributos.testeDestreza = true
+                this.atributos.testeCarisma = true
             } else if (this.classePersonagem == "Mago") {
                 this.pontosVidaMaximos = 12 + this.atributos.constituicaoBonus
                 this.pontosVida = this.pontosVidaMaximos
                 this.manaMaximo = this.atributos.inteligenciaBonus * (this.nivel || 0)
                 this.mana = this.manaMaximo
+                this.atributos.testeInteligencia = true
+                this.atributos.testeSabedoria = true
             }
         }
 
@@ -377,11 +386,15 @@ export class Personagem {
 
         let bonusAtaque = 0;
 
-        if (this.arma.propriedades.includes(acuidade) && this.atributos.destreza >= this.atributos.forca) {
+        if (this.arma.propriedades.some(propriedade => propriedade.nome === "Acuidade") && +this.atributos.destreza >= +this.atributos.forca) {
             bonusAtaque = this.atributos.destrezaBonus + this.atributos.bonusProficiencia;
+        } else if (this.arma.propriedades.some(propriedade => propriedade.nome === "Magico") && this.classePersonagem === "Mago") {
+            bonusAtaque = this.atributos.inteligenciaBonus + this.atributos.bonusProficiencia;
         } else {
             bonusAtaque = this.atributos.forcaBonus + this.atributos.bonusProficiencia;
         }
+
+
 
         if (logCallback) {
             const totalAtaque = +_1d20.resultados + bonusAtaque;
@@ -414,8 +427,8 @@ export class Personagem {
                     multiplicadorDados = 2;
                 }
 
-                if ((this.arma.propriedades.includes(acuidade) && this.atributos.destreza >= this.atributos.forca) &&
-                    this.arma.propriedades.includes(danoExtra) &&
+                if ((this.arma.propriedades.some(propriedade => propriedade.nome === "Acuidade") && +this.atributos.destreza >= +this.atributos.forca) &&
+                    this.arma.propriedades.some(propriedade => propriedade.nome === "Dano Extra") &&
                     this.arma.dadoTipoExtra &&
                     this.arma.dadosDanoExtra &&
                     this.arma.dadoTipoExtra) { // Dano com Destreza + Dano extra da arma
@@ -426,7 +439,7 @@ export class Personagem {
                     logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
                     dano = (dano.total + this.atributos.destrezaBonus);
                     extra = (extra.total);
-                } else if (this.arma.propriedades.includes(danoExtra) &&
+                } else if (this.arma.propriedades.some(propriedade => propriedade.nome === "Dano Extra") &&
                     this.arma.dadoTipoExtra &&
                     this.arma.dadosDanoExtra &&
                     this.arma.dadoTipoExtra) { // Dano com Forca + Dano extra da arma
@@ -437,7 +450,12 @@ export class Personagem {
                     logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.forcaBonus} = ${+dano.total + this.atributos.forcaBonus} (${dano.resultados} + ${this.atributos.forcaBonus}) ${this.arma.tipoDano} E ${this.arma.dadosDanoExtra * multiplicadorDados}d${this.arma.dadoTipoExtra} = ${extra.total} (${extra.resultados}) ${this.arma.tipoDanoExtra}`);
                     dano = (dano.total + this.atributos.forcaBonus);
                     extra = (extra.total);
-                } else if (this.arma.propriedades.includes(acuidade) && this.atributos.destreza >= this.atributos.forca) { // Dano com Destreza
+                } else if (this.arma.propriedades.some(propriedade => propriedade.nome === "Magico") && this.classePersonagem == "Mago") {
+                    dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
+                    dano.rolarVezes();
+                    logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.inteligenciaBonus} = ${+dano.total + this.atributos.inteligenciaBonus} (${dano.resultados} + ${this.atributos.inteligenciaBonus}) ${this.arma.tipoDano}`)
+                    dano = (dano.total + this.atributos.inteligenciaBonus);
+                } else if (this.arma.propriedades.some(propriedade => propriedade.nome === "Acuidade") && +this.atributos.destreza >= +this.atributos.forca) { // Dano com Destreza
                     dano = new RolarDado(this.arma.dadoTipo, (this.arma.dadosDano * multiplicadorDados));
                     dano.rolarVezes();
                     logCallback(`${this.arma.dadosDano * multiplicadorDados}d${this.arma.dadoTipo} + ${this.atributos.destrezaBonus} = ${+dano.total + this.atributos.destrezaBonus} (${dano.resultados} + ${this.atributos.destrezaBonus}) ${this.arma.tipoDano}`);
@@ -468,7 +486,7 @@ export class Personagem {
                         // Se não, conjura a magia e adiciona o efeito ativo
                         magia.conjurar(this);
                         this.efeitosAtivos[magia.nome] = { rodadasRestantes: magia.duracaoRodadas, tipoEfeito: magia.tipoEfeito };
-                        if (magia.tipoEfeito == "CA") {
+                        if (magia.tipoEfeito == "CA2") {
                             this.calcularClasseArmadura()
                         }
                     }
@@ -497,7 +515,6 @@ export class Personagem {
                 this.pontosVida = this.pontosVidaMaximos
                 this.mana = this.manaMaximo
                 logCallback("Pontos de vida e mana recuperados!")
-
             }
         }
     }
@@ -516,6 +533,7 @@ export function usePersonagem() {
 
             // Reconstruir instâncias apropriadas, dependendo dos tipos esperados
             parsedCharacter.magiasConhecidas = parsedCharacter.magiasConhecidas.map((magia: any) => Magia.reconstruir(magia));
+            parsedCharacter.arma.propriedades = parsedCharacter.arma.propriedades.map((propriedade: any) => Propriedades.reconstruir(propriedade))
 
             setPersonagem(new Personagem(parsedCharacter));
         }

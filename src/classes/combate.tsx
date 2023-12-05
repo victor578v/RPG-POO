@@ -1,6 +1,6 @@
 import { Monstro } from './criaturas';
 import { Item } from './equipamentos';
-import { Magia, SpellBuff, SpellDano, escudo } from './magias';
+import { Magia, escudo } from './magias';
 import { Personagem } from './personagem';
 import { RolarDado } from './util';
 
@@ -40,8 +40,8 @@ export class Combate {
 
                         // Se a duração chegou a 0, remova o efeito
                         if (personagem.efeitosAtivos[efeito].rodadasRestantes === 0) {
-                            if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA" && personagem.efeitos.bonusCA) {
-                                personagem.efeitos.bonusCA -= escudo.bonusCA
+                            if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA2" && personagem.efeitos.bonusCA) {
+                                personagem.efeitos.bonusCA -= 2
                                 personagem.calcularClasseArmadura()
                             }
                             delete personagem.efeitosAtivos[efeito];
@@ -55,6 +55,7 @@ export class Combate {
                     logCallback('Turno do Jogador');
                     logCallback("-".repeat(10));
                     personagem.numeroAcoes = 1;
+                    personagem.numeroAcoesBonus = 1;
                 }
             } else {
                 logCallback("Nenhum combate encontrado!");
@@ -73,6 +74,8 @@ export class Combate {
                 logCallback("-".repeat(10))
                 this.rodada = 1;
                 logCallback(`Iniciando rodada ${this.rodada}`);
+                personagem.numeroAcoes = 1
+                personagem.numeroAcoesBonus = 1
             } else if (this.rodada >= 1) {
                 logCallback("Voce ja está em um combate!")
             } else {
@@ -96,8 +99,8 @@ export class Combate {
                 for (const efeito in personagem.efeitosAtivos) {
                     if (personagem.efeitosAtivos.hasOwnProperty(efeito)) {
                         personagem.efeitosAtivos[efeito].rodadasRestantes = 0
-                        if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA" && personagem.efeitos.bonusCA) {
-                            personagem.efeitos.bonusCA -= escudo.bonusCA
+                        if (personagem.efeitosAtivos[efeito].tipoEfeito == "CA2" && personagem.efeitos.bonusCA) {
+                            personagem.efeitos.bonusCA -= 2
                             personagem.calcularClasseArmadura()
                         }
                         delete personagem.efeitosAtivos[efeito];
@@ -166,17 +169,25 @@ export class Combate {
                     const { dano, extra } = atacante.dano(logCallback);
                     if (dano) {
                         alvo.pontosVida -= dano + (extra || 0);
-                        logCallback(`${alvo.nome} sofre ${dano + (extra || 0)} pontos de dano. ${alvo.pontosVida}/${alvo.pontosVidaMaximos} pontos de vida restantes.`);
+                        if (alvo.nome == "Bau") {
+                            // nada acontece feijoada
+                        } else {
+                            logCallback(`${alvo.nome} sofre ${dano + (extra || 0)} pontos de dano. ${alvo.pontosVida}/${alvo.pontosVidaMaximos} pontos de vida restantes.`);
+                        }
                     }
                 }
 
                 // Verifica se o alvo foi derrotado
-                if (alvo.pontosVida <= 0 && alvo.exp) {
-                    logCallback(`${alvo.nome} foi derrotado!`);
+                if (alvo.pontosVida <= 0) {
+                    if (alvo.nome == "Bau") {
+                        logCallback("Abrindo Bau...")
+                    } else if (alvo.exp) {
+                        logCallback(`${alvo.nome} foi derrotado!`);
+                        this.xpPool = this.xpPool + alvo.exp
+                    }
                     alvo.inventario.forEach(item => {
                         this.lootPool.push(item);
                     });
-                    this.xpPool = this.xpPool + alvo.exp
                     const index = this.participantes.indexOf(alvo);
                     if (index !== -1) {
                         this.participantes.splice(index, 1);
@@ -190,6 +201,8 @@ export class Combate {
     ataqueInimigo(atacante: Personagem, alvo: Personagem, logCallback?: LogCallback) {
         if (logCallback) {
             if (alvo.pontosVida <= 0) {
+                // Nada acontece feijoada
+            } else if (atacante.nome == "Bau") {
                 // Nada acontece feijoada
             } else {
                 if (atacante instanceof Monstro && atacante.ataqueEspecial && (Math.random() * 100) < atacante.ataqueEspecial.chance) {

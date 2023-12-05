@@ -1,6 +1,6 @@
 import { Atributos } from "./atributos";
 import * as Equipamentos from "./equipamentos";
-import { Personagem} from "./personagem";
+import { Personagem } from "./personagem";
 import { danoExtra } from "./propriedades";
 import { TipoDano } from "./util";
 
@@ -16,25 +16,25 @@ export class Especial {
   protected diffTR?: number;
 
   constructor(
-      nome: string,
-      descricao: string,
-      chance: number,
-      dadosDano?: number,
-      dadosTipo?: number,
-      danoTipo?: TipoDano,
-      tipoEfeito?: string,
-      tipoTR?: string,
-      diffTR?: number
+    nome: string,
+    descricao: string,
+    chance: number,
+    dadosDano?: number,
+    dadosTipo?: number,
+    danoTipo?: TipoDano,
+    tipoEfeito?: string,
+    tipoTR?: string,
+    diffTR?: number
   ) {
-      this.nome = nome;
-      this.descricao = descricao;
-      this.chance = chance;
-      this.dadosDano = dadosDano;
-      this.dadosTipo = dadosTipo;
-      this.danoTipo = danoTipo;
-      this.tipoEfeito = tipoEfeito;
-      this.tipoTR = tipoTR;
-      this.diffTR = diffTR;
+    this.nome = nome;
+    this.descricao = descricao;
+    this.chance = chance;
+    this.dadosDano = dadosDano;
+    this.dadosTipo = dadosTipo;
+    this.danoTipo = danoTipo;
+    this.tipoEfeito = tipoEfeito;
+    this.tipoTR = tipoTR;
+    this.diffTR = diffTR;
   }
 }
 
@@ -42,21 +42,21 @@ export class Monstro extends Personagem {
   public ataqueEspecial?: Especial;
 
   constructor(
-      nome: string,
-      pontosVidaMaximos: number,
-      pontosVida: number,
-      atributos: Atributos,
-      arma: Equipamentos.Arma,
-      armadura: Equipamentos.Armadura,
-      equipSecundario: Equipamentos.EquipSecundario,
-      imagem: string,
-      tamanho: "Pequeno" | "Medio" | "Grande",
-      nivel?: number,
-      exp?: number,
-      ataqueEspecial?: Especial,
+    nome: string,
+    pontosVidaMaximos: number,
+    pontosVida: number,
+    atributos: Atributos,
+    arma: Equipamentos.Arma,
+    armadura: Equipamentos.Armadura,
+    equipSecundario: Equipamentos.EquipSecundario,
+    imagem: string,
+    tamanho: "Pequeno" | "Medio" | "Grande",
+    nivel?: number,
+    exp?: number,
+    ataqueEspecial?: Especial,
   ) {
-      super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario, undefined, undefined, nivel, undefined, undefined, undefined, imagem, tamanho, undefined, exp);
-      this.ataqueEspecial = ataqueEspecial;
+    super(nome, pontosVidaMaximos, pontosVida, atributos, arma, armadura, equipSecundario, undefined, undefined, nivel, undefined, undefined, undefined, imagem, tamanho, undefined, exp);
+    this.ataqueEspecial = ataqueEspecial;
   }
 }
 
@@ -73,11 +73,27 @@ export function criarNovoGoblin(): Monstro {
   return novoGoblin;
 }
 
+export function criarNovoBau(): Monstro {
+  const atributos = new Atributos(8, 0, 10, 8, 8, 8);
+  const nome = `Bau`;
+
+  const novoBau = new Monstro(nome, 1, 1, atributos, Equipamentos.vazioArma, Equipamentos.vazioArmadura, Equipamentos.vazioArma, './bau.png', "Pequeno", 0, 0, undefined,);
+  const lootPool = [Equipamentos.adaga, Equipamentos.halfPlacas, Equipamentos.placas, Equipamentos.espada, Equipamentos.studded, Equipamentos.machadoGrande, Equipamentos.malho, Equipamentos.espadaGrande, Equipamentos.shoushaBlade]
+  novoBau.inventario = []
+  const numberOfItems = Math.floor(Math.random() * 3) + 1;
+  const shuffledLootPool = lootPool.sort(() => Math.random() - 0.5);
+  const selectedItems = shuffledLootPool.slice(0, numberOfItems);
+  novoBau.inventario.push(...selectedItems);
+  novoBau.calcularClasseArmadura();
+
+  return novoBau;
+}
+
 export function criarNovoEsqueleto(): Monstro {
   const atributos = new Atributos(10, 14, 15, 6, 8, 5);
   const nome = `Esqueleto Guerreiro`;
 
-  const novoEsqueleto = new Monstro(nome, 13, 13, atributos, Equipamentos.espada, Equipamentos.broken, Equipamentos.escudo, './esqueleto.png', "Pequeno",  0.5, 50, undefined,);
+  const novoEsqueleto = new Monstro(nome, 13, 13, atributos, Equipamentos.espada, Equipamentos.broken, Equipamentos.escudo, './esqueleto.png', "Pequeno", 0.5, 50, undefined,);
   novoEsqueleto.calcularClasseArmadura();
   novoEsqueleto.inventario = [Equipamentos.espada, Equipamentos.broken, Equipamentos.escudo]
   return novoEsqueleto;

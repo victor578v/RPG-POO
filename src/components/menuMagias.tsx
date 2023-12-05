@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Personagem } from '../classes/personagem';
 import Modal from 'react-responsive-modal';
-import * as Equipamentos from '../classes/equipamentos';
-import { Magia, SpellBuff, escudo } from '../classes/magias';
+import { Magia } from '../classes/magias';
 
 
 interface spelProps {

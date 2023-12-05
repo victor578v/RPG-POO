@@ -48,7 +48,6 @@ const Menu: React.FC<MenuProps> = ({ personagem, atualizarPersonagem }) => {
             <div className='botao' onClick={() => checkPersonagem(personagem)}><p>Entrar na Dungeon</p></div>
             <CriarPersonagem personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
             <FichaMenu personagem={personagem} atualizarPersonagem={atualizarPersonagem} />
-            <Tutorial />
           </div>
         </>
       )}

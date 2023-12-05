@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './dungeon.css';
 import { Personagem } from '../classes/personagem';
 import { combate } from '../classes/combate';
-import { criarNovoDragaoVermelhoAdulto, criarNovoEsqueleto, criarNovoGoblin } from '../classes/criaturas';
+import { criarNovoBau, criarNovoDragaoVermelhoAdulto, criarNovoEsqueleto, criarNovoGoblin } from '../classes/criaturas';
 import * as Equipamentos from '../classes/equipamentos';
 import Modal from 'react-responsive-modal';
 import Ficha from './ficha';
@@ -112,7 +112,8 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
             const criaturasDisponiveis = [
                 "Goblin",
                 "Esqueleto",
-                "Dragao Vermelho Adulto"
+                "Dragao Vermelho Adulto",
+                "Bau"
             ];
             const numeroCriaturas = Math.ceil(Math.random() * 5);
             const nivelMaximoCriatura = (personagem.nivel || 0) * 0.5;
@@ -136,6 +137,8 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
                     criaturaEscolhida = criarNovoEsqueleto();
                 } else if (criaturaAleatoria === "Dragao Vermelho Adulto") {
                     criaturaEscolhida = criarNovoDragaoVermelhoAdulto();
+                } else if (criaturaAleatoria === "Bau") {
+                    criaturaEscolhida = criarNovoBau();
                 }
 
                 // Verifica o tamanho da criatura
@@ -174,6 +177,7 @@ const Dungeon: React.FC<DungeonProps> = ({ personagem, voltarParaMenu, atualizar
                 <p>{personagem.nome}</p>
                 <div><img src={`${personagem.imagem}`} width={150} height={150} alt="Personagem" /></div>
                 <p>Pontos de vida: {personagem.pontosVida}/{personagem.pontosVidaMaximos}</p>
+                <p>Mana: {personagem.mana}/{personagem.manaMaximo}</p>
                 <p>Exp: {personagem.exp}</p>
                 <p>Classe de armadura: {personagem.classeArmadura}</p>
                 <p>Arma Equipada: {personagem.arma.nome}</p>
