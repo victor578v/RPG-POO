@@ -1,6 +1,6 @@
 import { Monstro } from './criaturas';
 import { Item } from './equipamentos';
-import { Magia, escudo } from './magias';
+import { Magia } from './magias';
 import { Personagem } from './personagem';
 import { RolarDado } from './util';
 

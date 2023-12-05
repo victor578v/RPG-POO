@@ -20,31 +20,31 @@ export class Atributos {
     private _carismaBonus: number;
 
     // Proficiências em Testes de Resistência NAO É USADO
-    testeForca: boolean;
-    testeDestreza: boolean;
-    testeConstituicao: boolean;
-    testeInteligencia: boolean;
-    testeSabedoria: boolean;
-    testeCarisma: boolean;
+    public testeForca: boolean;
+    public testeDestreza: boolean;
+    public testeConstituicao: boolean;
+    public testeInteligencia: boolean;
+    public testeSabedoria: boolean;
+    public testeCarisma: boolean;
 
     // Proficiencias em Perícias NAO É USADO
-    atletismo: boolean;
-    sobrevivencia: boolean;
-    maoHabil: boolean;
-    furtividade: boolean;
-    acrobacias: boolean;
-    arcanismo: boolean;
-    natureza: boolean;
-    medicina: boolean;
-    percepcao: boolean;
-    historia: boolean;
-    intuicao: boolean;
-    persuasao: boolean;
-    enganacao: boolean;
-    intimidacao: boolean;
+    public atletismo: boolean;
+    public sobrevivencia: boolean;
+    public maoHabil: boolean;
+    public furtividade: boolean;
+    public acrobacias: boolean;
+    public arcanismo: boolean;
+    public natureza: boolean;
+    public medicina: boolean;
+    public percepcao: boolean;
+    public historia: boolean;
+    public intuicao: boolean;
+    public persuasao: boolean;
+    public enganacao: boolean;
+    public intimidacao: boolean;
 
     // Bônus de Proficiência 
-    bonusProficiencia: number;
+    public bonusProficiencia: number;
 
     constructor(
         forca: number,

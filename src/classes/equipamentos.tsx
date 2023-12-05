@@ -3,6 +3,7 @@ import { TipoDano } from "./util";
 
 // Aqui tem Construtores
 // Aqui tem Heranca e Polimorfismo
+// Aqui tem Associacoes
 
 export class Item {
   public nome: string;
@@ -18,7 +19,7 @@ export class Arma extends Item {
   public dadosDano: number; // Numero de dados de dano da arma
   public dadoTipo: number; // Numero de lados do dado de dano Ex: d6, dado de 6 lados
   public tipoDano: TipoDano; // Tipo de dano que a arma causa
-  public propriedades: Propriedades[]; // Lista as propriedades que a arma possui
+  public propriedades: Propriedades[]; // Associacoes: arma tem propriedades
   public bonusCA: number;
   public dadosDanoExtra?: number; // Numero de dados de dano Extra da arma
   public dadoTipoExtra?: number; // Numero de lados do dado de dano Extra
